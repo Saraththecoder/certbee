@@ -4,21 +4,109 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#F6C33E" />
+    <meta
+      name="google-site-verification"
+      content="6y3tKDOBduxhMR0deKupvlabhGS4q4wI3MuNS45m0hY"
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>CertBee — One design. Every certificate.</title>
-    <meta name="description" content="Upload your certificate design, add names from a CSV or public Google Sheet, and generate personalized PDFs locally in one batch." />
-    <meta property="og:title" content="CertBee — One design. Every certificate." />
-    <meta property="og:description" content="Free bulk personalized certificate generator. Place fields once, preview live, and download a ZIP locally in your browser." />
+    <title>Free Bulk Certificate Generator Online | CertBee</title>
+    <meta
+      name="description"
+      content="Create personalized certificates in bulk for free. Import participants from Excel, CSV or Google Sheets, customize your template, and download PDFs instantly. No server uploads."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://certbee.vercel.app/" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="CertBee" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="Free Bulk Certificate Generator Online | CertBee" />
+    <meta
+      property="og:description"
+      content="Create personalized certificates in bulk for free. Import participants from Excel, CSV or Google Sheets, customize your template, and download PDFs instantly. No server uploads."
+    />
+    <meta property="og:url" content="https://certbee.vercel.app/" />
+    <meta property="og:image" content="https://certbee.vercel.app/images/certbee-og-preview.png" />
+    <meta
+      property="og:image:alt"
+      content="CertBee certificate editor and bulk PDF workspace preview"
+    />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Free Bulk Certificate Generator Online | CertBee" />
+    <meta
+      name="twitter:description"
+      content="Create personalized certificates in bulk for free. Import participants from Excel, CSV or Google Sheets, customize your template, and download PDFs instantly. No server uploads."
+    />
+    <meta name="twitter:image" content="https://certbee.vercel.app/images/certbee-og-preview.png" />
+
+    <!-- Structured Data -->
+    <script id="certbee-structured-data" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://certbee.vercel.app/#organization",
+            "name": "CertBee",
+            "url": "https://certbee.vercel.app/",
+            "sameAs": ["https://github.com/Saraththecoder/certbee"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://certbee.vercel.app/#website",
+            "name": "CertBee",
+            "url": "https://certbee.vercel.app/"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://certbee.vercel.app/#software",
+            "name": "CertBee",
+            "applicationCategory": "UtilitiesApplication",
+            "operatingSystem": "Web Browser",
+            "url": "https://certbee.vercel.app/",
+            "description": "Create personalized certificates in bulk for free. Import participants from Excel, CSV or Google Sheets, customize your template, and download PDFs instantly. No server uploads.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          }
+        ]
+      }
+    </script>
+
+    <!-- Preload critical hero preview artwork & connect fonts -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/images/certbee-sample-certificate-preview.webp"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Great+Vibes&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <main style="max-width:720px;margin:48px auto;padding:24px;font-family:system-ui,sans-serif;line-height:1.6;">
+        <h1>One design. Every certificate.</h1>
+        <p>CertBee is a free, browser-native bulk certificate generator. Upload PNG, JPG, SVG, or PDF templates, import participants from CSV, Excel (.xlsx), pasted names, or public Google Sheets, position fields visually, and download personalized PDFs bundled as a ZIP locally without server uploads.</p>
+        <nav>
+          <a href="/features">Features</a> ·
+          <a href="/how-it-works">How it works</a> ·
+          <a href="/guide">Preparation guide</a> ·
+          <a href="/blog">Guides &amp; Blog</a> ·
+          <a href="/about">About</a> ·
+          <a href="/privacy">Privacy policy</a>
+        </nav>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

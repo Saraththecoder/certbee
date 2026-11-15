@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx';
+import type * as XLSXTypes from 'xlsx';
 import { ParticipantDataset, ParticipantRow } from '../types/participant';
 import { createId } from '../utils/fileUtils';
 import { validateParticipants } from '../utils/validation';
@@ -12,6 +12,7 @@ export async function parseExcelFile(file: File): Promise<ParticipantDataset> {
     throw new Error('Please upload an Excel (.xlsx or .xls) file.');
   }
 
+  const XLSX = await import('xlsx');
   const buffer = await file.arrayBuffer();
   const workbook = XLSX.read(buffer, { type: 'array' });
 
@@ -20,7 +21,7 @@ export async function parseExcelFile(file: File): Promise<ParticipantDataset> {
   }
 
   // Find first non-empty worksheet
-  let targetSheet: XLSX.WorkSheet | null = null;
+  let targetSheet: XLSXTypes.WorkSheet | null = null;
   for (const sheetName of workbook.SheetNames) {
     const sheet = workbook.Sheets[sheetName];
     if (sheet && sheet['!ref']) {

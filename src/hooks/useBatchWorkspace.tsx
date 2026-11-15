@@ -1,4 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { getBlogPostBySlug } from '../data/blogPosts';
+import { STATIC_ROUTE_TO_PATH } from '../seo/routeMeta';
 import {
   clearWorkspaceState,
   loadWorkspaceState,
@@ -6,51 +8,51 @@ import {
 } from '../services/storageService';
 import { PageRoute, WorkflowStep } from '../types/certificate';
 import { CustomFontAsset } from '../types/editor';
+import { trackEvent } from '../utils/analytics';
 import { loadCustomFontFile, registerAllCustomFonts } from '../utils/fontUtils';
 import { buildSampleWorkspacePayload } from '../utils/sampleData';
 import { useCertificate } from './useCertificate';
 import { useEditor } from './useEditor';
 import { useParticipants } from './useParticipants';
+import { useSeo } from './useSeo';
 
-const ROUTE_TO_PATH: Record<Exclude<PageRoute, 'not-found'>, string> = {
-  home: '/',
-  create: '/create',
-  about: '/about',
-  guide: '/guide',
-  blog: '/blog',
-  contact: '/contact',
-  privacy: '/privacy',
-  terms: '/terms',
-};
+export type NavTarget = Exclude<PageRoute, 'not-found' | 'blog-post'>;
 
-const ROUTE_TITLES: Record<PageRoute, string> = {
-  home: 'CertBee — One design. Every certificate.',
-  create: 'Batch Workspace — CertBee',
-  about: 'About — CertBee',
-  guide: 'Preparation Guide — CertBee',
-  blog: 'Journal — CertBee',
-  contact: 'Contact — CertBee',
-  privacy: 'Privacy Policy — CertBee',
-  terms: 'Terms of Use — CertBee',
-  'not-found': 'Page Not Found — CertBee',
-};
-
-export function getRoutePath(route: Exclude<PageRoute, 'not-found'>, hash?: string): string {
-  const base = ROUTE_TO_PATH[route] ?? '/';
+export function getRoutePath(route: NavTarget, hash?: string): string {
+  const base = STATIC_ROUTE_TO_PATH[route] ?? '/';
   return hash ? `${base}#${hash.replace(/^#/, '')}` : base;
 }
 
-export function parsePathToRoute(pathname: string): PageRoute {
+export function getBlogPostPath(slug: string): string {
+  return `/blog/${slug}`;
+}
+
+export function parseLocationToRoute(pathname: string): {
+  route: PageRoute;
+  blogSlug: string | null;
+} {
   const normalized = pathname.replace(/\/+$/, '') || '/';
-  const match = (Object.entries(ROUTE_TO_PATH) as Array<[Exclude<PageRoute, 'not-found'>, string]>).find(
-    ([, path]) => path === normalized
-  );
-  return match ? match[0] : 'not-found';
+
+  if (normalized.startsWith('/blog/')) {
+    const slug = normalized.slice('/blog/'.length);
+    if (slug && getBlogPostBySlug(slug)) {
+      return { route: 'blog-post', blogSlug: slug };
+    }
+    return { route: 'not-found', blogSlug: null };
+  }
+
+  const match = (
+    Object.entries(STATIC_ROUTE_TO_PATH) as Array<[NavTarget, string]>
+  ).find(([, path]) => path === normalized);
+
+  return match ? { route: match[0], blogSlug: null } : { route: 'not-found', blogSlug: null };
 }
 
 interface BatchWorkspaceContextValue {
   route: PageRoute;
-  navigate: (route: Exclude<PageRoute, 'not-found'>, hash?: string) => void;
+  blogSlug: string | null;
+  navigate: (route: NavTarget, hash?: string) => void;
+  navigateBlogPost: (slug: string) => void;
   step: WorkflowStep;
   setStep: (step: WorkflowStep) => void;
   certificate: ReturnType<typeof useCertificate>;
@@ -68,10 +70,15 @@ interface BatchWorkspaceContextValue {
 const BatchWorkspaceContext = createContext<BatchWorkspaceContextValue | null>(null);
 
 export function BatchWorkspaceProvider({ children }: { children: React.ReactNode }) {
-  const [route, setRoute] = useState<PageRoute>(() => {
-    if (typeof window === 'undefined') return 'home';
-    return parsePathToRoute(window.location.pathname);
+  const [locationState, setLocationState] = useState<{
+    route: PageRoute;
+    blogSlug: string | null;
+  }>(() => {
+    if (typeof window === 'undefined') return { route: 'home', blogSlug: null };
+    return parseLocationToRoute(window.location.pathname);
   });
+
+  const { route, blogSlug } = locationState;
   const [step, setStep] = useState<WorkflowStep>(1);
   const [customFonts, setCustomFonts] = useState<CustomFontAsset[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -80,18 +87,13 @@ export function BatchWorkspaceProvider({ children }: { children: React.ReactNode
   const participants = useParticipants(null);
   const editor = useEditor([]);
 
-  // Sync document.title with active route
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.title = ROUTE_TITLES[route] ?? ROUTE_TITLES.home;
-    }
-  }, [route]);
+  useSeo(route, blogSlug);
 
   // Listen to browser Back/Forward history navigation
   useEffect(() => {
     const handlePopState = () => {
-      const nextRoute = parsePathToRoute(window.location.pathname);
-      setRoute(nextRoute);
+      const next = parseLocationToRoute(window.location.pathname);
+      setLocationState(next);
       const hash = window.location.hash.replace(/^#/, '');
       if (hash) {
         window.setTimeout(() => {
@@ -158,13 +160,13 @@ export function BatchWorkspaceProvider({ children }: { children: React.ReactNode
     return () => window.clearTimeout(timer);
   }, [isHydrated, step, certificate.template, participants.dataset, editor.fields, customFonts]);
 
-  const navigate = useCallback((nextRoute: Exclude<PageRoute, 'not-found'>, hash?: string) => {
+  const navigate = useCallback((nextRoute: NavTarget, hash?: string) => {
     const targetUrl = getRoutePath(nextRoute, hash);
     const currentFull = `${window.location.pathname}${window.location.hash}`;
     if (currentFull !== targetUrl) {
       window.history.pushState({ route: nextRoute }, '', targetUrl);
     }
-    setRoute(nextRoute);
+    setLocationState({ route: nextRoute, blogSlug: null });
 
     if (hash) {
       window.setTimeout(() => {
@@ -176,12 +178,23 @@ export function BatchWorkspaceProvider({ children }: { children: React.ReactNode
     }
   }, []);
 
+  const navigateBlogPost = useCallback((slug: string) => {
+    const targetUrl = getBlogPostPath(slug);
+    if (window.location.pathname !== targetUrl) {
+      window.history.pushState({ route: 'blog-post', slug }, '', targetUrl);
+    }
+    setLocationState({ route: 'blog-post', blogSlug: slug });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const startEmptyBatch = useCallback(() => {
+    trackEvent('generator_started', { source: 'empty' });
     navigate('create');
     setStep(1);
   }, [navigate]);
 
   const loadSampleBatch = useCallback(() => {
+    trackEvent('generator_started', { source: 'sample' });
     const sample = buildSampleWorkspacePayload();
     certificate.setTemplate(sample.template);
     participants.setDataset(sample.dataset);
@@ -221,7 +234,9 @@ export function BatchWorkspaceProvider({ children }: { children: React.ReactNode
     <BatchWorkspaceContext.Provider
       value={{
         route,
+        blogSlug,
         navigate,
+        navigateBlogPost,
         step,
         setStep,
         certificate,

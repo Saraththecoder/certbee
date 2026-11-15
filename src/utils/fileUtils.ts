@@ -1,8 +1,8 @@
-import * as pdfjsLib from 'pdfjs-dist';
+type PdfJsModule = typeof import('pdfjs-dist');
 
 let pdfWorkerConfigured = false;
 
-function ensurePdfWorker(): void {
+function ensurePdfWorker(pdfjsLib: PdfJsModule): void {
   if (pdfWorkerConfigured || typeof window === 'undefined') return;
   pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -151,7 +151,8 @@ export async function renderPdfTemplatePreview(dataUrl: string): Promise<{
   widthPx: number;
   heightPx: number;
 }> {
-  ensurePdfWorker();
+  const pdfjsLib = await import('pdfjs-dist');
+  ensurePdfWorker(pdfjsLib);
   const pdfBytes = dataUrlToUint8Array(dataUrl);
 
   const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });

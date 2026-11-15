@@ -1,6 +1,7 @@
 import { AlertCircle, ArrowRight, CheckCircle2, RefreshCw, Trash2, Upload } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
+import { trackEvent } from '../utils/analytics';
 import { formatBytes } from '../utils/fileUtils';
 
 export function UploadZone() {
@@ -13,7 +14,20 @@ export function UploadZone() {
 
   const handleFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
-    await uploadTemplateFile(files[0]);
+    const file = files[0];
+    const ok = await uploadTemplateFile(file);
+    if (ok) {
+      const ext = file.name.toLowerCase();
+      const format =
+        file.type === 'application/pdf' || ext.endsWith('.pdf')
+          ? 'pdf'
+          : file.type === 'image/svg+xml' || ext.endsWith('.svg')
+          ? 'svg'
+          : file.type === 'image/jpeg' || ext.endsWith('.jpg') || ext.endsWith('.jpeg')
+          ? 'jpg'
+          : 'png';
+      trackEvent('template_uploaded', { format });
+    }
   };
 
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {

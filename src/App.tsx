@@ -1,15 +1,32 @@
-import { useRef } from 'react';
+import { lazy, Suspense, useRef } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
+import { LANDING_PAGES, LandingRouteKey } from './data/landingPages';
 import { BatchWorkspaceProvider, useBatchWorkspace } from './hooks/useBatchWorkspace';
 import { usePageReveal } from './hooks/usePageReveal';
-import { About } from './pages/About';
-import { Blog } from './pages/Blog';
-import { Contact } from './pages/Contact';
-import { CreateBatch } from './pages/CreateBatch';
-import { Guide } from './pages/Guide';
 import { Home } from './pages/Home';
+
+const CreateBatch = lazy(() =>
+  import('./pages/CreateBatch').then((m) => ({ default: m.CreateBatch }))
+);
+const About = lazy(() => import('./pages/About').then((m) => ({ default: m.About })));
+const Guide = lazy(() => import('./pages/Guide').then((m) => ({ default: m.Guide })));
+const Blog = lazy(() => import('./pages/Blog').then((m) => ({ default: m.Blog })));
+const Contact = lazy(() => import('./pages/Contact').then((m) => ({ default: m.Contact })));
+const LandingPage = lazy(() =>
+  import('./pages/LandingPage').then((m) => ({ default: m.LandingPage }))
+);
+
+function RouteLoadingFallback() {
+  return (
+    <main className="min-h-[75vh] flex items-center justify-center px-4 py-16">
+      <div className="rounded-xl border-[1.5px] border-[#12151E] bg-white px-5 py-3 text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E]">
+        Loading workspace…
+      </div>
+    </main>
+  );
+}
 
 function NotFoundPage() {
   const { navigate, startEmptyBatch } = useBatchWorkspace();
@@ -17,7 +34,10 @@ function NotFoundPage() {
   usePageReveal(mainRef);
   return (
     <main ref={mainRef} className="min-h-[75vh] flex items-center justify-center px-4 py-16">
-      <div data-page-reveal className="w-full max-w-lg rounded-xl border-[1.5px] border-[#12151E] bg-white p-6 sm:p-8 space-y-5 shadow-[4px_4px_0_#12151E]">
+      <div
+        data-page-reveal
+        className="w-full max-w-lg rounded-xl border-[1.5px] border-[#12151E] bg-white p-6 sm:p-8 space-y-5 shadow-[4px_4px_0_#12151E]"
+      >
         <span className="inline-block rounded-md border-[1.5px] border-[#12151E] bg-[#F6C844] px-3 py-1 font-mono-tabular text-xs font-semibold text-[#12151E] shadow-[2px_2px_0_#12151E]">
           404 · Page not found
         </span>
@@ -59,8 +79,8 @@ function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
           <span className="inline-block rounded-md border-[1.5px] border-[#12151E] bg-[#F6C844] px-3 py-1 font-mono-tabular text-xs font-semibold text-[#12151E] shadow-[2px_2px_0_#12151E]">
             {kind === 'privacy' ? 'Privacy policy' : 'Terms of use'}
           </span>
-          <span className="text-xs font-mono-tabular tabular-nums text-[#6B7280]">
-            Effective November 14, 2026
+          <span className="text-xs font-mono-tabular tabular-nums text-[#525866]">
+            Effective November 15, 2026
           </span>
         </div>
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-[-0.025em] text-[#12151E]">
@@ -78,10 +98,10 @@ function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
             </section>
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                2. Zero server collection
+                2. Zero server collection of participant lists
               </h2>
               <p>
-                CertBee does not upload, transmit, store, log, or sell recipient names, email addresses, certificate artwork, or generated documents to remote servers. No user accounts, tracking pixels, or behavioral analytics cookies are required to run the certificate studio.
+                CertBee does not upload, transmit, store, log, or sell recipient names, email addresses, certificate artwork, or generated documents to remote servers. No user accounts are required to run the certificate studio.
               </p>
             </section>
             <section className="space-y-1.5">
@@ -89,7 +109,7 @@ function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
                 3. Public Google Sheets &amp; typography assets
               </h2>
               <p>
-                When you paste a public Google Sheets link in Step 02, your browser makes a direct, read-only request to Google&apos;s public CSV export endpoint for that spreadsheet tab—CertBee never receives OAuth credentials or private Drive access. Built-in editorial stylesheets load from Google Fonts, while vector PDF font embedding uses static font files served alongside the app.
+                When you paste a public Google Sheets link in Step 02, your browser makes a direct, read-only request to Google&apos;s public CSV export endpoint for that spreadsheet tab—CertBee never receives OAuth credentials or private Drive access. Built-in UI stylesheets load from Google Fonts, while PDF font embedding uses static font files served alongside the app.
               </p>
             </section>
             <section className="space-y-1.5">
@@ -98,6 +118,14 @@ function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
               </h2>
               <p>
                 Your active batch draft persists locally in IndexedDB solely so refreshing the browser does not lose your layout. You may permanently erase all locally stored draft assets at any moment via the &ldquo;New batch&rdquo; reset control in the workflow header or by clearing site storage in your browser settings.
+              </p>
+            </section>
+            <section className="space-y-1.5">
+              <h2 className="font-display text-base font-semibold text-[#12151E]">
+                5. Optional aggregate analytics
+              </h2>
+              <p>
+                When enabled via deployment configuration, aggregate workflow counts (such as template format category or anonymized batch size bucket) may be recorded via privacy-configured analytics respecting Do Not Track (DNT) and Global Privacy Control (GPC). Participant names, emails, sheet URLs, and uploaded files are never included in analytics payloads.
               </p>
             </section>
           </div>
@@ -151,8 +179,12 @@ function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
   );
 }
 
+function isLandingRouteKey(value: string): value is LandingRouteKey {
+  return value in LANDING_PAGES;
+}
+
 function AppShell() {
-  const { route, step } = useBatchWorkspace();
+  const { route, blogSlug, step } = useBatchWorkspace();
   const isStudioEditor = route === 'create' && step === 3;
   const hideFooter = isStudioEditor;
 
@@ -160,15 +192,18 @@ function AppShell() {
     <div className="min-h-screen flex flex-col overflow-x-clip certbee-surface-bg text-[#12151E]">
       <Navbar />
       <div className="flex-1 w-full">
-        {route === 'home' && <Home />}
-        {route === 'create' && <CreateBatch />}
-        {route === 'about' && <About />}
-        {route === 'guide' && <Guide />}
-        {route === 'blog' && <Blog />}
-        {route === 'contact' && <Contact />}
-        {route === 'privacy' && <LegalPage kind="privacy" />}
-        {route === 'terms' && <LegalPage kind="terms" />}
-        {route === 'not-found' && <NotFoundPage />}
+        <Suspense fallback={<RouteLoadingFallback />}>
+          {route === 'home' && <Home />}
+          {route === 'create' && <CreateBatch />}
+          {isLandingRouteKey(route) && <LandingPage pageKey={route} />}
+          {route === 'about' && <About />}
+          {route === 'guide' && <Guide />}
+          {(route === 'blog' || route === 'blog-post') && <Blog slug={blogSlug} />}
+          {route === 'contact' && <Contact />}
+          {route === 'privacy' && <LegalPage kind="privacy" />}
+          {route === 'terms' && <LegalPage kind="terms" />}
+          {route === 'not-found' && <NotFoundPage />}
+        </Suspense>
       </div>
       {!hideFooter && <Footer />}
     </div>

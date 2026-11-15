@@ -136,15 +136,24 @@ export function Hero() {
                       return (
                         <tr
                           key={row.name}
+                          tabIndex={0}
+                          aria-selected={isActive}
                           onMouseEnter={() => setActiveRowIdx(idx)}
+                          onFocus={() => setActiveRowIdx(idx)}
                           onClick={() => setActiveRowIdx(idx)}
-                          className={`h-10 cursor-pointer transition-colors duration-150 ${
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setActiveRowIdx(idx);
+                            }
+                          }}
+                          className={`h-10 cursor-pointer transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#12151E] ${
                             isActive ? 'bg-[#FFF4CC]/75' : 'hover:bg-[#FAF9F5]'
                           }`}
                         >
                           <td className="px-4 py-2 font-semibold whitespace-nowrap">{row.name}</td>
                           <td className="px-4 py-2 text-[#4B5263] whitespace-nowrap">{row.role}</td>
-                          <td className="px-4 py-2 text-right font-mono-tabular tabular-nums text-[11px] text-[#6B7280] whitespace-nowrap">
+                          <td className="px-4 py-2 text-right font-mono-tabular tabular-nums text-[11px] text-[#525866] whitespace-nowrap">
                             {row.date}
                           </td>
                         </tr>
@@ -187,8 +196,12 @@ export function Hero() {
                 <div className="sm:col-span-5">
                   <div className="overflow-hidden rounded-lg border-[1.5px] border-[#12151E] bg-[#FAF9F5] shadow-[2px_2px_0_#12151E]">
                     <img
-                      src="/assets/aistudio/Colorful_Abstract_Painting_Art_Completion_Certificate_4fe08b87.png"
-                      alt="Generated certificate for Aarav Kumar inside certificates_batch.zip"
+                      src="/images/certbee-sample-certificate-preview.webp"
+                      alt="Sample completed certificate generated inside CertBee for Aarav Kumar"
+                      width={900}
+                      height={636}
+                      fetchPriority="high"
+                      decoding="async"
                       className="block aspect-[16/11.3] w-full object-cover transition-transform duration-300 ease-out hover:scale-[1.03]"
                     />
                   </div>
@@ -203,17 +216,24 @@ export function Hero() {
                         <li
                           key={row.file}
                           data-workbench-file
-                          onMouseEnter={() => setActiveRowIdx(idx)}
-                          onClick={() => setActiveRowIdx(idx)}
-                          className={`flex h-9 items-center justify-between gap-2 rounded px-2 -mx-2 cursor-pointer transition-colors duration-150 ${
+                          className={`rounded px-2 -mx-2 transition-colors duration-150 ${
                             isActive ? 'bg-[#FFF4CC]/75' : 'hover:bg-[#FAF9F5]'
                           }`}
                         >
-                          <span className="inline-flex items-center gap-2 min-w-0 font-mono-tabular text-[11px] font-medium text-[#12151E]">
-                            <FileText className="h-4 w-4 shrink-0 text-[#4B5263]" strokeWidth={1.6} />
-                            <span className="truncate">{row.file}</span>
-                          </span>
-                          <Check className="h-4 w-4 shrink-0 text-[#10B981]" strokeWidth={2} aria-hidden="true" />
+                          <button
+                            type="button"
+                            onMouseEnter={() => setActiveRowIdx(idx)}
+                            onFocus={() => setActiveRowIdx(idx)}
+                            onClick={() => setActiveRowIdx(idx)}
+                            aria-pressed={isActive}
+                            className="flex h-9 w-full items-center justify-between gap-2 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12151E] rounded"
+                          >
+                            <span className="inline-flex items-center gap-2 min-w-0 font-mono-tabular text-[11px] font-medium text-[#12151E]">
+                              <FileText className="h-4 w-4 shrink-0 text-[#4B5263]" strokeWidth={1.6} aria-hidden="true" />
+                              <span className="truncate">{row.file}</span>
+                            </span>
+                            <Check className="h-4 w-4 shrink-0 text-[#10B981]" strokeWidth={2} aria-hidden="true" />
+                          </button>
                         </li>
                       );
                     })}

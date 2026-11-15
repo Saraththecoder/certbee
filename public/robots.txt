@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /create
+Disallow: /assets/aistudio/
+Disallow: /404
+
+Sitemap: https://certbee.vercel.app/sitemap.xml

@@ -4,7 +4,7 @@ import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
 import { usePageReveal } from '../hooks/usePageReveal';
 
 export function Guide() {
-  const { startEmptyBatch } = useBatchWorkspace();
+  const { startEmptyBatch, navigate } = useBatchWorkspace();
   const mainRef = useRef<HTMLElement | null>(null);
 
   usePageReveal(mainRef);
@@ -74,15 +74,40 @@ export function Guide() {
           </section>
         </div>
 
-        <div data-page-reveal>
+        <div data-page-reveal className="flex flex-wrap items-center justify-between gap-4 pt-2">
           <button
             type="button"
             onClick={startEmptyBatch}
             className="inline-flex h-11 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-5 text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:bg-[#1E2333] active:translate-x-[1px] active:translate-y-[1px] transition-[background-color,transform] duration-150 cursor-pointer"
           >
             <span>Start a batch</span>
-            <ArrowRight className="h-4 w-4 text-[#F6C844]" strokeWidth={1.75} />
+            <ArrowRight className="h-4 w-4 text-[#F6C844]" strokeWidth={1.75} aria-hidden="true" />
           </button>
+
+          <div className="flex flex-wrap items-center gap-4 text-sm font-semibold">
+            <a
+              href="/certificate-generator-from-excel"
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                navigate('certificate-generator-from-excel');
+              }}
+              className="text-[#2563EB] hover:text-[#12151E] transition-colors"
+            >
+              Excel (.xlsx) guide
+            </a>
+            <a
+              href="/certificate-generator-from-google-sheets"
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                navigate('certificate-generator-from-google-sheets');
+              }}
+              className="text-[#2563EB] hover:text-[#12151E] transition-colors"
+            >
+              Google Sheets guide
+            </a>
+          </div>
         </div>
       </div>
     </main>

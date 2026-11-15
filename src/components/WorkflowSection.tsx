@@ -1,6 +1,6 @@
 import { ArrowRight, Maximize2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
+import { getRoutePath, useBatchWorkspace } from '../hooks/useBatchWorkspace';
 
 const WORKFLOW_STEPS = [
   {
@@ -9,8 +9,9 @@ const WORKFLOW_STEPS = [
     title: 'Upload your design',
     description:
       'Drop in any clean PNG, JPG, SVG, or vector PDF template exported without placeholder recipient names.',
-    screenshot: '/assets/aistudio/image_7a95b629.png',
-    screenshotAlt: 'Step 1 of 4: Upload your certificate template inside CertBee',
+    screenshot: '/images/certbee-step-1-upload-certificate-template.webp',
+    screenshotAlt:
+      'CertBee Step 1 template uploader showing PNG, JPG, SVG, and vector PDF certificate dropzone',
   },
   {
     id: '02',
@@ -18,8 +19,9 @@ const WORKFLOW_STEPS = [
     title: 'Import your list',
     description:
       'Load a CSV or Excel workbook, paste names one per line, or fetch a public Google Sheet directly in your browser.',
-    screenshot: '/assets/aistudio/image_0032b421.png',
-    screenshotAlt: 'Step 2 of 4: Import participant names from CSV, Excel, pasted list, or Google Sheets',
+    screenshot: '/images/certbee-step-2-import-participants-spreadsheet.webp',
+    screenshotAlt:
+      'CertBee Step 2 participant import screen supporting Excel (.xlsx), CSV, pasted names, and Google Sheets URLs',
   },
   {
     id: '03',
@@ -27,8 +29,9 @@ const WORKFLOW_STEPS = [
     title: 'Place the fields',
     description:
       'Drag the name box into place on your template, pick a font and color, and enable Auto-fit so long names never overflow.',
-    screenshot: '/assets/aistudio/image_b59d7b54.png',
-    screenshotAlt: 'Step 3 of 4: Place dynamic name box and customize font styling on certificate',
+    screenshot: '/images/certbee-step-3-design-certificate-fields.webp',
+    screenshotAlt:
+      'CertBee Step 3 canvas editor with draggable participant name field, font dropdown, and alignment properties',
   },
   {
     id: '04',
@@ -36,13 +39,14 @@ const WORKFLOW_STEPS = [
     title: 'Export your ZIP',
     description:
       'Verify every column once, generate every personalized PDF locally, and download the complete batch in one ZIP archive.',
-    screenshot: '/assets/aistudio/image_909d1e15.png',
-    screenshotAlt: 'Step 4 of 4: Generate batch PDFs and download the ZIP archive',
+    screenshot: '/images/certbee-step-4-generate-download-zip.webp',
+    screenshotAlt:
+      'CertBee Step 4 batch generation dashboard validating participant count and downloading certificates_batch.zip locally',
   },
 ] as const;
 
 export function WorkflowSection() {
-  const { startEmptyBatch } = useBatchWorkspace();
+  const { startEmptyBatch, navigate } = useBatchWorkspace();
   const [zoomedStepId, setZoomedStepId] = useState<string | null>(null);
 
   const zoomedStep = WORKFLOW_STEPS.find((s) => s.id === zoomedStepId) ?? null;
@@ -111,7 +115,11 @@ export function WorkflowSection() {
                   <img
                     src={step.screenshot}
                     alt={step.screenshotAlt}
+                    width={1280}
+                    height={585}
+                    sizes="(max-width: 1024px) 100vw, 600px"
                     loading="lazy"
+                    decoding="async"
                     className="block w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.015]"
                   />
                   <span className="absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-md border-[1.5px] border-[#12151E] bg-white/95 px-2.5 py-1 font-mono-tabular text-[11px] font-semibold text-[#12151E] shadow-[2px_2px_0_#12151E] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
@@ -135,6 +143,61 @@ export function WorkflowSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Helpful Internal Navigation Strip */}
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border-[1.5px] border-[#12151E] bg-white px-5 py-4 shadow-[3px_3px_0_#12151E]">
+          <p className="text-sm text-[#4B5263]">
+            Need a walkthrough for <strong className="font-semibold text-[#12151E]">Excel</strong>,{' '}
+            <strong className="font-semibold text-[#12151E]">Google Sheets</strong>, or{' '}
+            <strong className="font-semibold text-[#12151E]">campus events</strong>?
+          </p>
+          <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm font-semibold">
+            <a
+              href={getRoutePath('features')}
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                navigate('features');
+              }}
+              className="text-[#2563EB] hover:text-[#12151E] transition-colors"
+            >
+              All features
+            </a>
+            <a
+              href={getRoutePath('certificate-generator-from-excel')}
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                navigate('certificate-generator-from-excel');
+              }}
+              className="text-[#2563EB] hover:text-[#12151E] transition-colors"
+            >
+              Excel guide
+            </a>
+            <a
+              href={getRoutePath('certificate-generator-from-google-sheets')}
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                navigate('certificate-generator-from-google-sheets');
+              }}
+              className="text-[#2563EB] hover:text-[#12151E] transition-colors"
+            >
+              Google Sheets
+            </a>
+            <a
+              href={getRoutePath('how-it-works')}
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                navigate('how-it-works');
+              }}
+              className="text-[#12151E] underline decoration-[#F6C844] decoration-2 underline-offset-4 hover:text-[#2563EB] transition-colors"
+            >
+              Detailed workflow →
+            </a>
+          </div>
         </div>
       </div>
 
@@ -172,6 +235,8 @@ export function WorkflowSection() {
             <img
               src={zoomedStep.screenshot}
               alt={zoomedStep.screenshotAlt}
+              width={1280}
+              height={585}
               className="block w-full h-auto"
             />
           </div>

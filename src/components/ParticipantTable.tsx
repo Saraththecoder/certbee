@@ -17,6 +17,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
 import { extractPastedLines } from '../services/excelService';
 import { ColumnMapping } from '../types/participant';
+import { getBatchSizeBucket, trackEvent } from '../utils/analytics';
 
 const PAGE_SIZE = 10;
 
@@ -60,11 +61,13 @@ export function ParticipantTable() {
     if (!files || files.length === 0) return;
     const file = files[0];
     const lower = file.name.toLowerCase();
-    const res =
-      lower.endsWith('.xlsx') || lower.endsWith('.xls')
-        ? await importExcel(file)
-        : await importCsv(file);
+    const isExcel = lower.endsWith('.xlsx') || lower.endsWith('.xls');
+    const res = isExcel ? await importExcel(file) : await importCsv(file);
     if (res) {
+      trackEvent('participants_imported', {
+        source: isExcel ? 'excel' : 'csv',
+        batch_size_bucket: getBatchSizeBucket(res.rows.length),
+      });
       setImporterOpen(false);
       setPage(1);
     }
@@ -77,6 +80,10 @@ export function ParticipantTable() {
       defaultDate: pasteDefaultDate,
     });
     if (res) {
+      trackEvent('participants_imported', {
+        source: 'paste',
+        batch_size_bucket: getBatchSizeBucket(res.rows.length),
+      });
       setImporterOpen(false);
       setPage(1);
     }
@@ -86,6 +93,7 @@ export function ParticipantTable() {
     e.preventDefault();
     const ok = await importSheetsUrl(sheetsUrl);
     if (ok) {
+      trackEvent('participants_imported', { source: 'sheets' });
       setImporterOpen(false);
       setPage(1);
     }

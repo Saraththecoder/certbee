@@ -13,6 +13,7 @@ import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
 import { generateCertificateBatch } from '../services/pdfService';
 import { createStreamingZipSession } from '../services/zipService';
 import { GeneratedCert, GenerationJobState } from '../types/editor';
+import { getBatchSizeBucket, trackEvent } from '../utils/analytics';
 import { downloadBlob, sanitizeFilename } from '../utils/fileUtils';
 
 export function GenerationProgress() {
@@ -135,6 +136,9 @@ export function GenerationProgress() {
       }));
 
       const zipName = `${zipFolderName}.zip`;
+      trackEvent('design_completed', { field_count: editor.fields.length });
+      trackEvent('batch_generated', { batch_size_bucket: getBatchSizeBucket(collected.length) });
+      trackEvent('zip_downloaded', { batch_size_bucket: getBatchSizeBucket(collected.length) });
       downloadBlob(zipBlob, zipName);
     } catch (err) {
       setZipProgressPct(null);
