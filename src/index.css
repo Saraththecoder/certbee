@@ -1,20 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FBFBF8;
-  --sheet: #FBFBF8;
+  --background: #FAF9F5;
+  --sheet: #FAF9F5;
   --surface: #FFFFFF;
   --surface-muted: #F3F1EA;
-  --border: #141414;
-  --border-subtle: rgba(20, 20, 20, 0.16);
-  --foreground: #141414;
-  --muted: #52525B;
-  --marigold: #F6C33E;
+  --surface-dark: #11131B;
+  --border: #12151E;
+  --border-subtle: rgba(18, 21, 30, 0.14);
+  --foreground: #12151E;
+  --secondary: #4B5263;
+  --muted: #6B7280;
+  --marigold: #F6C844;
+  --marigold-hover: #EBB82B;
+  --marigold-text: #9A5B00;
+  --marigold-soft: #FFF4CC;
   --cobalt: #2563EB;
-  --emerald: #1FA971;
-  --mint: #C8EFE0;
+  --emerald: #10B981;
   --rose: #EC4899;
-  --tangerine: #EA580C;
+  --orange: #F97316;
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -22,7 +27,7 @@
     scroll-behavior: smooth;
     background-color: var(--background);
     color: var(--foreground);
-    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "Plus Jakarta Sans", "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -32,6 +37,14 @@
 
   .font-serif-editorial {
     font-family: "Fraunces", Georgia, serif;
+  }
+
+  .font-serif-cert {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+
+  .font-script-cert {
+    font-family: "Great Vibes", "Fraunces", Georgia, serif;
   }
 
   .font-mono-tabular {
@@ -55,16 +68,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Warm ruled notebook paper sheet */
-.notebook-ruled-sheet {
-  background-color: #FBFBF8;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 31px,
-    rgba(20, 20, 20, 0.06) 31px,
-    rgba(20, 20, 20, 0.06) 32px
-  );
+/* Studio drafting graph paper ground */
+.certbee-surface-bg {
+  background-color: #FAF9F5;
+  background-image:
+    linear-gradient(to right, rgba(18, 21, 30, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 21, 30, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
 /* Step 03 Canvas Studio dark drafting mat */
@@ -80,23 +90,7 @@
 .studio-grid-light-bg {
   background-color: #F3F1EA;
   background-image:
-    linear-gradient(to right, rgba(20, 20, 20, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(20, 20, 20, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(22, 27, 46, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 27, 46, 0.045) 1px, transparent 1px);
   background-size: 24px 24px;
-}
-
-/* Angled folder tab geometry matching stacked project folders */
-.folder-tab-left {
-  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 100%, 0 100%);
-}
-
-.folder-tab-center {
-  clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 100%, 0 100%);
-}
-
-/* Translucent masking tape strip */
-.masking-tape {
-  background: rgba(230, 224, 204, 0.88);
-  border: 1px solid rgba(20, 20, 20, 0.1);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
 }

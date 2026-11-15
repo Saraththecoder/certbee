@@ -5,6 +5,12 @@ export function clamp(val: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, val));
 }
 
+export function containsComplexScript(text: string): boolean {
+  return /[\u0300-\u036F\u0590-\u05FF\u0600-\u06FF\u0900-\u0DFF\u0E00-\u0EFF\u1000-\u109F\u1780-\u17FF]/.test(
+    text
+  );
+}
+
 export function resolveFieldText(
   field: DynamicField,
   participant: ParticipantRow | null,
@@ -59,11 +65,11 @@ export function getFontFamilyCss(
   }
 
   const familyMap: Record<DynamicField['fontFamily'], string> = {
-    Fraunces: '"Fraunces", Georgia, serif',
-    'Plus Jakarta Sans': '"Plus Jakarta Sans", sans-serif',
-    'DM Sans': '"DM Sans", sans-serif',
-    'JetBrains Mono': '"JetBrains Mono", monospace',
-    Georgia: 'Georgia, "Times New Roman", serif',
+    Fraunces: '"Fraunces", "Noto Sans Devanagari", "Noto Sans Telugu", Georgia, serif',
+    'Plus Jakarta Sans': '"Plus Jakarta Sans", "Noto Sans Devanagari", "Noto Sans Telugu", sans-serif',
+    'DM Sans': '"DM Sans", "Noto Sans Devanagari", "Noto Sans Telugu", sans-serif',
+    'JetBrains Mono': '"JetBrains Mono", "Noto Sans Devanagari", "Noto Sans Telugu", monospace',
+    Georgia: 'Georgia, "Times New Roman", "Noto Sans Devanagari", "Noto Sans Telugu", serif',
   };
   return familyMap[fontFamily];
 }
@@ -118,12 +124,12 @@ export function measureAndFitField(
 
   const ctx = getMeasureContext();
 
-  if (!ctx || !text) {
+  if (!ctx || !text || field.fontSizePt <= 0) {
     return {
       overflows: false,
       measuredWidthPx: 0,
       boxWidthPx,
-      effectiveFontSizePt: field.fontSizePt,
+      effectiveFontSizePt: Math.max(0, field.fontSizePt),
       warning: null,
     };
   }
@@ -137,8 +143,9 @@ export function measureAndFitField(
       field.customFontId
     );
     const metrics = ctx.measureText(text);
+    const hasComplex = containsComplexScript(text);
     const extraSpacing =
-      text.length > 1 ? (field.letterSpacing / 100) * sizePx * (text.length - 1) : 0;
+      !hasComplex && text.length > 1 ? (field.letterSpacing / 100) * sizePx * (text.length - 1) : 0;
     return metrics.width + extraSpacing;
   };
 
@@ -148,7 +155,7 @@ export function measureAndFitField(
   let effectiveFontSizePt = field.fontSizePt;
   if (overflows && field.autoFit && baseWidth > 0) {
     const ratio = (boxWidthPx * 0.96) / baseWidth;
-    effectiveFontSizePt = Math.max(10, Math.floor(field.fontSizePt * ratio));
+    effectiveFontSizePt = Math.max(0, Math.floor(field.fontSizePt * ratio));
   }
 
   const warning: OverflowWarning | null = overflows

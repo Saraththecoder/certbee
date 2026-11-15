@@ -1,6 +1,6 @@
 import React from 'react';
 import { CustomFontAsset, DynamicField } from '../types/editor';
-import { getFontFamilyCss } from '../utils/coordinateUtils';
+import { containsComplexScript, getFontFamilyCss } from '../utils/coordinateUtils';
 
 interface DraggableFieldProps {
   field: DynamicField;
@@ -29,8 +29,8 @@ export function DraggableField({
   onStartResize,
 }: DraggableFieldProps) {
   const scale = canvasHeightPx / 1000;
-  const fontSizePx = Math.max(8, effectiveFontSizePt * scale);
-  const letterSpacingEm = field.letterSpacing / 100;
+  const fontSizePx = Math.max(0, effectiveFontSizePt * scale);
+  const letterSpacingEm = containsComplexScript(renderedText) ? 0 : field.letterSpacing / 100;
 
   const isImageField = field.fieldType === 'image' && Boolean(field.imageDataUrl);
 
@@ -88,11 +88,11 @@ export function DraggableField({
             textAlign: field.align,
             letterSpacing: `${letterSpacingEm}em`,
           }}
-          className={`w-full px-1 py-0.5 ${
+          className={`w-full min-h-[18px] px-1 py-0.5 ${
             field.autoFit ? 'whitespace-nowrap overflow-hidden' : 'break-words'
           }`}
         >
-          {renderedText || ' '}
+          {fontSizePx > 0 ? renderedText || ' ' : ' '}
         </div>
       )}
 

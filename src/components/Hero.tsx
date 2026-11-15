@@ -1,261 +1,174 @@
-import { ArrowRight, Award, Layers, Sparkles } from 'lucide-react';
-import { useState } from 'react';
-import botanicalBackdrop from '../assets/images/botanical_shadow_slate_1794682854352.jpg';
-import wideBackdrop from '../assets/images/wide_botanical_backdrop_1794682854967.jpg';
+import {
+  ArrowRight,
+  Check,
+  FileSpreadsheet,
+  FileText,
+  FolderArchive,
+} from 'lucide-react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
-import { CertBeeMark } from './CertBeeLogo';
+
+const SAMPLE_PREVIEW_ROWS = [
+  { name: 'Aarav Kumar', role: 'Winner', date: 'Nov 15, 2026', file: 'Certificate_Aarav_Kumar.pdf' },
+  { name: 'Meera Nair', role: 'Speaker', date: 'Nov 15, 2026', file: 'Certificate_Meera_Nair.pdf' },
+  { name: 'Jordan Lee', role: 'Participant', date: 'Nov 15, 2026', file: 'Certificate_Jordan_Lee.pdf' },
+] as const;
 
 export function Hero() {
-  const { startEmptyBatch, navigate } = useBatchWorkspace();
-  const [imgErrLeft, setImgErrLeft] = useState(false);
-  const [imgErrRight, setImgErrRight] = useState(false);
-
+  const { startEmptyBatch, loadSampleBatch } = useBatchWorkspace();
 
   return (
-    <section className="relative overflow-hidden px-4 pt-8 pb-10 sm:px-6 lg:px-8 sm:pt-14 sm:pb-14">
-      <div className="mx-auto max-w-7xl flex flex-col items-center text-center">
-        {/* Handwritten-style micro label */}
-        <p
-          data-hero-stagger
-          className="font-serif-editorial italic text-xs sm:text-sm text-[#141414] underline decoration-[#141414]/40 underline-offset-4"
-        >
-          bulk certificate studio
-        </p>
-
-        {/* Framed Centerpiece with Tilted Sticky-Note Tags */}
-        <div className="relative mt-5 inline-flex flex-col items-center">
-          {/* Desktop Top-Left Sticky Tag */}
-          <span
-            data-hero-note
-            className="hidden md:inline-block absolute -left-36 -top-7 -rotate-3 rounded-sm border border-[#141414] bg-[#C8EFE0] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold tracking-wider text-[#141414] shadow-[2px_2px_0_#141414] transition-transform duration-200 hover:rotate-0 hover:-translate-y-0.5"
-          >
-            ONE TEMPLATE
-          </span>
-
-          {/* Desktop Top-Right Sticky Tag */}
-          <span
-            data-hero-note
-            className="hidden md:inline-block absolute -right-40 -top-6 rotate-2 rounded-sm border border-[#141414] bg-[#F6EBB8] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold tracking-wider text-[#141414] shadow-[2px_2px_0_#141414] transition-transform duration-200 hover:rotate-0 hover:-translate-y-0.5"
-          >
-            ZERO SERVER UPLOAD
-          </span>
-
-          {/* Framed CERTBEE Title Box */}
-          <div
-            data-hero-stagger
-            className="group relative inline-flex items-center gap-3 sm:gap-4 border-2 border-[#EA580C] bg-[#FBFBF8] px-6 py-3.5 sm:px-11 sm:py-4.5 shadow-[4px_4px_0_rgba(20,20,20,0.08)] transition-transform duration-200 hover:-translate-y-0.5"
-          >
-            <div data-hero-bee className="shrink-0">
-              <CertBeeMark className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 drop-shadow-[2px_2px_0_#141414] transition-transform duration-200 group-hover:rotate-[-6deg] group-hover:scale-105" />
-            </div>
-            <h1
-              aria-label="CERTBEE"
-              className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[#141414] leading-none flex items-center"
-            >
-              <span aria-hidden="true" className="inline-flex">
-                {'CERT'.split('').map((ch, idx) => (
-                  <span key={`c-${idx}`} className="inline-block overflow-hidden">
-                    <span data-hero-char className="inline-block">
-                      {ch}
-                    </span>
-                  </span>
-                ))}
-              </span>
-              <span aria-hidden="true" className="inline-flex text-[#EA580C]">
-                {'BEE'.split('').map((ch, idx) => (
-                  <span key={`b-${idx}`} className="inline-block overflow-hidden">
-                    <span data-hero-char className="inline-block">
-                      {ch}
-                    </span>
-                  </span>
-                ))}
-              </span>
-            </h1>
-          </div>
-
-          {/* Desktop Bottom-Left Callout Tag + Arrow */}
-          <div
-            data-hero-note
-            className="hidden md:flex items-center gap-1.5 absolute -left-40 -bottom-6 rotate-1 transition-transform duration-200 hover:rotate-0 hover:-translate-y-0.5"
-          >
-            <span className="rounded-sm border border-[#141414] bg-[#F6C33E] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold text-[#141414] shadow-[2px_2px_0_#141414]">
-              CSV · Excel · Sheets
-            </span>
-            <svg width="24" height="18" viewBox="0 0 24 18" fill="none" aria-hidden="true">
-              <path
-                d="M2 15C10 14 16 10 21 3M21 3L15 4M21 3L20 9"
-                stroke="#141414"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-
-          {/* Desktop Bottom-Right Callout Tag + Arrow */}
-          <div
-            data-hero-note
-            className="hidden md:flex items-center gap-1.5 absolute -right-40 -bottom-6 -rotate-1 transition-transform duration-200 hover:rotate-0 hover:-translate-y-0.5"
-          >
-            <svg width="24" height="18" viewBox="0 0 24 18" fill="none" aria-hidden="true">
-              <path
-                d="M22 15C14 14 8 10 3 3M3 3L9 4M3 3L4 9"
-                stroke="#141414"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="rounded-sm border border-[#141414] bg-[#C8EFE0] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold text-[#141414] shadow-[2px_2px_0_#141414]">
-              Instant PDF + ZIP
-            </span>
-          </div>
-        </div>
-
-        {/* Mobile/Tablet Responsive Sticky-Note Tags Row */}
-        <div
-          data-hero-note
-          className="mt-4 flex md:hidden flex-wrap items-center justify-center gap-2"
-        >
-          <span className="rounded-sm border border-[#141414] bg-[#C8EFE0] px-2 py-0.5 font-mono-tabular text-[10px] font-semibold text-[#141414] shadow-[2px_2px_0_#141414]">
-            ONE TEMPLATE
-          </span>
-          <span className="rounded-sm border border-[#141414] bg-[#F6C33E] px-2 py-0.5 font-mono-tabular text-[10px] font-semibold text-[#141414] shadow-[2px_2px_0_#141414]">
-            CSV · Excel · Sheets
-          </span>
-          <span className="rounded-sm border border-[#141414] bg-[#F6EBB8] px-2 py-0.5 font-mono-tabular text-[10px] font-semibold text-[#141414] shadow-[2px_2px_0_#141414]">
-            ZERO UPLOAD
-          </span>
-          <span className="rounded-sm border border-[#141414] bg-[#C8EFE0] px-2 py-0.5 font-mono-tabular text-[10px] font-semibold text-[#141414] shadow-[2px_2px_0_#141414]">
-            PDF + ZIP
-          </span>
-        </div>
-
-        {/* Clean Status Caption Row */}
+    <section className="px-4 pt-12 pb-12 sm:px-6 lg:px-8 sm:pt-16 sm:pb-14">
+      <div className="mx-auto max-w-5xl flex flex-col items-center text-center">
+        {/* Clear High-Contrast Objection Killer */}
         <div
           data-hero-stagger
-          className="mt-6 md:mt-8 flex flex-wrap items-center justify-center gap-2 font-mono-tabular text-[10px] sm:text-[11px] font-medium tracking-wider text-[#52525B]"
+          className="mb-6 inline-flex flex-wrap items-center justify-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-white px-4 py-1.5 text-xs sm:text-sm font-semibold text-[#12151E] shadow-[2px_2px_0_#12151E]"
         >
-          <span className="inline-block h-2 w-2 rounded-full bg-[#2563EB] animate-pulse" aria-hidden="true" />
-          <span>FREE · NO ACCOUNT · RUNS LOCALLY IN YOUR BROWSER</span>
+          <span>Free</span>
+          <span aria-hidden="true" className="text-[#4B5263]">·</span>
+          <span>No watermark</span>
+          <span aria-hidden="true" className="text-[#4B5263]">·</span>
+          <span>Runs in your browser</span>
         </div>
 
-        {/* Main Statement + Flanking Tactile Thumbnail Medallions */}
-        <div className="relative mt-7 sm:mt-9 w-full flex items-center justify-center">
-          {/* Left Circular Medallion */}
-          <div
-            data-hero-badge
-            aria-hidden="true"
-            className="hidden lg:flex absolute left-12 xl:left-24 -top-2 h-20 w-20 rounded-full border-2 border-[#EA580C] bg-white p-1 shadow-[3px_3px_0_#141414] overflow-hidden -rotate-6 transition-transform duration-200 hover:scale-105 hover:rotate-0"
-          >
-            {!imgErrLeft ? (
-              <img
-                src={botanicalBackdrop}
-                alt=""
-                onError={() => setImgErrLeft(true)}
-                className="h-full w-full rounded-full object-cover"
-              />
-            ) : (
-              <div className="h-full w-full rounded-full bg-[#C8EFE0]" />
-            )}
-          </div>
+        {/* Display Headline */}
+        <h1
+          data-hero-stagger
+          className="font-display text-4xl sm:text-[56px] font-bold tracking-[-0.03em] text-[#12151E] leading-[1.06]"
+          style={{ textWrap: 'balance' }}
+        >
+          One design.
+          <br />
+          <span className="inline-block mt-1 rounded-lg border-[1.5px] border-[#12151E] bg-[#F6C844] px-3 py-0.5 text-[#12151E] shadow-[3px_3px_0_#12151E]">
+            Every certificate.
+          </span>
+        </h1>
 
-          <div data-hero-stagger className="max-w-3xl space-y-3 sm:space-y-4 px-1">
-            <h2
-              className="font-display text-3xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight text-[#141414] leading-[1.12]"
-              style={{ textWrap: 'balance' }}
-            >
-              <span className="inline-block overflow-hidden align-bottom">
-                <span data-hero-word className="inline-block">
-                  One design
-                </span>
-              </span>{' '}
-              <span
-                data-hero-word
-                aria-hidden="true"
-                className="inline-flex h-8 w-8 sm:h-10 sm:w-10 align-middle items-center justify-center rounded-full border-[1.5px] border-[#141414] bg-[#1FA971] text-white transition-transform duration-200 hover:rotate-12"
-              >
-                <Layers className="h-4 w-4 sm:h-5 sm:w-5" />
-              </span>{' '}
-              <br className="hidden sm:inline" />
-              <span className="relative inline-block overflow-hidden align-bottom px-1">
-                <span
-                  data-hero-highlight
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-1 h-3 sm:h-4 -z-10 origin-left bg-[#F6C33E]/75"
-                />
-                <span data-hero-word className="inline-block">
-                  Every certificate.
-                </span>
-              </span>{' '}
-              <span
-                data-hero-word
-                aria-hidden="true"
-                className="inline-flex h-8 w-8 sm:h-10 sm:w-10 align-middle items-center justify-center rounded-full border-[1.5px] border-[#141414] bg-[#EC4899] text-white transition-transform duration-200 hover:-rotate-12"
-              >
-                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
-              </span>
-            </h2>
-
-            <p className="mx-auto max-w-xl text-sm sm:text-base leading-relaxed text-[#52525B]">
-              Upload your certificate background, import names from Excel, CSV, or Google Sheets, and export personalized PDFs in one ZIP.
-            </p>
-          </div>
-
-          {/* Right Circular Medallion */}
-          <div
-            data-hero-badge
-            aria-hidden="true"
-            className="hidden lg:flex absolute right-12 xl:right-24 top-4 h-20 w-20 rounded-full border-2 border-[#EA580C] bg-white p-1 shadow-[3px_3px_0_#141414] overflow-hidden rotate-6 transition-transform duration-200 hover:scale-105 hover:rotate-0"
-          >
-            {!imgErrRight ? (
-              <img
-                src={wideBackdrop}
-                alt=""
-                onError={() => setImgErrRight(true)}
-                className="h-full w-full rounded-full object-cover"
-              />
-            ) : (
-              <div className="h-full w-full rounded-full bg-[#F6C33E]" />
-            )}
-          </div>
+        {/* Concise Subcopy + Dedicated Ambassador Line */}
+        <div data-hero-stagger className="mt-6 max-w-xl space-y-2">
+          <p className="text-base sm:text-lg font-normal leading-relaxed text-[#4B5263]">
+            Upload your certificate template, import a CSV or Excel sheet, and export personalized PDFs in one ZIP.
+          </p>
+          <p className="text-sm sm:text-base font-semibold text-[#12151E]">
+            Built by a Google Student Ambassador for ambassador programs, clubs, and hackathons.
+          </p>
         </div>
 
-        {/* Primary Dark CTA Button with Cobalt Square Accent */}
-        <div data-hero-stagger className="mt-7 sm:mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        {/* Primary & Secondary Actions */}
+        <div data-hero-stagger className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
           <button
             type="button"
             onClick={startEmptyBatch}
-            className="group inline-flex items-center gap-2.5 rounded-sm border-[1.5px] border-[#141414] bg-[#141414] px-5 py-3 font-mono-tabular text-xs font-semibold tracking-wider text-white hover:bg-[#27272A] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 shadow-[3px_3px_0_#2563EB] hover:shadow-[4px_4px_0_#2563EB] whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
+            className="inline-flex h-11 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-5 text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:bg-[#1E2333] active:translate-x-[1px] active:translate-y-[1px] transition-[background-color,transform] duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12151E]"
           >
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-[2px] bg-[#2563EB] text-white transition-transform duration-150 group-hover:scale-110">
-              <Award className="h-3.5 w-3.5" />
-            </span>
-            <span>START A BATCH</span>
-            <ArrowRight className="h-3.5 w-3.5 text-[#F6C33E] transition-transform duration-150 group-hover:translate-x-1" />
+            <span>Start a batch</span>
+            <ArrowRight className="h-4 w-4 text-[#F6C844]" strokeWidth={1.75} />
           </button>
 
           <button
             type="button"
-            onClick={() => navigate('guide')}
-            className="inline-flex items-center gap-1.5 rounded-sm border-[1.5px] border-[#141414] bg-white px-4 py-3 font-mono-tabular text-xs font-semibold tracking-wider text-[#141414] hover:bg-[#F6C33E] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 whitespace-nowrap shrink-0 cursor-pointer"
+            onClick={loadSampleBatch}
+            className="inline-flex h-11 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-white px-5 text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E] hover:bg-[#F3F1EA] active:translate-x-[1px] active:translate-y-[1px] transition-[background-color,transform] duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12151E]"
           >
-            <span>PREPARATION GUIDE</span>
+            <span>Try with sample data</span>
           </button>
         </div>
-      </div>
 
-      {/* Subtle Curved Notebook Divider Line */}
-      <div className="mx-auto mt-10 sm:mt-12 max-w-7xl overflow-hidden" aria-hidden="true">
-        <svg viewBox="0 0 1000 32" fill="none" className="w-full h-6">
-          <path
-            data-hero-line
-            d="M0 24 Q 500 -4 1000 22"
-            stroke="#141414"
-            strokeOpacity="0.22"
-            strokeWidth="1.2"
-          />
-        </svg>
+        {/* Tactile Print-Studio Workbench Visual: CSV -> Certificate Specimen + ZIP */}
+        <div
+          data-hero-stagger
+          className="mt-10 w-full rounded-2xl border-[1.5px] border-[#12151E] bg-[#F3F1EA] p-4 sm:p-6 text-left shadow-[5px_5px_0_#12151E]"
+        >
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-center">
+            {/* CSV / Excel Roster Card */}
+            <div className="lg:col-span-5 rounded-xl border-[1.5px] border-[#12151E] bg-white overflow-hidden shadow-[3px_3px_0_#12151E]">
+              <div className="flex items-center justify-between border-b-[1.5px] border-[#12151E] bg-[#FAF9F5] px-4 py-2.5 text-xs">
+                <span className="inline-flex items-center gap-2 font-semibold text-[#12151E]">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#12151E] bg-[#2563EB] text-white">
+                    <FileSpreadsheet className="h-3.5 w-3.5" strokeWidth={1.75} />
+                  </span>
+                  <span>participants.csv</span>
+                </span>
+                <span className="font-mono-tabular text-[11px] text-[#6B7280]">CSV · Excel · Sheets</span>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-[#12151E]/15 text-[#6B7280]">
+                      <th className="px-4 py-2.5 font-semibold">Name</th>
+                      <th className="px-4 py-2.5 font-semibold">Role</th>
+                      <th className="px-4 py-2.5 font-semibold text-right">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#12151E]/10 text-[#12151E]">
+                    {SAMPLE_PREVIEW_ROWS.map((row) => (
+                      <tr key={row.name} className="h-10">
+                        <td className="px-4 py-2 font-semibold whitespace-nowrap">{row.name}</td>
+                        <td className="px-4 py-2 text-[#4B5263] whitespace-nowrap">{row.role}</td>
+                        <td className="px-4 py-2 text-right font-mono-tabular tabular-nums text-[11px] text-[#6B7280] whitespace-nowrap">
+                          {row.date}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Crisp Transformation Connector */}
+            <div className="lg:col-span-1 flex items-center justify-center">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border-[1.5px] border-[#12151E] bg-[#F6C844] text-[#12151E] shadow-[2px_2px_0_#12151E] rotate-90 lg:rotate-0">
+                <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+              </span>
+            </div>
+
+            {/* Rendered Specimen Thumbnail + ZIP Archive */}
+            <div className="lg:col-span-6 rounded-xl border-[1.5px] border-[#12151E] bg-white p-4 shadow-[3px_3px_0_#12151E]">
+              <div className="flex items-center justify-between border-b-[1.5px] border-[#12151E] pb-2.5 mb-4 text-xs">
+                <span className="inline-flex items-center gap-2 font-semibold text-[#12151E]">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#12151E] bg-[#10B981] text-white">
+                    <FolderArchive className="h-3.5 w-3.5" strokeWidth={1.75} />
+                  </span>
+                  <span>certificates_batch.zip</span>
+                </span>
+                <span className="font-mono-tabular tabular-nums text-[11px] font-medium text-[#4B5263]">
+                  3 PDF files
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                {/* Uploaded Finished Certificate Specimen */}
+                <div className="sm:col-span-5">
+                  <div className="overflow-hidden rounded-lg border-[1.5px] border-[#12151E] bg-[#FAF9F5] shadow-[2px_2px_0_#12151E]">
+                    <img
+                      src="/assets/aistudio/Colorful_Abstract_Painting_Art_Completion_Certificate_4fe08b87.png"
+                      alt="Generated certificate for Aarav Kumar inside certificates_batch.zip"
+                      className="block aspect-[16/11.3] w-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                {/* Unclipped Clean PDF Output Rows */}
+                <div className="sm:col-span-7">
+                  <ul className="divide-y divide-[#12151E]/10 text-xs">
+                    {SAMPLE_PREVIEW_ROWS.map((row) => (
+                      <li
+                        key={row.file}
+                        className="flex h-9 items-center justify-between gap-2"
+                      >
+                        <span className="inline-flex items-center gap-2 min-w-0 font-mono-tabular text-[11px] font-medium text-[#12151E]">
+                          <FileText className="h-4 w-4 shrink-0 text-[#4B5263]" strokeWidth={1.6} />
+                          <span className="truncate">{row.file}</span>
+                        </span>
+                        <Check className="h-4 w-4 shrink-0 text-[#10B981]" strokeWidth={2} aria-hidden="true" />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

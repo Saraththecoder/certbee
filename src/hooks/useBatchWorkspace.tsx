@@ -7,6 +7,7 @@ import {
 import { PageRoute, WorkflowStep } from '../types/certificate';
 import { CustomFontAsset } from '../types/editor';
 import { loadCustomFontFile, registerAllCustomFonts } from '../utils/fontUtils';
+import { buildSampleWorkspacePayload } from '../utils/sampleData';
 import { useCertificate } from './useCertificate';
 import { useEditor } from './useEditor';
 import { useParticipants } from './useParticipants';
@@ -60,6 +61,7 @@ interface BatchWorkspaceContextValue {
   removeCustomFont: (fontId: string) => void;
   isHydrated: boolean;
   startEmptyBatch: () => void;
+  loadSampleBatch: () => void;
   resetAllWorkspace: () => Promise<void>;
 }
 
@@ -179,6 +181,15 @@ export function BatchWorkspaceProvider({ children }: { children: React.ReactNode
     setStep(1);
   }, [navigate]);
 
+  const loadSampleBatch = useCallback(() => {
+    const sample = buildSampleWorkspacePayload();
+    certificate.setTemplate(sample.template);
+    participants.setDataset(sample.dataset);
+    editor.setFields(sample.fields);
+    setStep(3);
+    navigate('create');
+  }, [certificate, editor, navigate, participants]);
+
   const addCustomFont = useCallback(async (file: File): Promise<CustomFontAsset> => {
     const asset = await loadCustomFontFile(file);
     setCustomFonts((prev) => [...prev, asset]);
@@ -221,6 +232,7 @@ export function BatchWorkspaceProvider({ children }: { children: React.ReactNode
         removeCustomFont,
         isHydrated,
         startEmptyBatch,
+        loadSampleBatch,
         resetAllWorkspace,
       }}
     >

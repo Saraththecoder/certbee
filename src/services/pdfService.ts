@@ -3,7 +3,11 @@ import { PDFDocument, PDFFont, PDFImage, PDFPage, StandardFonts, degrees, rgb } 
 import { TemplateAsset } from '../types/certificate';
 import { CustomFontAsset, DynamicField, FontFamilyOption, GeneratedCert } from '../types/editor';
 import { ColumnMapping, ParticipantRow } from '../types/participant';
-import { getFontCssString, resolveFieldText } from '../utils/coordinateUtils';
+import {
+  containsComplexScript,
+  getFontCssString,
+  resolveFieldText,
+} from '../utils/coordinateUtils';
 import {
   dataUrlToUint8Array,
   rasterizeImageToPngBytes,
@@ -189,8 +193,8 @@ async function renderFallbackTextPng(
   text: string,
   customFonts?: CustomFontAsset[]
 ): Promise<Uint8Array> {
-  // High-DPI fallback render only for fields containing glyphs outside embedded TTFs
-  const targetWidth = 2400;
+  // High-DPI shaped render for complex scripts (Indic/Arabic) or glyphs outside embedded TTFs
+  const targetWidth = 2800;
   const targetHeight = Math.round(targetWidth * (pdfHeight / pdfWidth));
   const scale = targetHeight / 1000;
 
@@ -205,25 +209,11 @@ async function renderFallbackTextPng(
   const boxTopPx = (field.yPct / 100) * targetHeight;
   const boxWidthPx = (field.widthPct / 100) * targetWidth;
 
-  let fontSizePt = field.fontSizePt;
+  let fontSizePt = Math.max(0, field.fontSizePt);
   let fontSizePx = fontSizePt * scale;
   let letterSpacingPx = (field.letterSpacing / 100) * fontSizePx;
 
-  ctx.font = getFontCssString(
-    field.fontFamily,
-    field.fontWeight,
-    fontSizePx,
-    customFonts,
-    field.customFontId
-  );
-  const measured =
-    ctx.measureText(text).width +
-    (text.length > 1 ? letterSpacingPx * (text.length - 1) : 0);
-
-  if (field.autoFit && measured > boxWidthPx + 2 && measured > 0) {
-    fontSizePt = Math.max(10, Math.floor(fontSizePt * ((boxWidthPx * 0.96) / measured)));
-    fontSizePx = fontSizePt * scale;
-    letterSpacingPx = (field.letterSpacing / 100) * fontSizePx;
+  if (fontSizePx > 0) {
     ctx.font = getFontCssString(
       field.fontFamily,
       field.fontWeight,
@@ -231,6 +221,26 @@ async function renderFallbackTextPng(
       customFonts,
       field.customFontId
     );
+    const isComplex = containsComplexScript(text);
+    const effectiveSpacing = isComplex ? 0 : letterSpacingPx;
+    const measured =
+      ctx.measureText(text).width +
+      (text.length > 1 ? effectiveSpacing * (text.length - 1) : 0);
+
+    if (field.autoFit && measured > boxWidthPx + 2 && measured > 0) {
+      fontSizePt = Math.max(0, Math.floor(fontSizePt * ((boxWidthPx * 0.96) / measured)));
+      fontSizePx = fontSizePt * scale;
+      letterSpacingPx = (field.letterSpacing / 100) * fontSizePx;
+      if (fontSizePx > 0) {
+        ctx.font = getFontCssString(
+          field.fontFamily,
+          field.fontWeight,
+          fontSizePx,
+          customFonts,
+          field.customFontId
+        );
+      }
+    }
   }
 
   ctx.save();
@@ -274,25 +284,28 @@ async function renderFallbackTextPng(
     ctx.translate(-centerX, -centerY);
   }
 
-  lines.forEach((line, idx) => {
-    const y = boxTopPx + idx * lineHeight;
-    if (Math.abs(letterSpacingPx) < 0.1 || line.length <= 1) {
-      ctx.textAlign = field.align;
-      ctx.fillText(line, anchorX, y);
-    } else {
-      const chars = Array.from(line);
-      const widths = chars.map((ch) => ctx.measureText(ch).width);
-      const total = widths.reduce((a, b) => a + b, 0) + letterSpacingPx * (chars.length - 1);
-      let cx = anchorX;
-      if (field.align === 'center') cx = anchorX - total / 2;
-      if (field.align === 'right') cx = anchorX - total;
-      ctx.textAlign = 'left';
-      chars.forEach((ch, ci) => {
-        ctx.fillText(ch, cx, y);
-        cx += widths[ci] + letterSpacingPx;
-      });
-    }
-  });
+  if (fontSizePx > 0) {
+    lines.forEach((line, idx) => {
+      const y = boxTopPx + idx * lineHeight;
+      const complexLine = containsComplexScript(line);
+      if (complexLine || Math.abs(letterSpacingPx) < 0.1 || line.length <= 1) {
+        ctx.textAlign = field.align;
+        ctx.fillText(line, anchorX, y);
+      } else {
+        const chars = Array.from(line);
+        const widths = chars.map((ch) => ctx.measureText(ch).width);
+        const total = widths.reduce((a, b) => a + b, 0) + letterSpacingPx * (chars.length - 1);
+        let cx = anchorX;
+        if (field.align === 'center') cx = anchorX - total / 2;
+        if (field.align === 'right') cx = anchorX - total;
+        ctx.textAlign = 'left';
+        chars.forEach((ch, ci) => {
+          ctx.fillText(ch, cx, y);
+          cx += widths[ci] + letterSpacingPx;
+        });
+      }
+    });
+  }
 
   ctx.restore();
 
@@ -471,7 +484,8 @@ export async function renderParticipantPdfBytes(
     if (!text) continue;
 
     const font = embeddedFonts.get(getFontKey(field))!;
-    if (!canFontEncodeText(font, text)) {
+    // Route non-encodable glyphs and complex scripts (Indic/Arabic) through native browser shaping
+    if (!canFontEncodeText(font, text) || containsComplexScript(text)) {
       const fallbackPngBytes = await renderFallbackTextPng(
         pdfWidth,
         pdfHeight,
@@ -488,14 +502,16 @@ export async function renderParticipantPdfBytes(
     const boxTopFromTop = (field.yPct / 100) * pdfHeight;
     const boxWidth = (field.widthPct / 100) * pdfWidth;
 
-    let effectiveFontSizePt = field.fontSizePt;
+    let effectiveFontSizePt = Math.max(0, field.fontSizePt);
+    if (effectiveFontSizePt <= 0) continue;
     let fontSizePdf = effectiveFontSizePt * scale;
     let letterSpacingPdf = (field.letterSpacing / 100) * fontSizePdf;
 
     const baseWidth = measureTextWidthPdf(font, text, fontSizePdf, letterSpacingPdf);
     if (field.autoFit && baseWidth > boxWidth + 2 && baseWidth > 0) {
       const ratio = (boxWidth * 0.96) / baseWidth;
-      effectiveFontSizePt = Math.max(10, Math.floor(field.fontSizePt * ratio));
+      effectiveFontSizePt = Math.max(0, Math.floor(field.fontSizePt * ratio));
+      if (effectiveFontSizePt <= 0) continue;
       fontSizePdf = effectiveFontSizePt * scale;
       letterSpacingPdf = (field.letterSpacing / 100) * fontSizePdf;
     }

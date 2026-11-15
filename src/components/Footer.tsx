@@ -16,55 +16,26 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t-[1.5px] border-[#141414]/20 px-4 py-10 sm:px-6 lg:px-8 text-[#141414]">
-      <div className="mx-auto max-w-7xl">
+    <footer className="border-t-[1.5px] border-[#12151E] bg-[#FAF9F5] px-4 py-12 sm:px-6 lg:px-8 text-[#12151E]">
+      <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           <div className="md:col-span-5 space-y-3">
             <a
               href={getRoutePath('home')}
               onClick={(e) => handleNav(e, 'home')}
               aria-label="CertBee Home"
-              className="inline-flex items-center hover:opacity-90 transition-opacity"
+              className="inline-flex items-center transition-opacity duration-150 hover:opacity-85"
             >
               <CertBeeLogo size="sm" />
             </a>
-            <p className="max-w-sm text-xs sm:text-sm leading-relaxed text-[#52525B]">
+            <p className="max-w-sm text-sm leading-relaxed text-[#4B5263]">
               One design. Every certificate. Free bulk PDF generation processed locally inside your browser.
             </p>
           </div>
 
-          <div className="md:col-span-3 space-y-2.5">
-            <h3 className="font-mono-tabular text-[11px] font-bold uppercase tracking-wider text-[#52525B]">
-              Navigate
-            </h3>
-            <ul className="space-y-1.5 text-sm">
-              <li>
-                <a
-                  href={getRoutePath('home', 'workflow')}
-                  onClick={(e) => handleNav(e, 'home', 'workflow')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
-                >
-                  How it works
-                </a>
-              </li>
-              <li>
-                <a
-                  href={getRoutePath('home', 'capabilities')}
-                  onClick={(e) => handleNav(e, 'home', 'capabilities')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
-                >
-                  Import formats
-                </a>
-              </li>
-              <li>
-                <a
-                  href={getRoutePath('home', 'faq')}
-                  onClick={(e) => handleNav(e, 'home', 'faq')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
-                >
-                  FAQ
-                </a>
-              </li>
+          <div className="md:col-span-3 space-y-3">
+            <h3 className="font-mono-tabular text-xs font-semibold text-[#6B7280]">Tool</h3>
+            <ul className="space-y-2 text-sm">
               <li>
                 <a
                   href={getRoutePath('create')}
@@ -73,33 +44,40 @@ export function Footer() {
                     e.preventDefault();
                     startEmptyBatch();
                   }}
-                  className="font-semibold text-[#2563EB] hover:underline underline-offset-4"
+                  className="font-semibold text-[#2563EB] hover:text-[#12151E] transition-colors duration-150"
                 >
-                  Open Certificate Tool
+                  Start a batch →
+                </a>
+              </li>
+              <li>
+                <a
+                  href={getRoutePath('home', 'workflow')}
+                  onClick={(e) => handleNav(e, 'home', 'workflow')}
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
+                >
+                  How it works
+                </a>
+              </li>
+              <li>
+                <a
+                  href={getRoutePath('home', 'faq')}
+                  onClick={(e) => handleNav(e, 'home', 'faq')}
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
+                >
+                  FAQ
                 </a>
               </li>
             </ul>
           </div>
 
-          <div className="md:col-span-4 space-y-2.5">
-            <h3 className="font-mono-tabular text-[11px] font-bold uppercase tracking-wider text-[#52525B]">
-              Resources &amp; Legal
-            </h3>
-            <ul className="grid grid-cols-2 gap-1.5 text-sm">
-              <li>
-                <a
-                  href={getRoutePath('about')}
-                  onClick={(e) => handleNav(e, 'about')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
-                >
-                  About
-                </a>
-              </li>
+          <div className="md:col-span-4 space-y-3">
+            <h3 className="font-mono-tabular text-xs font-semibold text-[#6B7280]">Resources</h3>
+            <ul className="grid grid-cols-2 gap-2 text-sm">
               <li>
                 <a
                   href={getRoutePath('guide')}
                   onClick={(e) => handleNav(e, 'guide')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
                 >
                   Guide
                 </a>
@@ -108,16 +86,25 @@ export function Footer() {
                 <a
                   href={getRoutePath('blog')}
                   onClick={(e) => handleNav(e, 'blog')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
                 >
                   Blog
                 </a>
               </li>
               <li>
                 <a
+                  href={getRoutePath('about')}
+                  onClick={(e) => handleNav(e, 'about')}
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
                   href={getRoutePath('contact')}
                   onClick={(e) => handleNav(e, 'contact')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
                 >
                   Contact
                 </a>
@@ -126,16 +113,16 @@ export function Footer() {
                 <a
                   href={getRoutePath('privacy')}
                   onClick={(e) => handleNav(e, 'privacy')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
                 >
-                  Privacy Policy
+                  Privacy policy
                 </a>
               </li>
               <li>
                 <a
                   href={getRoutePath('terms')}
                   onClick={(e) => handleNav(e, 'terms')}
-                  className="text-[#141414] hover:text-[#2563EB] transition-colors"
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
                 >
                   Terms
                 </a>
@@ -144,11 +131,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 border-t border-[#141414]/15 pt-5 text-xs text-[#52525B] sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono-tabular">© {new Date().getFullYear()} CertBee.</p>
+        <div className="mt-8 flex flex-col gap-2 border-t border-[#12151E]/15 pt-6 text-xs text-[#6B7280] sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-mono-tabular tabular-nums">© {new Date().getFullYear()} CertBee</p>
           <p className="inline-flex items-center gap-1.5">
-            <ShieldCheck className="h-3.5 w-3.5 text-[#1FA971]" />
-            <span>Processed locally on your device.</span>
+            <ShieldCheck className="h-3.5 w-3.5 text-[#10B981] shrink-0" strokeWidth={1.75} aria-hidden="true" />
+            <span>Participant lists never leave your device</span>
           </p>
         </div>
       </div>

@@ -15,25 +15,25 @@ export function usePageReveal(
       if (targets.length > 0) {
         gsap.fromTo(
           targets,
-          { y: 24, opacity: 0 },
+          { y: 8, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.48,
-            stagger: 0.08,
-            ease: 'power3.out',
+            duration: 0.34,
+            stagger: 0.045,
+            ease: 'power2.out',
             clearProps: 'transform,opacity',
           }
         );
       } else {
         gsap.fromTo(
           root,
-          { y: 18, opacity: 0 },
+          { y: 8, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.4,
-            ease: 'power3.out',
+            duration: 0.32,
+            ease: 'power2.out',
             clearProps: 'transform,opacity',
           }
         );

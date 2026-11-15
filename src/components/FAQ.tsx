@@ -1,129 +1,118 @@
-import gsap from 'gsap';
-import { ArrowRight, BookOpen, ChevronDown, HelpCircle } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
+import { ArrowRight, BookOpen, ChevronDown, HelpCircle, Mail } from 'lucide-react';
+import React, { useState } from 'react';
+import { getRoutePath, useBatchWorkspace } from '../hooks/useBatchWorkspace';
 
 const FAQ_ITEMS = [
   {
-    q: 'What template formats work best?',
-    a: 'Upload a vector PDF, SVG, PNG, or JPG exported without placeholder recipient names. Vector PDFs stay crisp at any zoom; for PNG/JPG exports, use 1920 × 1080 px for digital delivery or 3508 × 2480 px at 300 DPI for print.',
+    q: 'Does it handle long names?',
+    a: 'Yes. Turn on Auto-fit in Step 03 and drag the text box wide across your template. Any name that exceeds the box scales down proportionally to stay inside your margins, and you can preview the longest name in your sheet before exporting.',
   },
   {
-    q: 'Which participant lists can I import?',
-    a: 'Import Excel (.xlsx/.xls) workbooks, UTF-8 CSV files, pasted lines of names, or a public Google Sheets link shared as "Anyone with the link can view".',
+    q: 'Does it support Telugu, Hindi, or other non-English names?',
+    a: 'Yes. Standard PDF fonts only cover English ASCII glyphs, so CertBee renders Telugu, Hindi (Devanagari), and other complex scripts with native browser shaping so ligatures and matras stay intact. You can also upload custom .ttf or .otf fonts in Step 03.',
   },
   {
-    q: 'Does any participant data leave my device?',
-    a: 'No. Template rendering, column mapping, PDF assembly, and ZIP packaging run inside browser memory and local IndexedDB storage.',
+    q: 'What is the print quality?',
+    a: 'Vector PDF and SVG templates keep borders, logos, and typed names sharp at any print size. For PNG or JPG artwork, export at 3508 × 2480 px (300 DPI for A4) and CertBee embeds that full resolution into each PDF.',
   },
   {
-    q: 'How are long participant names handled?',
-    a: 'Enable Auto-fit inside Step 03 and preview the longest name in your dataset—oversized names scale down proportionally inside their field box.',
+    q: 'Why is it free, and what is the catch?',
+    a: 'None. I built it for my own events as a Google Student Ambassador. Because all PDF and ZIP generation runs inside your browser tab instead of backend servers, there are no accounts, no watermarks, and participant lists never reach our servers (optional Google Sheets links fetch directly from Google in your browser).',
+  },
+  {
+    q: 'How many certificates can I export in one batch?',
+    a: 'Because processing runs inside browser memory, dozens up to ~200–300 PDFs bundle smoothly into one ZIP archive. For 500 or more participants, split your CSV into batches of ~200 rows.',
   },
 ];
 
 export function FAQ() {
   const { navigate } = useBatchWorkspace();
   const [openIdx, setOpenIdx] = useState<number | null>(0);
-  const answerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const node = answerRef.current;
-    if (!node || openIdx === null) return;
-    const mm = gsap.matchMedia();
-    mm.add('(prefers-reduced-motion: no-preference)', () => {
-      gsap.fromTo(
-        node,
-        { opacity: 0, y: -8 },
-        { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out', clearProps: 'transform,opacity' }
-      );
-    });
-    return () => mm.revert();
-  }, [openIdx]);
+  const handleNav = (e: React.MouseEvent, target: 'guide' | 'about' | 'contact') => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    navigate(target);
+  };
 
   return (
-    <section id="faq" className="px-4 py-10 sm:px-6 lg:px-8 sm:py-14 overflow-hidden">
-      <div className="mx-auto max-w-7xl space-y-14">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-          <div data-faq-reveal className="lg:col-span-4 space-y-5">
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-sm border-[1.5px] border-[#141414] bg-[#C8EFE0] shadow-[2px_2px_0_#141414]">
-              <HelpCircle className="h-5 w-5 text-[#141414]" />
-            </div>
+    <section id="faq" className="px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
+      <div className="mx-auto max-w-5xl">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-4 space-y-4">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border-[1.5px] border-[#12151E] bg-[#D1FAE5] text-[#059669] shadow-[2px_2px_0_#12151E]">
+              <HelpCircle className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
+            </span>
+
             <div className="space-y-2">
               <h2
-                data-scroll-text
-                className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-[#141414]"
+                className="font-display text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-[#12151E]"
                 style={{ textWrap: 'balance' }}
               >
                 A few things to know.
               </h2>
-              <p data-scroll-text className="text-sm leading-relaxed text-[#52525B]">
-                Quick answers before you launch your certificate batch.
+              <p className="text-sm leading-relaxed text-[#4B5263]">
+                Quick answers on long names, Indian and non-English scripts, print quality, and batch limits.
               </p>
             </div>
 
-            <nav aria-label="Quick resources" className="flex flex-col items-start gap-2.5 pt-1 text-sm">
-              <button
-                type="button"
-                onClick={() => navigate('guide')}
-                className="group inline-flex items-center gap-2 font-semibold text-[#2563EB] hover:underline underline-offset-4 cursor-pointer"
+            <nav aria-label="Helpful links" className="flex flex-col items-start gap-2.5 pt-2 text-sm">
+              <a
+                href={getRoutePath('guide')}
+                onClick={(e) => handleNav(e, 'guide')}
+                className="inline-flex items-center gap-2 font-semibold text-[#2563EB] hover:text-[#12151E] transition-colors duration-150"
               >
-                <BookOpen className="h-4 w-4" />
+                <BookOpen className="h-4 w-4" strokeWidth={1.75} />
                 <span>Preparation guide</span>
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate('about')}
-                className="text-[#52525B] hover:text-[#141414] transition-colors cursor-pointer"
+                <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+              </a>
+              <a
+                href={getRoutePath('about')}
+                onClick={(e) => handleNav(e, 'about')}
+                className="text-sm font-medium text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
               >
                 About CertBee
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate('contact')}
-                className="text-[#52525B] hover:text-[#141414] transition-colors cursor-pointer"
+              </a>
+              <a
+                href={getRoutePath('contact')}
+                onClick={(e) => handleNav(e, 'contact')}
+                className="inline-flex items-center gap-2 text-sm font-medium text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
               >
-                Contact support
-              </button>
+                <Mail className="h-4 w-4" strokeWidth={1.75} />
+                <span>Ask a question</span>
+              </a>
             </nav>
           </div>
 
-          <div
-            data-faq-reveal
-            className="lg:col-span-8 space-y-3"
-          >
+          <div className="lg:col-span-8 space-y-3">
             {FAQ_ITEMS.map((item, idx) => {
               const isOpen = openIdx === idx;
               return (
                 <div
                   key={item.q}
-                  data-faq-item
-                  className="rounded-sm border-[1.5px] border-[#141414] bg-white shadow-[3px_3px_0_#141414] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#141414]"
+                  className="rounded-xl border-[1.5px] border-[#12151E] bg-white shadow-[3px_3px_0_#12151E] overflow-hidden"
                 >
                   <button
                     type="button"
                     aria-expanded={isOpen}
                     onClick={() => setOpenIdx(isOpen ? null : idx)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-[#FAF9F5] transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#12151E]"
                   >
-                    <span className="flex items-center gap-3 font-display text-sm sm:text-base font-bold text-[#141414]">
-                      <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-sm border border-[#141414] bg-[#F6C33E] font-mono-tabular text-[11px] font-bold text-[#141414]">
+                    <span className="flex items-center gap-3 font-display text-sm sm:text-base font-semibold text-[#12151E]">
+                      <span className="inline-flex h-6 w-7 shrink-0 items-center justify-center rounded border border-[#12151E] bg-[#F6C844] font-mono-tabular tabular-nums text-[11px] font-bold text-[#12151E]">
                         0{idx + 1}
                       </span>
                       <span>{item.q}</span>
                     </span>
                     <ChevronDown
-                      className={`h-4 w-4 shrink-0 text-[#52525B] transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 text-[#141414]' : ''
+                      className={`h-4 w-4 shrink-0 text-[#12151E] transition-transform duration-150 ${
+                        isOpen ? 'rotate-180' : ''
                       }`}
+                      strokeWidth={1.75}
                     />
                   </button>
                   {isOpen && (
-                    <div
-                      ref={answerRef}
-                      className="border-t border-[#141414]/15 bg-[#FBFBF8] px-5 py-4 text-sm leading-relaxed text-[#52525B]"
-                    >
+                    <div className="border-t border-[#12151E]/15 bg-[#FAF9F5] px-5 py-4 text-sm leading-relaxed text-[#4B5263]">
                       {item.a}
                     </div>
                   )}

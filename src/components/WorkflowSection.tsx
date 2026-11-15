@@ -1,238 +1,112 @@
-import gsap from 'gsap';
-import {
-  ArrowRight,
-  FileSpreadsheet,
-  FolderArchive,
-  SlidersHorizontal,
-  Upload,
-} from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import botanicalBackdrop from '../assets/images/botanical_shadow_slate_1794682854352.jpg';
-import wideBackdrop from '../assets/images/wide_botanical_backdrop_1794682854967.jpg';
+import { ArrowRight, Download, FileSpreadsheet, Move, UploadCloud } from 'lucide-react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
 
 const WORKFLOW_STEPS = [
   {
     id: '01',
-    label: '01 · Upload Template',
-    title: 'Choose the background',
-    description: 'Upload a PNG, JPG, SVG, or PDF exported without placeholder recipient names.',
-    color: 'bg-[#F6C33E] text-[#141414]',
-    icon: Upload,
+    title: 'Upload design',
+    description: 'Drop in any clean PNG, JPG, SVG, or vector PDF template exported without sample names.',
+    formatHint: 'PNG · JPG · SVG · PDF',
+    icon: UploadCloud,
+    badgeBg: 'bg-[#F97316]',
   },
   {
     id: '02',
-    label: '02 · Import List',
-    title: 'Add your recipients',
-    description: 'Import CSV, Excel (.xlsx), paste names, or link a public Google Sheet.',
-    color: 'bg-[#1FA971] text-white',
+    title: 'Import list',
+    description: 'Load CSV or Excel files, paste plain text rows, or fetch a public Google Sheet link.',
+    formatHint: 'CSV · XLSX · SHEETS',
     icon: FileSpreadsheet,
+    badgeBg: 'bg-[#2563EB]',
   },
   {
     id: '03',
-    label: '03 · Place Fields',
-    title: 'Style & auto-fit names',
-    description: 'Position dynamic text once, preview long names, and keep proportions crisp.',
-    color: 'bg-[#EC4899] text-white',
-    icon: SlidersHorizontal,
+    title: 'Place fields',
+    description: 'Align text boxes directly over your artwork, set Auto-fit margins, and preview long names.',
+    formatHint: 'Auto-fit · Custom TTF/OTF',
+    icon: Move,
+    badgeBg: 'bg-[#10B981]',
   },
   {
     id: '04',
-    label: '04 · Export ZIP',
-    title: 'Download every PDF',
-    description: 'Build named PDFs locally in your browser and save one ready ZIP archive.',
-    color: 'bg-[#2563EB] text-white',
-    icon: FolderArchive,
+    title: 'Export ZIP',
+    description: 'Render crisp personalized PDFs and download everything bundled in one browser-built ZIP.',
+    formatHint: 'One PDF per participant',
+    icon: Download,
+    badgeBg: 'bg-[#EC4899]',
   },
 ] as const;
 
 export function WorkflowSection() {
   const { startEmptyBatch } = useBatchWorkspace();
-  const [selectedIdx, setSelectedIdx] = useState(0);
-  const [leftErr, setLeftErr] = useState(false);
-  const [rightErr, setRightErr] = useState(false);
-  const stepNoteRef = useRef<HTMLDivElement | null>(null);
-
-  const activeStep = WORKFLOW_STEPS[selectedIdx] ?? WORKFLOW_STEPS[0];
-
-  useEffect(() => {
-    const node = stepNoteRef.current;
-    if (!node) return;
-    const mm = gsap.matchMedia();
-    mm.add('(prefers-reduced-motion: no-preference)', () => {
-      gsap.fromTo(
-        node,
-        { opacity: 0.25, y: 10, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: 'back.out(1.4)', clearProps: 'transform,opacity' }
-      );
-    });
-    return () => mm.revert();
-  }, [selectedIdx]);
 
   return (
-    <section id="workflow" className="px-4 py-8 sm:px-6 lg:px-8 sm:py-12 overflow-hidden">
-      <div className="mx-auto max-w-7xl space-y-8">
-        <p className="font-serif-editorial italic text-xs text-[#52525B] underline decoration-[#141414]/30 underline-offset-4">
-          from design to batch
-        </p>
+    <section id="workflow" className="px-4 py-10 sm:px-6 lg:px-8 sm:py-12">
+      <div className="mx-auto max-w-5xl">
+        {/* Cobalt Folder Tab Header */}
+        <div className="inline-flex items-center gap-2 rounded-t-lg border-[1.5px] border-b-0 border-[#12151E] bg-[#2563EB] px-4 py-1.5 font-mono-tabular text-xs font-semibold text-white">
+          <span>How it works</span>
+        </div>
 
-        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
-          {/* Left Tilted Masking-Taped Polaroid Frame */}
-          <div data-wf-left className="lg:col-span-3 flex justify-center">
-            <div className="relative w-60 -rotate-3 rounded-[2px] border border-[#141414]/25 bg-white p-2.5 pb-4 shadow-[0_12px_26px_rgba(0,0,0,0.14)] transition-transform duration-300 hover:rotate-0 hover:-translate-y-1">
-              <span
-                aria-hidden="true"
-                className="masking-tape absolute -left-3 -top-2.5 h-4 w-12 -rotate-12"
-              />
-              <span
-                aria-hidden="true"
-                className="masking-tape absolute -right-3 -top-2 h-4 w-10 rotate-12"
-              />
-
-              <div className="relative h-44 w-full overflow-hidden rounded-[2px] bg-[#1C2A25] p-3 flex flex-col justify-center items-center">
-                {!leftErr && (
-                  <img
-                    src={botanicalBackdrop}
-                    alt=""
-                    aria-hidden="true"
-                    onError={() => setLeftErr(true)}
-                    className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-85"
-                  />
-                )}
-                <div className="relative space-y-1.5 w-full">
-                  <div className="-rotate-2 rounded-[2px] border border-[#D8D1C5] bg-[#F7F3EA] px-3 py-2 text-center shadow-sm">
-                    <p className="font-serif-editorial text-xs font-semibold text-[#141414]">
-                      Alex Morgan
-                    </p>
-                  </div>
-                  <div className="rotate-1 rounded-[2px] border border-[#D8D1C5] bg-[#F7F3EA] px-3 py-2 text-center shadow-md">
-                    <p className="font-mono-tabular text-[7px] tracking-[0.18em] text-[#52525B]">
-                      CERTIFICATE
-                    </p>
-                    <p className="font-serif-editorial text-sm font-semibold text-[#141414]">
-                      Jordan Lee
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <p className="mt-2.5 text-center font-mono-tabular text-[10px] text-[#52525B]">
-                one layout
+        {/* High-Contrast Charcoal Studio Block */}
+        <div className="rounded-2xl rounded-tl-none border-[1.5px] border-[#12151E] bg-[#11131B] p-6 sm:p-8 lg:p-10 text-white shadow-[5px_5px_0_#12151E]">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-xl space-y-2.5">
+              <h2
+                className="font-display text-2xl sm:text-4xl font-bold tracking-[-0.025em] text-white leading-[1.12]"
+                style={{ textWrap: 'balance' }}
+              >
+                From spreadsheet to ZIP in 4 steps.
+              </h2>
+              <p className="text-sm sm:text-base leading-relaxed text-white/75">
+                Keep your own borders, seals, and typography. Upload your template, import your list, place fields once, and export one clean PDF per participant.
               </p>
             </div>
+
+            <button
+              type="button"
+              onClick={startEmptyBatch}
+              className="inline-flex h-10 shrink-0 items-center gap-2 self-start sm:self-auto rounded-lg border-[1.5px] border-white/25 bg-[#2563EB] px-4 text-xs sm:text-sm font-semibold text-white shadow-[3px_3px_0_#000000] hover:bg-[#1D4ED8] active:translate-x-[1px] active:translate-y-[1px] transition-[background-color,transform] duration-150 whitespace-nowrap cursor-pointer"
+            >
+              <span>Start a batch</span>
+              <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+            </button>
           </div>
 
-          {/* Center Boxed Heading + Tactile Stamp Badges */}
-          <div data-wf-center className="lg:col-span-6 flex flex-col items-center text-center space-y-5">
-            <h2
-              data-scroll-text
-              className="inline-block border-[1.5px] border-[#141414] bg-white px-4 py-1.5 font-display text-xl sm:text-2xl font-bold tracking-tight text-[#141414] shadow-[3px_3px_0_#141414]"
-            >
-              how it works
-            </h2>
-
-            <p data-scroll-text className="max-w-lg text-sm sm:text-base leading-relaxed text-[#141414]">
-              Keep your own typography, borders, and seals. CertBee binds your spreadsheet columns onto your artwork and exports a clean PDF for every participant.
-            </p>
-
-            {/* 4 Colored Stamp Badges matching reference middle badges */}
-            <div data-wf-stamps className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
-              {WORKFLOW_STEPS.map((step, idx) => {
-                const Icon = step.icon;
-                const active = selectedIdx === idx;
-                return (
-                  <div key={step.id} data-wf-stamp className="inline-flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedIdx(idx)}
-                      className={`inline-flex items-center gap-2 rounded-sm border-[1.5px] border-[#141414] px-3.5 py-2 text-xs font-bold tracking-tight transition-all duration-150 whitespace-nowrap cursor-pointer ${
-                        step.color
-                      } ${
-                        active
-                          ? '-translate-y-1 shadow-[4px_4px_0_#141414]'
-                          : 'shadow-[2px_2px_0_#141414] hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#141414]'
-                      }`}
-                    >
-                      <span>{step.label}</span>
-                    </button>
-                    <button
-                      type="button"
-                      aria-label={`Open ${step.label}`}
-                      onClick={() => setSelectedIdx(idx)}
-                      className={`inline-flex h-8 w-8 items-center justify-center rounded-sm border-[1.5px] border-[#141414] transition-transform duration-150 hover:-translate-y-0.5 cursor-pointer ${step.color} shadow-[2px_2px_0_#141414]`}
-                    >
-                      <Icon className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Active Step Explanation Note */}
-            <div
-              ref={stepNoteRef}
-              className="w-full max-w-lg rounded-md border-[1.5px] border-[#141414] bg-white px-5 py-3.5 text-left shadow-[3px_3px_0_#141414]"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <p className="font-mono-tabular text-[11px] font-bold uppercase tracking-wider text-[#2563EB]">
-                  STEP {activeStep.id} · {activeStep.title}
-                </p>
-                <button
-                  type="button"
-                  onClick={startEmptyBatch}
-                  className="group inline-flex items-center gap-1 font-mono-tabular text-[11px] font-bold text-[#141414] hover:text-[#2563EB] whitespace-nowrap cursor-pointer"
+          {/* 4 Structured Dark Cards */}
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {WORKFLOW_STEPS.map((step) => {
+              const Icon = step.icon;
+              return (
+                <div
+                  key={step.id}
+                  className="flex flex-col justify-between rounded-xl border border-white/15 bg-[#181B26] p-5 text-left"
                 >
-                  <span>Launch</span>
-                  <ArrowRight className="h-3 w-3 transition-transform duration-150 group-hover:translate-x-0.5" />
-                </button>
-              </div>
-              <p className="mt-1 text-xs leading-relaxed text-[#52525B]">
-                {activeStep.description}
-              </p>
-            </div>
-          </div>
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/20 ${step.badgeBg} text-white`}
+                      >
+                        <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+                      </span>
+                      <span className="font-mono-tabular tabular-nums text-xs font-medium text-white/55">
+                        {step.id}
+                      </span>
+                    </div>
 
-          {/* Right Tilted Masking-Taped Polaroid Frame */}
-          <div data-wf-right className="lg:col-span-3 flex justify-center">
-            <div className="relative w-60 rotate-3 rounded-[2px] border border-[#141414]/25 bg-white p-2.5 pb-4 shadow-[0_12px_26px_rgba(0,0,0,0.14)] transition-transform duration-300 hover:rotate-0 hover:-translate-y-1">
-              <span
-                aria-hidden="true"
-                className="masking-tape absolute -left-3 -top-2 h-4 w-10 -rotate-12"
-              />
-              <span
-                aria-hidden="true"
-                className="masking-tape absolute -right-3 -top-2.5 h-4 w-12 rotate-12"
-              />
-
-              <div className="relative h-44 w-full overflow-hidden rounded-[2px] bg-[#1B2226] p-3 flex flex-col justify-center items-center">
-                {!rightErr && (
-                  <img
-                    src={wideBackdrop}
-                    alt=""
-                    aria-hidden="true"
-                    onError={() => setRightErr(true)}
-                    className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-85"
-                  />
-                )}
-                <div className="relative w-full rounded-[2px] border border-[#D8D1C5] bg-[#FBFBF8] p-3 text-center shadow-md">
-                  <p className="font-mono-tabular text-[7px] tracking-[0.2em] text-[#52525B]">
-                    AUTO-FIT FIELD
-                  </p>
-                  <div className="mt-1.5 border border-dashed border-[#2563EB] bg-[#2563EB]/10 px-2 py-1">
-                    <p className="font-serif-editorial text-sm italic text-[#141414]">
-                      {'{{name}}'}
+                    <h3 className="mt-4 font-display text-base font-semibold text-white">
+                      {step.title}
+                    </h3>
+                    <p className="mt-1 font-mono-tabular text-[11px] text-white/55">
+                      {step.formatHint}
                     </p>
                   </div>
-                  <p className="mt-1.5 font-mono-tabular text-[7px] text-[#52525B]">
-                    BATCH ZIP EXPORT
+
+                  <p className="mt-3 text-xs sm:text-sm leading-relaxed text-white/75">
+                    {step.description}
                   </p>
                 </div>
-              </div>
-
-              <p className="mt-2.5 text-center font-mono-tabular text-[10px] text-[#52525B]">
-                local merge
-              </p>
-            </div>
+              );
+            })}
           </div>
         </div>
       </div>

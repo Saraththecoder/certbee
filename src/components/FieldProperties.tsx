@@ -359,12 +359,20 @@ export function FieldProperties({
                   <input
                     id="prop-size"
                     type="number"
-                    min={10}
-                    max={140}
+                    min={0}
+                    max={200}
                     value={field.fontSizePt}
-                    onChange={(e) =>
-                      onUpdate(field.id, { fontSizePt: Math.max(10, Number(e.target.value) || 12) })
-                    }
+                    onChange={(e) => {
+                      const raw = e.target.value;
+                      if (raw === '') {
+                        onUpdate(field.id, { fontSizePt: 0 });
+                        return;
+                      }
+                      const parsed = Number(raw);
+                      if (Number.isFinite(parsed)) {
+                        onUpdate(field.id, { fontSizePt: Math.max(0, Math.min(200, parsed)) });
+                      }
+                    }}
                     className="w-full rounded-sm border-[1.5px] border-[#141414] bg-white px-2.5 py-1.5 font-mono-tabular text-xs text-[#141414] focus:border-[#2563EB] focus:outline-none"
                   />
                 </div>
