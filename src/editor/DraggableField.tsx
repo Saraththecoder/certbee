@@ -1,6 +1,6 @@
 import React from 'react';
 import { CustomFontAsset, DynamicField } from '../types/editor';
-import { getFontCssString } from '../utils/coordinateUtils';
+import { getFontFamilyCss } from '../utils/coordinateUtils';
 
 interface DraggableFieldProps {
   field: DynamicField;
@@ -79,13 +79,9 @@ export function DraggableField({
       ) : (
         <div
           style={{
-            font: getFontCssString(
-              field.fontFamily,
-              field.fontWeight,
-              fontSizePx,
-              customFonts,
-              field.customFontId
-            ),
+            fontFamily: getFontFamilyCss(field.fontFamily, customFonts, field.customFontId),
+            fontWeight: field.fontWeight,
+            fontSize: `${fontSizePx}px`,
             lineHeight: 1.2,
             color: field.color,
             opacity: field.opacity,

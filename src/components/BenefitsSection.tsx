@@ -33,19 +33,19 @@ const BENEFIT_CARDS = [
 
 export function BenefitsSection() {
   return (
-    <section id="benefits" aria-label="Key benefits" className="px-5 py-6 sm:px-10 sm:py-8">
-      <div className="mx-auto max-w-5xl grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <section id="benefits" aria-label="Key benefits" className="px-4 py-6 sm:px-6 lg:px-8 sm:py-8">
+      <div className="mx-auto max-w-7xl grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {BENEFIT_CARDS.map((card) => {
           const Icon = card.icon;
           return (
             <div
               key={card.num}
               data-benefit-card
-              className="rounded-sm border-[1.5px] border-[#141414] bg-white p-4 shadow-[3px_3px_0_#141414] flex flex-col justify-between gap-3"
+              className="group rounded-sm border-[1.5px] border-[#141414] bg-white p-5 shadow-[3px_3px_0_#141414] flex flex-col justify-between gap-3 transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[5px_5px_0_#141414]"
             >
               <div className="flex items-center justify-between gap-2">
                 <span
-                  className={`inline-flex h-8 w-8 items-center justify-center rounded-sm border border-[#141414] ${card.badgeBg}`}
+                  className={`inline-flex h-9 w-9 items-center justify-center rounded-sm border border-[#141414] transition-transform duration-200 group-hover:-rotate-6 group-hover:scale-110 ${card.badgeBg}`}
                 >
                   <Icon className="h-4 w-4" />
                 </span>

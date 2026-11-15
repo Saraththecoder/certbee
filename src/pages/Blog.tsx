@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
+import { usePageReveal } from '../hooks/usePageReveal';
 
 interface BlogArticle {
   id: string;
@@ -60,13 +61,16 @@ export function Blog() {
   const { startEmptyBatch } = useBatchWorkspace();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = ARTICLES.find((a) => a.id === selectedId) ?? null;
+  const mainRef = useRef<HTMLElement | null>(null);
+
+  usePageReveal(mainRef, [selectedId]);
 
   return (
-    <main className="min-h-[75vh]">
+    <main ref={mainRef} className="min-h-[75vh]">
       <div className="mx-auto max-w-4xl px-5 py-12 sm:px-8 sm:py-16 space-y-10">
         {!selected ? (
           <>
-            <div className="space-y-3">
+            <div data-page-reveal className="space-y-3">
               <span className="inline-block rounded-sm border border-[#141414] bg-[#F6EBB8] px-2.5 py-1 font-mono-tabular text-[11px] font-semibold uppercase tracking-wider text-[#141414]">
                 Notes &amp; Essays
               </span>
@@ -82,6 +86,7 @@ export function Blog() {
               {ARTICLES.map((article) => (
                 <article
                   key={article.id}
+                  data-page-reveal
                   className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 sm:p-7 space-y-3 shadow-[4px_4px_0_#141414] hover:-translate-y-0.5 transition-transform"
                 >
                   <div className="flex flex-wrap items-center gap-2 font-mono-tabular text-xs text-[#52525B]">
@@ -120,7 +125,7 @@ export function Blog() {
               All articles
             </button>
 
-            <div className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 sm:p-9 space-y-6 shadow-[5px_5px_0_#141414]">
+            <div data-page-reveal className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 sm:p-9 space-y-6 shadow-[5px_5px_0_#141414]">
               <div className="space-y-3 border-b border-[#141414]/15 pb-6">
                 <div className="flex flex-wrap items-center gap-2 font-mono-tabular text-xs text-[#52525B]">
                   <span className="rounded-sm border border-[#141414] bg-[#C8EFE0] px-2 py-0.5 font-semibold text-[#141414]">

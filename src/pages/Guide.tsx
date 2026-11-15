@@ -1,13 +1,18 @@
 import { ArrowRight } from 'lucide-react';
+import { useRef } from 'react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
+import { usePageReveal } from '../hooks/usePageReveal';
 
 export function Guide() {
   const { startEmptyBatch } = useBatchWorkspace();
+  const mainRef = useRef<HTMLElement | null>(null);
+
+  usePageReveal(mainRef);
 
   return (
-    <main className="min-h-[75vh]">
+    <main ref={mainRef} className="min-h-[75vh]">
       <div className="mx-auto max-w-4xl px-5 py-12 sm:px-8 sm:py-16 space-y-10">
-        <div className="space-y-4">
+        <div data-page-reveal className="space-y-4">
           <span className="inline-block rounded-sm border border-[#141414] bg-[#F6C33E] px-2.5 py-1 font-mono-tabular text-[11px] font-semibold uppercase tracking-wider text-[#141414]">
             Practical Guide
           </span>
@@ -20,7 +25,7 @@ export function Guide() {
         </div>
 
         <div className="space-y-5">
-          <section className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-3 shadow-[4px_4px_0_#141414]">
+          <section data-page-reveal className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-3 shadow-[4px_4px_0_#141414]">
             <h2 className="font-display text-lg font-bold text-[#141414]">
               <span className="mr-2 inline-block rounded-sm border border-[#141414] bg-[#F6C33E] px-2 py-0.5 font-mono-tabular text-xs">
                 01
@@ -32,7 +37,7 @@ export function Guide() {
             </p>
           </section>
 
-          <section id="sheets-guide" className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-3 shadow-[4px_4px_0_#141414]">
+          <section id="sheets-guide" data-page-reveal className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-3 shadow-[4px_4px_0_#141414]">
             <h2 className="font-display text-lg font-bold text-[#141414]">
               <span className="mr-2 inline-block rounded-sm border border-[#141414] bg-[#1FA971] px-2 py-0.5 font-mono-tabular text-xs text-white">
                 02
@@ -44,7 +49,7 @@ export function Guide() {
             </p>
           </section>
 
-          <section className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-3 shadow-[4px_4px_0_#141414]">
+          <section data-page-reveal className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-3 shadow-[4px_4px_0_#141414]">
             <h2 className="font-display text-lg font-bold text-[#141414]">
               <span className="mr-2 inline-block rounded-sm border border-[#141414] bg-[#EC4899] px-2 py-0.5 font-mono-tabular text-xs text-white">
                 03
@@ -56,7 +61,7 @@ export function Guide() {
             </p>
           </section>
 
-          <section className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-3 shadow-[4px_4px_0_#141414]">
+          <section data-page-reveal className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-3 shadow-[4px_4px_0_#141414]">
             <h2 className="font-display text-lg font-bold text-[#141414]">
               <span className="mr-2 inline-block rounded-sm border border-[#141414] bg-[#2563EB] px-2 py-0.5 font-mono-tabular text-xs text-white">
                 04
@@ -69,7 +74,7 @@ export function Guide() {
           </section>
         </div>
 
-        <div>
+        <div data-page-reveal>
           <button
             type="button"
             onClick={startEmptyBatch}

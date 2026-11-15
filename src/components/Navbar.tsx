@@ -26,13 +26,13 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b-[1.5px] border-[#141414]/15 bg-[#FBFBF8]/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-7">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 sm:gap-5 min-w-0">
           <a
             href={getRoutePath('home')}
             onClick={(e) => handleLinkClick(e, 'home')}
             aria-label="CertBee Home"
-            className="inline-flex items-center hover:opacity-90 transition-opacity shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] rounded-sm"
+            className="inline-flex items-center hover:opacity-90 transition-transform duration-150 hover:-translate-y-0.5 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] rounded-sm"
           >
             <CertBeeLogo size="md" />
           </a>
@@ -46,9 +46,9 @@ export function Navbar() {
                   key={item.target}
                   href={getRoutePath(item.target)}
                   onClick={(e) => handleLinkClick(e, item.target)}
-                  className={`inline-flex items-center gap-1.5 rounded-sm px-3 py-1.5 font-mono-tabular text-[11px] font-semibold tracking-wider whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] ${
+                  className={`inline-flex items-center gap-1.5 rounded-sm px-3 py-1.5 font-mono-tabular text-[11px] font-semibold tracking-wider whitespace-nowrap shrink-0 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] ${
                     active
-                      ? 'bg-[#F6C33E] text-[#141414] border border-[#141414]'
+                      ? 'bg-[#F6C33E] text-[#141414] border border-[#141414] shadow-[2px_2px_0_#141414]'
                       : 'text-[#52525B] hover:text-[#141414] hover:bg-[#141414]/5 border border-transparent'
                   }`}
                 >
@@ -64,9 +64,9 @@ export function Navbar() {
           <a
             href={getRoutePath('contact')}
             onClick={(e) => handleLinkClick(e, 'contact')}
-            className={`hidden sm:inline-flex items-center gap-1.5 rounded-sm border-[1.5px] border-[#141414] px-3 py-1.5 font-mono-tabular text-[11px] font-semibold tracking-wider whitespace-nowrap shrink-0 transition-colors ${
+            className={`hidden sm:inline-flex items-center gap-1.5 rounded-sm border-[1.5px] border-[#141414] px-3 py-1.5 font-mono-tabular text-[11px] font-semibold tracking-wider whitespace-nowrap shrink-0 transition-all duration-150 hover:-translate-y-0.5 active:translate-y-0 ${
               route === 'contact'
-                ? 'bg-[#F6C33E] text-[#141414]'
+                ? 'bg-[#F6C33E] text-[#141414] shadow-[2px_2px_0_#141414]'
                 : 'bg-white text-[#141414] hover:bg-[#F3F1EA]'
             }`}
           >
@@ -85,10 +85,10 @@ export function Navbar() {
                 startEmptyBatch();
               }
             }}
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-sm border-[1.5px] border-[#141414] bg-[#141414] px-3.5 py-1.5 font-mono-tabular text-[11px] font-semibold tracking-wider text-white hover:bg-[#27272A] transition-colors whitespace-nowrap shrink-0 shadow-[2px_2px_0_#2563EB]"
+            className="group hidden sm:inline-flex items-center gap-1.5 rounded-sm border-[1.5px] border-[#141414] bg-[#141414] px-3.5 py-1.5 font-mono-tabular text-[11px] font-semibold tracking-wider text-white hover:bg-[#27272A] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 whitespace-nowrap shrink-0 shadow-[2px_2px_0_#2563EB]"
           >
             <span>OPEN TOOL</span>
-            <ArrowRight className="h-3.5 w-3.5 text-[#F6C33E]" />
+            <ArrowRight className="h-3.5 w-3.5 text-[#F6C33E] transition-transform duration-150 group-hover:translate-x-0.5" />
           </a>
 
           <button

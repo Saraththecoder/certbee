@@ -62,24 +62,24 @@ export function WorkflowSection() {
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       gsap.fromTo(
         node,
-        { opacity: 0.4, y: 5 },
-        { opacity: 1, y: 0, duration: 0.22, ease: 'power2.out', clearProps: 'transform,opacity' }
+        { opacity: 0.25, y: 10, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: 'back.out(1.4)', clearProps: 'transform,opacity' }
       );
     });
     return () => mm.revert();
   }, [selectedIdx]);
 
   return (
-    <section id="workflow" className="px-4 py-8 sm:px-10 sm:py-12 overflow-hidden">
-      <div className="mx-auto max-w-5xl space-y-8">
+    <section id="workflow" className="px-4 py-8 sm:px-6 lg:px-8 sm:py-12 overflow-hidden">
+      <div className="mx-auto max-w-7xl space-y-8">
         <p className="font-serif-editorial italic text-xs text-[#52525B] underline decoration-[#141414]/30 underline-offset-4">
           from design to batch
         </p>
 
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
           {/* Left Tilted Masking-Taped Polaroid Frame */}
-          <div data-wf-card className="lg:col-span-3 flex justify-center">
-            <div className="relative w-56 -rotate-3 rounded-[2px] border border-[#141414]/25 bg-white p-2.5 pb-4 shadow-[0_12px_26px_rgba(0,0,0,0.14)]">
+          <div data-wf-left className="lg:col-span-3 flex justify-center">
+            <div className="relative w-60 -rotate-3 rounded-[2px] border border-[#141414]/25 bg-white p-2.5 pb-4 shadow-[0_12px_26px_rgba(0,0,0,0.14)] transition-transform duration-300 hover:rotate-0 hover:-translate-y-1">
               <span
                 aria-hidden="true"
                 className="masking-tape absolute -left-3 -top-2.5 h-4 w-12 -rotate-12"
@@ -123,7 +123,7 @@ export function WorkflowSection() {
           </div>
 
           {/* Center Boxed Heading + Tactile Stamp Badges */}
-          <div data-wf-card className="lg:col-span-6 flex flex-col items-center text-center space-y-5">
+          <div data-wf-center className="lg:col-span-6 flex flex-col items-center text-center space-y-5">
             <h2
               data-scroll-text
               className="inline-block border-[1.5px] border-[#141414] bg-white px-4 py-1.5 font-display text-xl sm:text-2xl font-bold tracking-tight text-[#141414] shadow-[3px_3px_0_#141414]"
@@ -131,7 +131,7 @@ export function WorkflowSection() {
               how it works
             </h2>
 
-            <p data-scroll-text className="max-w-md text-sm sm:text-base leading-relaxed text-[#141414]">
+            <p data-scroll-text className="max-w-lg text-sm sm:text-base leading-relaxed text-[#141414]">
               Keep your own typography, borders, and seals. CertBee binds your spreadsheet columns onto your artwork and exports a clean PDF for every participant.
             </p>
 
@@ -145,12 +145,12 @@ export function WorkflowSection() {
                     <button
                       type="button"
                       onClick={() => setSelectedIdx(idx)}
-                      className={`inline-flex items-center gap-2 rounded-sm border-[1.5px] border-[#141414] px-3.5 py-2 text-xs font-bold tracking-tight transition-transform whitespace-nowrap ${
+                      className={`inline-flex items-center gap-2 rounded-sm border-[1.5px] border-[#141414] px-3.5 py-2 text-xs font-bold tracking-tight transition-all duration-150 whitespace-nowrap cursor-pointer ${
                         step.color
                       } ${
                         active
-                          ? '-translate-y-0.5 shadow-[3px_3px_0_#141414]'
-                          : 'shadow-[2px_2px_0_#141414] hover:-translate-y-0.5'
+                          ? '-translate-y-1 shadow-[4px_4px_0_#141414]'
+                          : 'shadow-[2px_2px_0_#141414] hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#141414]'
                       }`}
                     >
                       <span>{step.label}</span>
@@ -159,7 +159,7 @@ export function WorkflowSection() {
                       type="button"
                       aria-label={`Open ${step.label}`}
                       onClick={() => setSelectedIdx(idx)}
-                      className={`inline-flex h-8 w-8 items-center justify-center rounded-sm border-[1.5px] border-[#141414] ${step.color} shadow-[2px_2px_0_#141414]`}
+                      className={`inline-flex h-8 w-8 items-center justify-center rounded-sm border-[1.5px] border-[#141414] transition-transform duration-150 hover:-translate-y-0.5 cursor-pointer ${step.color} shadow-[2px_2px_0_#141414]`}
                     >
                       <Icon className="h-3.5 w-3.5" />
                     </button>
@@ -171,7 +171,7 @@ export function WorkflowSection() {
             {/* Active Step Explanation Note */}
             <div
               ref={stepNoteRef}
-              className="w-full max-w-md rounded-md border-[1.5px] border-[#141414] bg-white px-4 py-3 text-left shadow-[3px_3px_0_#141414]"
+              className="w-full max-w-lg rounded-md border-[1.5px] border-[#141414] bg-white px-5 py-3.5 text-left shadow-[3px_3px_0_#141414]"
             >
               <div className="flex items-center justify-between gap-3">
                 <p className="font-mono-tabular text-[11px] font-bold uppercase tracking-wider text-[#2563EB]">
@@ -180,10 +180,10 @@ export function WorkflowSection() {
                 <button
                   type="button"
                   onClick={startEmptyBatch}
-                  className="inline-flex items-center gap-1 font-mono-tabular text-[11px] font-bold text-[#141414] hover:text-[#2563EB] whitespace-nowrap"
+                  className="group inline-flex items-center gap-1 font-mono-tabular text-[11px] font-bold text-[#141414] hover:text-[#2563EB] whitespace-nowrap cursor-pointer"
                 >
                   <span>Launch</span>
-                  <ArrowRight className="h-3 w-3" />
+                  <ArrowRight className="h-3 w-3 transition-transform duration-150 group-hover:translate-x-0.5" />
                 </button>
               </div>
               <p className="mt-1 text-xs leading-relaxed text-[#52525B]">
@@ -193,8 +193,8 @@ export function WorkflowSection() {
           </div>
 
           {/* Right Tilted Masking-Taped Polaroid Frame */}
-          <div data-wf-card className="lg:col-span-3 flex justify-center">
-            <div className="relative w-56 rotate-3 rounded-[2px] border border-[#141414]/25 bg-white p-2.5 pb-4 shadow-[0_12px_26px_rgba(0,0,0,0.14)]">
+          <div data-wf-right className="lg:col-span-3 flex justify-center">
+            <div className="relative w-60 rotate-3 rounded-[2px] border border-[#141414]/25 bg-white p-2.5 pb-4 shadow-[0_12px_26px_rgba(0,0,0,0.14)] transition-transform duration-300 hover:rotate-0 hover:-translate-y-1">
               <span
                 aria-hidden="true"
                 className="masking-tape absolute -left-3 -top-2 h-4 w-10 -rotate-12"

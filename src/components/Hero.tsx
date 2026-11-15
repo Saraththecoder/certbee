@@ -12,8 +12,8 @@ export function Hero() {
 
 
   return (
-    <section className="relative overflow-hidden px-4 pt-8 pb-10 sm:px-8 sm:pt-14 sm:pb-16">
-      <div className="mx-auto max-w-4xl flex flex-col items-center text-center">
+    <section className="relative overflow-hidden px-4 pt-8 pb-10 sm:px-6 lg:px-8 sm:pt-14 sm:pb-14">
+      <div className="mx-auto max-w-7xl flex flex-col items-center text-center">
         {/* Handwritten-style micro label */}
         <p
           data-hero-stagger
@@ -27,7 +27,7 @@ export function Hero() {
           {/* Desktop Top-Left Sticky Tag */}
           <span
             data-hero-note
-            className="hidden md:inline-block absolute -left-32 -top-7 -rotate-3 rounded-sm border border-[#141414] bg-[#C8EFE0] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold tracking-wider text-[#141414] shadow-[2px_2px_0_#141414]"
+            className="hidden md:inline-block absolute -left-36 -top-7 -rotate-3 rounded-sm border border-[#141414] bg-[#C8EFE0] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold tracking-wider text-[#141414] shadow-[2px_2px_0_#141414] transition-transform duration-200 hover:rotate-0 hover:-translate-y-0.5"
           >
             ONE TEMPLATE
           </span>
@@ -35,7 +35,7 @@ export function Hero() {
           {/* Desktop Top-Right Sticky Tag */}
           <span
             data-hero-note
-            className="hidden md:inline-block absolute -right-36 -top-6 rotate-2 rounded-sm border border-[#141414] bg-[#F6EBB8] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold tracking-wider text-[#141414] shadow-[2px_2px_0_#141414]"
+            className="hidden md:inline-block absolute -right-40 -top-6 rotate-2 rounded-sm border border-[#141414] bg-[#F6EBB8] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold tracking-wider text-[#141414] shadow-[2px_2px_0_#141414] transition-transform duration-200 hover:rotate-0 hover:-translate-y-0.5"
           >
             ZERO SERVER UPLOAD
           </span>
@@ -43,9 +43,11 @@ export function Hero() {
           {/* Framed CERTBEE Title Box */}
           <div
             data-hero-stagger
-            className="relative inline-flex items-center gap-3 sm:gap-4 border-2 border-[#EA580C] bg-[#FBFBF8] px-6 py-3.5 sm:px-11 sm:py-4.5 shadow-[4px_4px_0_rgba(20,20,20,0.08)]"
+            className="group relative inline-flex items-center gap-3 sm:gap-4 border-2 border-[#EA580C] bg-[#FBFBF8] px-6 py-3.5 sm:px-11 sm:py-4.5 shadow-[4px_4px_0_rgba(20,20,20,0.08)] transition-transform duration-200 hover:-translate-y-0.5"
           >
-            <CertBeeMark className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 drop-shadow-[2px_2px_0_#141414]" />
+            <div data-hero-bee className="shrink-0">
+              <CertBeeMark className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 drop-shadow-[2px_2px_0_#141414] transition-transform duration-200 group-hover:rotate-[-6deg] group-hover:scale-105" />
+            </div>
             <h1
               aria-label="CERTBEE"
               className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[#141414] leading-none flex items-center"
@@ -74,7 +76,7 @@ export function Hero() {
           {/* Desktop Bottom-Left Callout Tag + Arrow */}
           <div
             data-hero-note
-            className="hidden md:flex items-center gap-1.5 absolute -left-36 -bottom-6 rotate-1"
+            className="hidden md:flex items-center gap-1.5 absolute -left-40 -bottom-6 rotate-1 transition-transform duration-200 hover:rotate-0 hover:-translate-y-0.5"
           >
             <span className="rounded-sm border border-[#141414] bg-[#F6C33E] px-2.5 py-1 font-mono-tabular text-[10px] font-semibold text-[#141414] shadow-[2px_2px_0_#141414]">
               CSV · Excel · Sheets
@@ -93,7 +95,7 @@ export function Hero() {
           {/* Desktop Bottom-Right Callout Tag + Arrow */}
           <div
             data-hero-note
-            className="hidden md:flex items-center gap-1.5 absolute -right-36 -bottom-6 -rotate-1"
+            className="hidden md:flex items-center gap-1.5 absolute -right-40 -bottom-6 -rotate-1 transition-transform duration-200 hover:rotate-0 hover:-translate-y-0.5"
           >
             <svg width="24" height="18" viewBox="0 0 24 18" fill="none" aria-hidden="true">
               <path
@@ -134,7 +136,7 @@ export function Hero() {
           data-hero-stagger
           className="mt-6 md:mt-8 flex flex-wrap items-center justify-center gap-2 font-mono-tabular text-[10px] sm:text-[11px] font-medium tracking-wider text-[#52525B]"
         >
-          <span className="inline-block h-2 w-2 rounded-full bg-[#2563EB]" aria-hidden="true" />
+          <span className="inline-block h-2 w-2 rounded-full bg-[#2563EB] animate-pulse" aria-hidden="true" />
           <span>FREE · NO ACCOUNT · RUNS LOCALLY IN YOUR BROWSER</span>
         </div>
 
@@ -144,7 +146,7 @@ export function Hero() {
           <div
             data-hero-badge
             aria-hidden="true"
-            className="hidden lg:flex absolute left-10 -top-2 h-16 w-16 rounded-full border-2 border-[#EA580C] bg-white p-1 shadow-[3px_3px_0_#141414] overflow-hidden -rotate-3"
+            className="hidden lg:flex absolute left-12 xl:left-24 -top-2 h-20 w-20 rounded-full border-2 border-[#EA580C] bg-white p-1 shadow-[3px_3px_0_#141414] overflow-hidden -rotate-6 transition-transform duration-200 hover:scale-105 hover:rotate-0"
           >
             {!imgErrLeft ? (
               <img
@@ -158,9 +160,9 @@ export function Hero() {
             )}
           </div>
 
-          <div data-hero-stagger className="max-w-2xl space-y-3 sm:space-y-4 px-1">
+          <div data-hero-stagger className="max-w-3xl space-y-3 sm:space-y-4 px-1">
             <h2
-              className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-[#141414] leading-[1.15]"
+              className="font-display text-3xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight text-[#141414] leading-[1.12]"
               style={{ textWrap: 'balance' }}
             >
               <span className="inline-block overflow-hidden align-bottom">
@@ -171,16 +173,16 @@ export function Hero() {
               <span
                 data-hero-word
                 aria-hidden="true"
-                className="inline-flex h-7 w-7 sm:h-10 sm:w-10 align-middle items-center justify-center rounded-full border-[1.5px] border-[#141414] bg-[#1FA971] text-white"
+                className="inline-flex h-8 w-8 sm:h-10 sm:w-10 align-middle items-center justify-center rounded-full border-[1.5px] border-[#141414] bg-[#1FA971] text-white transition-transform duration-200 hover:rotate-12"
               >
-                <Layers className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
+                <Layers className="h-4 w-4 sm:h-5 sm:w-5" />
               </span>{' '}
               <br className="hidden sm:inline" />
               <span className="relative inline-block overflow-hidden align-bottom px-1">
                 <span
                   data-hero-highlight
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-1 h-3 sm:h-4 -z-10 origin-left bg-[#F6C33E]/70"
+                  className="pointer-events-none absolute inset-x-0 bottom-1 h-3 sm:h-4 -z-10 origin-left bg-[#F6C33E]/75"
                 />
                 <span data-hero-word className="inline-block">
                   Every certificate.
@@ -189,13 +191,13 @@ export function Hero() {
               <span
                 data-hero-word
                 aria-hidden="true"
-                className="inline-flex h-7 w-7 sm:h-10 sm:w-10 align-middle items-center justify-center rounded-full border-[1.5px] border-[#141414] bg-[#EC4899] text-white"
+                className="inline-flex h-8 w-8 sm:h-10 sm:w-10 align-middle items-center justify-center rounded-full border-[1.5px] border-[#141414] bg-[#EC4899] text-white transition-transform duration-200 hover:-rotate-12"
               >
-                <Sparkles className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
               </span>
             </h2>
 
-            <p className="mx-auto max-w-lg text-sm sm:text-base leading-relaxed text-[#52525B]">
+            <p className="mx-auto max-w-xl text-sm sm:text-base leading-relaxed text-[#52525B]">
               Upload your certificate background, import names from Excel, CSV, or Google Sheets, and export personalized PDFs in one ZIP.
             </p>
           </div>
@@ -204,7 +206,7 @@ export function Hero() {
           <div
             data-hero-badge
             aria-hidden="true"
-            className="hidden lg:flex absolute right-10 top-6 h-16 w-16 rounded-full border-2 border-[#EA580C] bg-white p-1 shadow-[3px_3px_0_#141414] overflow-hidden rotate-3"
+            className="hidden lg:flex absolute right-12 xl:right-24 top-4 h-20 w-20 rounded-full border-2 border-[#EA580C] bg-white p-1 shadow-[3px_3px_0_#141414] overflow-hidden rotate-6 transition-transform duration-200 hover:scale-105 hover:rotate-0"
           >
             {!imgErrRight ? (
               <img
@@ -224,19 +226,19 @@ export function Hero() {
           <button
             type="button"
             onClick={startEmptyBatch}
-            className="inline-flex items-center gap-2.5 rounded-sm border-[1.5px] border-[#141414] bg-[#141414] px-5 py-3 font-mono-tabular text-xs font-semibold tracking-wider text-white hover:bg-[#27272A] transition-colors shadow-[3px_3px_0_#2563EB] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
+            className="group inline-flex items-center gap-2.5 rounded-sm border-[1.5px] border-[#141414] bg-[#141414] px-5 py-3 font-mono-tabular text-xs font-semibold tracking-wider text-white hover:bg-[#27272A] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 shadow-[3px_3px_0_#2563EB] hover:shadow-[4px_4px_0_#2563EB] whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
           >
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-[2px] bg-[#2563EB] text-white">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-[2px] bg-[#2563EB] text-white transition-transform duration-150 group-hover:scale-110">
               <Award className="h-3.5 w-3.5" />
             </span>
             <span>START A BATCH</span>
-            <ArrowRight className="h-3.5 w-3.5 text-[#F6C33E]" />
+            <ArrowRight className="h-3.5 w-3.5 text-[#F6C33E] transition-transform duration-150 group-hover:translate-x-1" />
           </button>
 
           <button
             type="button"
             onClick={() => navigate('guide')}
-            className="inline-flex items-center gap-1.5 rounded-sm border-[1.5px] border-[#141414] bg-white px-4 py-3 font-mono-tabular text-xs font-semibold tracking-wider text-[#141414] hover:bg-[#F6C33E] transition-colors whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1.5 rounded-sm border-[1.5px] border-[#141414] bg-white px-4 py-3 font-mono-tabular text-xs font-semibold tracking-wider text-[#141414] hover:bg-[#F6C33E] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 whitespace-nowrap shrink-0 cursor-pointer"
           >
             <span>PREPARATION GUIDE</span>
           </button>
@@ -244,9 +246,10 @@ export function Hero() {
       </div>
 
       {/* Subtle Curved Notebook Divider Line */}
-      <div className="mt-10 sm:mt-14 w-full overflow-hidden" aria-hidden="true">
+      <div className="mx-auto mt-10 sm:mt-12 max-w-7xl overflow-hidden" aria-hidden="true">
         <svg viewBox="0 0 1000 32" fill="none" className="w-full h-6">
           <path
+            data-hero-line
             d="M0 24 Q 500 -4 1000 22"
             stroke="#141414"
             strokeOpacity="0.22"

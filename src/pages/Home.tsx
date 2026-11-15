@@ -16,210 +16,334 @@ export function Home() {
     const root = mainRef.current;
     if (!root) return;
 
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+    const mm = gsap.matchMedia(root);
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        // 1. Hero subtle fade-in, letter/word kinetic reveal & highlight sweep
-        const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-        heroTl
-          .fromTo(
-            '[data-hero-stagger]',
-            { y: 18, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.45,
-              stagger: 0.06,
-              clearProps: 'transform,opacity',
-            }
-          )
-          .fromTo(
-            '[data-hero-char]',
-            { yPercent: 105, opacity: 0 },
-            {
-              yPercent: 0,
-              opacity: 1,
-              duration: 0.44,
-              stagger: 0.032,
-              ease: 'power4.out',
-              clearProps: 'transform,opacity',
-            },
-            0.06
-          )
-          .fromTo(
-            '[data-hero-word]',
-            { yPercent: 110, opacity: 0 },
-            {
-              yPercent: 0,
-              opacity: 1,
-              duration: 0.5,
-              stagger: 0.06,
-              ease: 'power4.out',
-              clearProps: 'transform,opacity',
-            },
-            0.16
-          )
-          .fromTo(
-            '[data-hero-highlight]',
-            { scaleX: 0 },
-            {
-              scaleX: 1,
-              duration: 0.42,
-              ease: 'power2.out',
-              clearProps: 'transform',
-            },
-            0.38
-          )
-          .fromTo(
-            '[data-hero-note]',
-            { y: 10, scale: 0.94, opacity: 0 },
-            {
-              y: 0,
-              scale: 1,
-              opacity: 1,
-              duration: 0.38,
-              stagger: 0.05,
-              clearProps: 'transform,opacity',
-            },
-            '-=0.3'
-          )
-          .fromTo(
-            '[data-hero-badge]',
-            { y: 12, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.42,
-              stagger: 0.08,
-              clearProps: 'transform,opacity',
-            },
-            '-=0.25'
-          );
-
-        // 2. Benefit cards staggered fade-up on scroll
-        gsap.fromTo(
-          '[data-benefit-card]',
-          { y: 24, opacity: 0 },
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      // 1. Hero entrance timeline: centerpiece, cascading letters, words, highlight & sticky notes
+      const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      heroTl
+        .fromTo(
+          '[data-hero-stagger]',
+          { y: 26, scale: 0.96, opacity: 0 },
           {
             y: 0,
+            scale: 1,
+            opacity: 1,
+            duration: 0.55,
+            stagger: 0.09,
+            ease: 'back.out(1.3)',
+            clearProps: 'transform,opacity',
+          }
+        )
+        .fromTo(
+          '[data-hero-char]',
+          { yPercent: 115, opacity: 0 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.04,
+            ease: 'back.out(1.4)',
+            clearProps: 'transform,opacity',
+          },
+          0.08
+        )
+        .fromTo(
+          '[data-hero-word]',
+          { yPercent: 115, opacity: 0 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            duration: 0.55,
+            stagger: 0.08,
+            ease: 'power4.out',
+            clearProps: 'transform,opacity',
+          },
+          0.2
+        )
+        .fromTo(
+          '[data-hero-highlight]',
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            duration: 0.48,
+            ease: 'power2.out',
+            clearProps: 'transform',
+          },
+          0.42
+        )
+        .fromTo(
+          '[data-hero-note]',
+          { y: 16, scale: 0.78, opacity: 0 },
+          {
+            y: 0,
+            scale: 1,
             opacity: 1,
             duration: 0.48,
             stagger: 0.08,
-            ease: 'power3.out',
+            ease: 'back.out(1.8)',
             clearProps: 'transform,opacity',
-            scrollTrigger: {
-              trigger: '#benefits',
-              start: 'top 88%',
-              once: true,
-            },
-          }
+          },
+          0.25
+        )
+        .fromTo(
+          '[data-hero-badge]',
+          { y: 20, scale: 0.85, opacity: 0 },
+          {
+            y: 0,
+            scale: 1,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.12,
+            ease: 'back.out(1.5)',
+            clearProps: 'transform,opacity',
+          },
+          0.28
         );
 
-        // 3. Workflow cards & steps staggered fade-up on scroll
+      // Draw curved notebook divider SVG path
+      const heroLine = root.querySelector<SVGPathElement>('[data-hero-line]');
+      if (heroLine && typeof heroLine.getTotalLength === 'function') {
+        const len = heroLine.getTotalLength();
+        gsap.set(heroLine, { strokeDasharray: len, strokeDashoffset: len });
+        gsap.to(heroLine, {
+          strokeDashoffset: 0,
+          duration: 0.9,
+          delay: 0.35,
+          ease: 'power2.out',
+        });
+      }
+
+      // Living ambient studio motion on medallions, bee mark & sticky tags
+      gsap.to('[data-hero-badge]', {
+        y: -10,
+        rotation: 2.5,
+        duration: 2.6,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        stagger: 0.5,
+        delay: 0.9,
+      });
+
+      gsap.to('[data-hero-bee]', {
+        y: -4,
+        rotation: -4,
+        duration: 2.0,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: 0.8,
+      });
+
+      gsap.to('[data-hero-note]', {
+        y: -4,
+        duration: 2.4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        stagger: 0.35,
+        delay: 1.0,
+      });
+
+      // 2. Benefit cards staggered spring reveal on scroll
+      gsap.fromTo(
+        '[data-benefit-card]',
+        { y: 36, scale: 0.95, opacity: 0 },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.55,
+          stagger: 0.1,
+          ease: 'back.out(1.3)',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#benefits',
+            start: 'top 90%',
+            once: true,
+          },
+        }
+      );
+
+      // 3. Workflow polaroids slide/tilt in from left & right + stamps pop in
+      gsap.fromTo(
+        '[data-wf-left]',
+        { x: -44, rotation: -6, opacity: 0 },
+        {
+          x: 0,
+          rotation: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#workflow',
+            start: 'top 86%',
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '[data-wf-center]',
+        { y: 32, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.55,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#workflow',
+            start: 'top 86%',
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '[data-wf-right]',
+        { x: 44, rotation: 6, opacity: 0 },
+        {
+          x: 0,
+          rotation: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#workflow',
+            start: 'top 86%',
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '[data-wf-stamp]',
+        { y: 20, scale: 0.82, opacity: 0 },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.45,
+          stagger: 0.08,
+          ease: 'back.out(1.7)',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '[data-wf-stamps]',
+            start: 'top 90%',
+            once: true,
+          },
+        }
+      );
+
+      // 4. Each capability folder (01. IMPORT LIST, 02. LIVE PREVIEW, BATCH SPEED) animates on its own scroll trigger
+      gsap.utils.toArray<HTMLElement>('[data-folder-reveal]').forEach((folder) => {
         gsap.fromTo(
-          '[data-wf-card]',
-          { y: 24, opacity: 0 },
+          folder,
+          { y: 44, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.5,
-            stagger: 0.09,
+            duration: 0.6,
             ease: 'power3.out',
             clearProps: 'transform,opacity',
             scrollTrigger: {
-              trigger: '#workflow',
+              trigger: folder,
               start: 'top 86%',
               once: true,
             },
           }
         );
+      });
 
+      gsap.fromTo(
+        '[data-import-card]',
+        { y: 26, scale: 0.94, opacity: 0 },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.45,
+          stagger: 0.09,
+          ease: 'back.out(1.3)',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '[data-import-grid]',
+            start: 'top 88%',
+            once: true,
+          },
+        }
+      );
+
+      // 5. FAQ intro & individual accordion items staggered reveal on scroll
+      gsap.fromTo(
+        '[data-faq-reveal]',
+        { y: 28, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.55,
+          stagger: 0.1,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#faq',
+            start: 'top 88%',
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '[data-faq-item]',
+        { y: 22, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.45,
+          stagger: 0.08,
+          ease: 'power2.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#faq',
+            start: 'top 84%',
+            once: true,
+          },
+        }
+      );
+
+      // 6. Scroll-triggered kinetic text reveals across section headings
+      gsap.utils.toArray<HTMLElement>('[data-scroll-text]').forEach((el) => {
         gsap.fromTo(
-          '[data-wf-stamp]',
-          { y: 18, opacity: 0 },
+          el,
+          { y: 20, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.42,
-            stagger: 0.07,
+            duration: 0.5,
             ease: 'power3.out',
             clearProps: 'transform,opacity',
             scrollTrigger: {
-              trigger: '[data-wf-stamps]',
+              trigger: el,
               start: 'top 90%',
               once: true,
             },
           }
         );
-
-        // 4. Feature folder cards staggered fade-up on scroll
-        gsap.fromTo(
-          '[data-folder-reveal]',
-          { y: 26, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.52,
-            stagger: 0.12,
-            ease: 'power3.out',
-            clearProps: 'transform,opacity',
-            scrollTrigger: {
-              trigger: '#capabilities',
-              start: 'top 86%',
-              once: true,
-            },
-          }
-        );
-
-        // 5. FAQ & closing banner cards staggered fade-up on scroll
-        gsap.fromTo(
-          '[data-faq-reveal]',
-          { y: 22, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.48,
-            stagger: 0.09,
-            ease: 'power3.out',
-            clearProps: 'transform,opacity',
-            scrollTrigger: {
-              trigger: '#faq',
-              start: 'top 88%',
-              once: true,
-            },
-          }
-        );
-
-        // 6. Scroll-triggered kinetic text reveals across home section headings
-        gsap.utils.toArray<HTMLElement>('[data-scroll-text]').forEach((el) => {
-          gsap.fromTo(
-            el,
-            { y: 16, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.48,
-              ease: 'power3.out',
-              clearProps: 'transform,opacity',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 90%',
-                once: true,
-              },
-            }
-          );
-        });
       });
-    }, root);
-
-    const raf = window.requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
     });
+
+    const refresh = () => ScrollTrigger.refresh();
+    const raf = window.requestAnimationFrame(refresh);
+    window.addEventListener('load', refresh);
 
     return () => {
       window.cancelAnimationFrame(raf);
-      ctx.revert();
+      window.removeEventListener('load', refresh);
+      mm.revert();
     };
   }, []);
 

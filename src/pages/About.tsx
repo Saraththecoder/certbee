@@ -1,13 +1,18 @@
 import { ArrowRight } from 'lucide-react';
+import { useRef } from 'react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
+import { usePageReveal } from '../hooks/usePageReveal';
 
 export function About() {
   const { startEmptyBatch } = useBatchWorkspace();
+  const mainRef = useRef<HTMLElement | null>(null);
+
+  usePageReveal(mainRef);
 
   return (
-    <main className="min-h-[75vh]">
+    <main ref={mainRef} className="min-h-[75vh]">
       <div className="mx-auto max-w-4xl px-5 py-12 sm:px-8 sm:py-16 space-y-12">
-        <div className="space-y-4">
+        <div data-page-reveal className="space-y-4">
           <span className="inline-block rounded-sm border border-[#141414] bg-[#C8EFE0] px-2.5 py-1 font-mono-tabular text-[11px] font-semibold uppercase tracking-wider text-[#141414]">
             About CertBee
           </span>
@@ -23,7 +28,7 @@ export function About() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-2 shadow-[4px_4px_0_#141414]">
+          <div data-page-reveal className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-2 shadow-[4px_4px_0_#141414] transition-transform duration-150 hover:-translate-y-0.5">
             <h2 className="font-display text-lg font-bold text-[#141414]">
               Bring your own craft
             </h2>
@@ -31,7 +36,7 @@ export function About() {
               You know your typography, seals, and brand margins best. Upload a static PNG, JPG, SVG, or vector PDF export and use CertBee strictly as the precision data-merge layer on top.
             </p>
           </div>
-          <div className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-2 shadow-[4px_4px_0_#141414]">
+          <div data-page-reveal className="rounded-sm border-[1.5px] border-[#141414] bg-white p-6 space-y-2 shadow-[4px_4px_0_#141414] transition-transform duration-150 hover:-translate-y-0.5">
             <h2 className="font-display text-lg font-bold text-[#141414]">
               Local-first by default
             </h2>
@@ -41,7 +46,7 @@ export function About() {
           </div>
         </div>
 
-        <div className="rounded-sm border-[1.5px] border-[#141414] bg-[#F6C33E] p-6 sm:p-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between shadow-[5px_5px_0_#141414]">
+        <div data-page-reveal className="rounded-sm border-[1.5px] border-[#141414] bg-[#F6C33E] p-6 sm:p-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between shadow-[5px_5px_0_#141414]">
           <div className="space-y-1">
             <h2 className="font-display text-xl font-extrabold text-[#141414]">
               Ready to run a batch?

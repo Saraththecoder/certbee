@@ -89,12 +89,12 @@ export function FeatureSection() {
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       gsap.fromTo(
         node,
-        { opacity: 0.82, y: 4 },
-        { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out', clearProps: 'transform,opacity' }
+        { opacity: 0.45, y: 10, scale: 0.985 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: 'power2.out', clearProps: 'transform,opacity' }
       );
     });
     return () => mm.revert();
-  }, [selectedRowIdx]);
+  }, [selectedRowIdx, showRoleField]);
 
   useEffect(() => {
     const mm = gsap.matchMedia();
@@ -102,7 +102,7 @@ export function FeatureSection() {
       gsap.to(animatedNumbers.current, {
         manual: manualMinutes,
         certly: certlyMinutes,
-        duration: 0.28,
+        duration: 0.34,
         ease: 'power2.out',
         onUpdate: () => {
           if (manualValRef.current) {
@@ -116,7 +116,7 @@ export function FeatureSection() {
       if (barRef.current) {
         gsap.to(barRef.current, {
           width: `${speedRatioPct}%`,
-          duration: 0.28,
+          duration: 0.34,
           ease: 'power2.out',
         });
       }
@@ -134,8 +134,8 @@ export function FeatureSection() {
   const activeRecipient = SAMPLE_RECIPIENTS[selectedRowIdx] ?? SAMPLE_RECIPIENTS[0];
 
   return (
-    <section id="capabilities" className="px-4 py-8 sm:px-10 sm:py-12 overflow-hidden">
-      <div className="mx-auto max-w-5xl space-y-10">
+    <section id="capabilities" className="px-4 py-8 sm:px-6 lg:px-8 sm:py-12 overflow-hidden">
+      <div className="mx-auto max-w-7xl space-y-12">
         {/* SECTION 01: Import List */}
         <div data-folder-reveal>
           <div className="flex items-end">
@@ -172,20 +172,21 @@ export function FeatureSection() {
               </button>
             </div>
 
-            <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div data-import-grid className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {IMPORT_TYPES.map((type, idx) => {
                 const Icon = type.icon;
                 return (
                   <button
                     key={type.id}
                     type="button"
+                    data-import-card
                     onClick={startEmptyBatch}
-                    className="group flex flex-col justify-between rounded-sm border border-zinc-700 bg-[#1B1D20] p-5 text-left transition-colors hover:border-[#F6C33E] hover:bg-[#202327] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6C33E]"
+                    className="group flex flex-col justify-between rounded-sm border border-zinc-700 bg-[#1B1D20] p-5 text-left transition-all duration-200 hover:-translate-y-1.5 hover:border-[#F6C33E] hover:bg-[#202327] hover:shadow-[4px_4px_0_#F6C33E] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6C33E]"
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2">
                         <span
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-[#141414]"
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-[#141414] transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6"
                           style={{ backgroundColor: type.accent, color: type.iconColor }}
                         >
                           <Icon className="h-4 w-4" />

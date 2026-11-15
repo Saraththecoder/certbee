@@ -46,17 +46,15 @@ export function resolveFieldText(
   return field.sampleFallback || `{{${field.key}}}`;
 }
 
-export function getFontCssString(
+export function getFontFamilyCss(
   fontFamily: DynamicField['fontFamily'],
-  fontWeight: number,
-  fontSizePx: number,
   customFonts?: CustomFontAsset[],
   customFontId?: string
 ): string {
   if (customFontId && customFonts && customFonts.length > 0) {
     const custom = customFonts.find((f) => f.id === customFontId);
     if (custom) {
-      return `${fontWeight} ${fontSizePx}px "${custom.familyName}", sans-serif`;
+      return `"${custom.familyName}", sans-serif`;
     }
   }
 
@@ -67,7 +65,18 @@ export function getFontCssString(
     'JetBrains Mono': '"JetBrains Mono", monospace',
     Georgia: 'Georgia, "Times New Roman", serif',
   };
-  return `${fontWeight} ${fontSizePx}px ${familyMap[fontFamily]}`;
+  return familyMap[fontFamily];
+}
+
+export function getFontCssString(
+  fontFamily: DynamicField['fontFamily'],
+  fontWeight: number,
+  fontSizePx: number,
+  customFonts?: CustomFontAsset[],
+  customFontId?: string
+): string {
+  const familyCss = getFontFamilyCss(fontFamily, customFonts, customFontId);
+  return `${fontWeight} ${fontSizePx}px ${familyCss}`;
 }
 
 let measureCanvas: HTMLCanvasElement | null = null;

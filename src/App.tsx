@@ -1,7 +1,9 @@
+import { useRef } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
 import { BatchWorkspaceProvider, useBatchWorkspace } from './hooks/useBatchWorkspace';
+import { usePageReveal } from './hooks/usePageReveal';
 import { About } from './pages/About';
 import { Blog } from './pages/Blog';
 import { Contact } from './pages/Contact';
@@ -11,9 +13,11 @@ import { Home } from './pages/Home';
 
 function NotFoundPage() {
   const { navigate, startEmptyBatch } = useBatchWorkspace();
+  const mainRef = useRef<HTMLElement | null>(null);
+  usePageReveal(mainRef);
   return (
-    <main className="min-h-[75vh] flex items-center justify-center px-5 py-16">
-      <div className="w-full max-w-lg rounded-sm border-[1.5px] border-[#141414] bg-white p-7 sm:p-10 space-y-5 shadow-[5px_5px_0_#141414]">
+    <main ref={mainRef} className="min-h-[75vh] flex items-center justify-center px-5 py-16">
+      <div data-page-reveal className="w-full max-w-lg rounded-sm border-[1.5px] border-[#141414] bg-white p-7 sm:p-10 space-y-5 shadow-[5px_5px_0_#141414]">
         <span className="inline-block rounded-sm border border-[#141414] bg-[#F6C33E] px-2.5 py-1 font-mono-tabular text-[11px] font-bold uppercase tracking-wider text-[#141414]">
           404 · Page not found
         </span>
@@ -46,9 +50,11 @@ function NotFoundPage() {
 
 function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
   const { navigate } = useBatchWorkspace();
+  const mainRef = useRef<HTMLElement | null>(null);
+  usePageReveal(mainRef, [kind]);
   return (
-    <main className="min-h-[75vh]">
-      <div className="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20 space-y-6">
+    <main ref={mainRef} className="min-h-[75vh]">
+      <div data-page-reveal className="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20 space-y-6">
         <div className="flex flex-wrap items-center gap-3">
           <span className="inline-block rounded-sm border border-[#141414] bg-[#C8EFE0] px-2.5 py-1 font-mono-tabular text-[11px] font-semibold uppercase tracking-wider text-[#141414]">
             {kind === 'privacy' ? 'Privacy Policy' : 'Terms of Use'}

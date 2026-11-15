@@ -16,8 +16,8 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t-[1.5px] border-[#141414]/20 px-5 py-10 sm:px-10 text-[#141414]">
-      <div className="mx-auto max-w-5xl">
+    <footer className="border-t-[1.5px] border-[#141414]/20 px-4 py-10 sm:px-6 lg:px-8 text-[#141414]">
+      <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           <div className="md:col-span-5 space-y-3">
             <a

@@ -34,16 +34,16 @@ export function FAQ() {
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       gsap.fromTo(
         node,
-        { opacity: 0, y: -4 },
-        { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out', clearProps: 'transform,opacity' }
+        { opacity: 0, y: -8 },
+        { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out', clearProps: 'transform,opacity' }
       );
     });
     return () => mm.revert();
   }, [openIdx]);
 
   return (
-    <section id="faq" className="px-4 py-10 sm:px-10 sm:py-14 overflow-hidden">
-      <div className="mx-auto max-w-5xl space-y-14">
+    <section id="faq" className="px-4 py-10 sm:px-6 lg:px-8 sm:py-14 overflow-hidden">
+      <div className="mx-auto max-w-7xl space-y-14">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div data-faq-reveal className="lg:col-span-4 space-y-5">
             <div className="inline-flex h-10 w-10 items-center justify-center rounded-sm border-[1.5px] border-[#141414] bg-[#C8EFE0] shadow-[2px_2px_0_#141414]">
@@ -66,23 +66,23 @@ export function FAQ() {
               <button
                 type="button"
                 onClick={() => navigate('guide')}
-                className="inline-flex items-center gap-2 font-semibold text-[#2563EB] hover:underline underline-offset-4"
+                className="group inline-flex items-center gap-2 font-semibold text-[#2563EB] hover:underline underline-offset-4 cursor-pointer"
               >
                 <BookOpen className="h-4 w-4" />
                 <span>Preparation guide</span>
-                <ArrowRight className="h-3.5 w-3.5" />
+                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />
               </button>
               <button
                 type="button"
                 onClick={() => navigate('about')}
-                className="text-[#52525B] hover:text-[#141414] transition-colors"
+                className="text-[#52525B] hover:text-[#141414] transition-colors cursor-pointer"
               >
                 About CertBee
               </button>
               <button
                 type="button"
                 onClick={() => navigate('contact')}
-                className="text-[#52525B] hover:text-[#141414] transition-colors"
+                className="text-[#52525B] hover:text-[#141414] transition-colors cursor-pointer"
               >
                 Contact support
               </button>
@@ -91,20 +91,21 @@ export function FAQ() {
 
           <div
             data-faq-reveal
-            className="lg:col-span-8 space-y-2.5"
+            className="lg:col-span-8 space-y-3"
           >
             {FAQ_ITEMS.map((item, idx) => {
               const isOpen = openIdx === idx;
               return (
                 <div
                   key={item.q}
-                  className="rounded-sm border-[1.5px] border-[#141414] bg-white shadow-[3px_3px_0_#141414]"
+                  data-faq-item
+                  className="rounded-sm border-[1.5px] border-[#141414] bg-white shadow-[3px_3px_0_#141414] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#141414]"
                 >
                   <button
                     type="button"
                     aria-expanded={isOpen}
                     onClick={() => setOpenIdx(isOpen ? null : idx)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
                   >
                     <span className="flex items-center gap-3 font-display text-sm sm:text-base font-bold text-[#141414]">
                       <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-sm border border-[#141414] bg-[#F6C33E] font-mono-tabular text-[11px] font-bold text-[#141414]">
@@ -113,7 +114,7 @@ export function FAQ() {
                       <span>{item.q}</span>
                     </span>
                     <ChevronDown
-                      className={`h-4 w-4 shrink-0 text-[#52525B] transition-transform duration-150 ${
+                      className={`h-4 w-4 shrink-0 text-[#52525B] transition-transform duration-200 ${
                         isOpen ? 'rotate-180 text-[#141414]' : ''
                       }`}
                     />
