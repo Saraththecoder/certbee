@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FBFBF8;
+  --sheet: #FBFBF8;
+  --surface: #FFFFFF;
+  --surface-muted: #F3F1EA;
+  --border: #141414;
+  --border-subtle: rgba(20, 20, 20, 0.16);
+  --foreground: #141414;
+  --muted: #52525B;
+  --marigold: #F6C33E;
+  --cobalt: #2563EB;
+  --emerald: #1FA971;
+  --mint: #C8EFE0;
+  --rose: #EC4899;
+  --tangerine: #EA580C;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .font-serif-editorial {
+    font-family: "Fraunces", Georgia, serif;
+  }
+
+  .font-mono-tabular {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Warm ruled notebook paper sheet */
+.notebook-ruled-sheet {
+  background-color: #FBFBF8;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(20, 20, 20, 0.06) 31px,
+    rgba(20, 20, 20, 0.06) 32px
+  );
+}
+
+/* Step 03 Canvas Studio dark drafting mat */
+.studio-grid-bg {
+  background-color: #232528;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Light neutral drafting surface for the design page canvas */
+.studio-grid-light-bg {
+  background-color: #F3F1EA;
+  background-image:
+    linear-gradient(to right, rgba(20, 20, 20, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 20, 20, 0.045) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Angled folder tab geometry matching stacked project folders */
+.folder-tab-left {
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 100%, 0 100%);
+}
+
+.folder-tab-center {
+  clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 100%, 0 100%);
+}
+
+/* Translucent masking tape strip */
+.masking-tape {
+  background: rgba(230, 224, 204, 0.88);
+  border: 1px solid rgba(20, 20, 20, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+}

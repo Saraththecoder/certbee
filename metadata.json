@@ -1,0 +1,6 @@
+{
+  "name": "Certly",
+  "description": "One design. Every certificate. Free bulk personalized certificate generator that creates PDFs locally in your browser.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
