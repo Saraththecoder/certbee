@@ -64,10 +64,13 @@ export function Navbar() {
           <a
             href={getRoutePath('create')}
             onClick={(e) => handleLinkClick(e, 'create')}
-            className="hidden sm:inline-flex h-9 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-4 text-xs font-semibold text-white shadow-[2px_2px_0_#F6C844] hover:bg-[#1E2333] active:translate-x-[1px] active:translate-y-[1px] transition-[background-color,transform] duration-150 whitespace-nowrap shrink-0 cursor-pointer"
+            className="group hidden sm:inline-flex h-9 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-4 text-xs font-semibold text-white shadow-[2px_2px_0_#F6C844] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#1E2333] transition-[background-color,transform] duration-150 whitespace-nowrap shrink-0 cursor-pointer"
           >
             <span>Start a batch</span>
-            <ArrowRight className="h-3.5 w-3.5 text-[#F6C844]" strokeWidth={1.75} />
+            <ArrowRight
+              className="h-3.5 w-3.5 text-[#F6C844] transition-transform duration-150 group-hover:translate-x-0.5"
+              strokeWidth={1.75}
+            />
           </a>
 
           <button
@@ -75,7 +78,7 @@ export function Navbar() {
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((o) => !o)}
-            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border-[1.5px] border-[#12151E] bg-white text-[#12151E] shadow-[2px_2px_0_#12151E] hover:bg-[#F3F1EA] transition-colors duration-150"
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border-[1.5px] border-[#12151E] bg-white text-[#12151E] shadow-[2px_2px_0_#12151E] hover:bg-[#F3F1EA] active:translate-y-0.5 transition-[background-color,transform] duration-150"
           >
             {mobileOpen ? (
               <X className="h-4 w-4" strokeWidth={1.75} />
@@ -86,32 +89,40 @@ export function Navbar() {
         </div>
       </div>
 
-      {mobileOpen && (
-        <div className="md:hidden border-t-[1.5px] border-[#12151E] bg-[#FAF9F5] px-4 py-4 space-y-1.5">
-          {navItems.map((item) => (
+      <div
+        className={`md:hidden grid transition-[grid-template-rows,opacity] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          mobileOpen ? 'grid-rows-[1fr] opacity-100 border-t-[1.5px] border-[#12151E]' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+        } bg-[#FAF9F5]`}
+      >
+        <div className="overflow-hidden">
+          <div className="px-4 py-4 space-y-1.5">
+            {navItems.map((item) => (
+              <a
+                key={item.target}
+                href={getRoutePath(item.target)}
+                onClick={(e) => handleLinkClick(e, item.target)}
+                tabIndex={mobileOpen ? undefined : -1}
+                className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 ${
+                  route === item.target
+                    ? 'border-[1.5px] border-[#12151E] bg-[#F6C844] text-[#12151E]'
+                    : 'text-[#4B5263] hover:bg-[#F3F1EA] hover:text-[#12151E]'
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
             <a
-              key={item.target}
-              href={getRoutePath(item.target)}
-              onClick={(e) => handleLinkClick(e, item.target)}
-              className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 ${
-                route === item.target
-                  ? 'border-[1.5px] border-[#12151E] bg-[#F6C844] text-[#12151E]'
-                  : 'text-[#4B5263] hover:bg-[#F3F1EA] hover:text-[#12151E]'
-              }`}
+              href={getRoutePath('create')}
+              onClick={(e) => handleLinkClick(e, 'create')}
+              tabIndex={mobileOpen ? undefined : -1}
+              className="mt-2 flex w-full h-11 items-center justify-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-4 text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:bg-[#1E2333] transition-colors duration-150"
             >
-              {item.label}
+              <span>Start a batch</span>
+              <ArrowRight className="h-4 w-4 text-[#F6C844]" strokeWidth={1.75} />
             </a>
-          ))}
-          <a
-            href={getRoutePath('create')}
-            onClick={(e) => handleLinkClick(e, 'create')}
-            className="mt-2 flex w-full h-11 items-center justify-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-4 text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:bg-[#1E2333] transition-colors duration-150"
-          >
-            <span>Start a batch</span>
-            <ArrowRight className="h-4 w-4 text-[#F6C844]" strokeWidth={1.75} />
-          </a>
+          </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }

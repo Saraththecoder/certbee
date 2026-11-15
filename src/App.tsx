@@ -31,14 +31,14 @@ function NotFoundPage() {
           <button
             type="button"
             onClick={() => navigate('home')}
-            className="inline-flex h-10 items-center rounded-lg border-[1.5px] border-[#12151E] bg-white px-4 text-xs sm:text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E] hover:bg-[#F3F1EA] transition-colors duration-150 cursor-pointer"
+            className="inline-flex h-10 items-center rounded-lg border-[1.5px] border-[#12151E] bg-white px-4 text-xs sm:text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#F3F1EA] transition-[background-color,transform] duration-150 cursor-pointer"
           >
             Back to home
           </button>
           <button
             type="button"
             onClick={() => startEmptyBatch()}
-            className="inline-flex h-10 items-center rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-4 text-xs sm:text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:bg-[#1E2333] transition-colors duration-150 cursor-pointer"
+            className="inline-flex h-10 items-center rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-4 text-xs sm:text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#1E2333] transition-[background-color,transform] duration-150 cursor-pointer"
           >
             Start a batch →
           </button>
@@ -141,7 +141,7 @@ function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
           <button
             type="button"
             onClick={() => navigate('home')}
-            className="inline-flex h-10 items-center rounded-lg border-[1.5px] border-[#12151E] bg-white px-4 text-xs sm:text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E] hover:bg-[#F3F1EA] transition-colors duration-150 cursor-pointer"
+            className="inline-flex h-10 items-center rounded-lg border-[1.5px] border-[#12151E] bg-white px-4 text-xs sm:text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#F3F1EA] transition-[background-color,transform] duration-150 cursor-pointer"
           >
             Back to home
           </button>

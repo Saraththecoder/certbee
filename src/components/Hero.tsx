@@ -1,3 +1,4 @@
+import gsap from 'gsap';
 import {
   ArrowRight,
   Check,
@@ -5,6 +6,7 @@ import {
   FileText,
   FolderArchive,
 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
 
 const SAMPLE_PREVIEW_ROWS = [
@@ -15,6 +17,25 @@ const SAMPLE_PREVIEW_ROWS = [
 
 export function Hero() {
   const { startEmptyBatch, loadSampleBatch } = useBatchWorkspace();
+  const [activeRowIdx, setActiveRowIdx] = useState(0);
+  const arrowBadgeRef = useRef<HTMLSpanElement | null>(null);
+  const didMountRef = useRef(false);
+
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+    const badge = arrowBadgeRef.current;
+    if (!badge) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    gsap.fromTo(
+      badge,
+      { scale: 0.9 },
+      { scale: 1, duration: 0.22, ease: 'back.out(1.8)', clearProps: 'transform' }
+    );
+  }, [activeRowIdx]);
 
   return (
     <section className="px-4 pt-12 pb-12 sm:px-6 lg:px-8 sm:pt-16 sm:pb-14">
@@ -39,7 +60,10 @@ export function Hero() {
         >
           One design.
           <br />
-          <span className="inline-block mt-1 rounded-lg border-[1.5px] border-[#12151E] bg-[#F6C844] px-3 py-0.5 text-[#12151E] shadow-[3px_3px_0_#12151E]">
+          <span
+            data-hero-stamp
+            className="inline-block mt-1 rounded-lg border-[1.5px] border-[#12151E] bg-[#F6C844] px-3 py-0.5 text-[#12151E] shadow-[3px_3px_0_#12151E]"
+          >
             Every certificate.
           </span>
         </h1>
@@ -59,29 +83,35 @@ export function Hero() {
           <button
             type="button"
             onClick={startEmptyBatch}
-            className="inline-flex h-11 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-5 text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:bg-[#1E2333] active:translate-x-[1px] active:translate-y-[1px] transition-[background-color,transform] duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12151E]"
+            className="group inline-flex h-11 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-5 text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#1E2333] transition-[background-color,transform] duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12151E]"
           >
             <span>Start a batch</span>
-            <ArrowRight className="h-4 w-4 text-[#F6C844]" strokeWidth={1.75} />
+            <ArrowRight
+              className="h-4 w-4 text-[#F6C844] transition-transform duration-150 group-hover:translate-x-1"
+              strokeWidth={1.75}
+            />
           </button>
 
           <button
             type="button"
             onClick={loadSampleBatch}
-            className="inline-flex h-11 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-white px-5 text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E] hover:bg-[#F3F1EA] active:translate-x-[1px] active:translate-y-[1px] transition-[background-color,transform] duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12151E]"
+            className="inline-flex h-11 items-center gap-2 rounded-lg border-[1.5px] border-[#12151E] bg-white px-5 text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#F3F1EA] transition-[background-color,transform] duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12151E]"
           >
             <span>Try with sample data</span>
           </button>
         </div>
 
-        {/* Tactile Print-Studio Workbench Visual: CSV -> Certificate Specimen + ZIP */}
+        {/* Interactive Print-Studio Workbench Visual: CSV -> Certificate Specimen + ZIP */}
         <div
           data-hero-stagger
           className="mt-10 w-full rounded-2xl border-[1.5px] border-[#12151E] bg-[#F3F1EA] p-4 sm:p-6 text-left shadow-[5px_5px_0_#12151E]"
         >
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-center">
             {/* CSV / Excel Roster Card */}
-            <div className="lg:col-span-5 rounded-xl border-[1.5px] border-[#12151E] bg-white overflow-hidden shadow-[3px_3px_0_#12151E]">
+            <div
+              data-workbench-csv
+              className="lg:col-span-5 rounded-xl border-[1.5px] border-[#12151E] bg-white overflow-hidden shadow-[3px_3px_0_#12151E]"
+            >
               <div className="flex items-center justify-between border-b-[1.5px] border-[#12151E] bg-[#FAF9F5] px-4 py-2.5 text-xs">
                 <span className="inline-flex items-center gap-2 font-semibold text-[#12151E]">
                   <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#12151E] bg-[#2563EB] text-white">
@@ -101,29 +131,45 @@ export function Hero() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#12151E]/10 text-[#12151E]">
-                    {SAMPLE_PREVIEW_ROWS.map((row) => (
-                      <tr key={row.name} className="h-10">
-                        <td className="px-4 py-2 font-semibold whitespace-nowrap">{row.name}</td>
-                        <td className="px-4 py-2 text-[#4B5263] whitespace-nowrap">{row.role}</td>
-                        <td className="px-4 py-2 text-right font-mono-tabular tabular-nums text-[11px] text-[#6B7280] whitespace-nowrap">
-                          {row.date}
-                        </td>
-                      </tr>
-                    ))}
+                    {SAMPLE_PREVIEW_ROWS.map((row, idx) => {
+                      const isActive = idx === activeRowIdx;
+                      return (
+                        <tr
+                          key={row.name}
+                          onMouseEnter={() => setActiveRowIdx(idx)}
+                          onClick={() => setActiveRowIdx(idx)}
+                          className={`h-10 cursor-pointer transition-colors duration-150 ${
+                            isActive ? 'bg-[#FFF4CC]/75' : 'hover:bg-[#FAF9F5]'
+                          }`}
+                        >
+                          <td className="px-4 py-2 font-semibold whitespace-nowrap">{row.name}</td>
+                          <td className="px-4 py-2 text-[#4B5263] whitespace-nowrap">{row.role}</td>
+                          <td className="px-4 py-2 text-right font-mono-tabular tabular-nums text-[11px] text-[#6B7280] whitespace-nowrap">
+                            {row.date}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
             </div>
 
             {/* Crisp Transformation Connector */}
-            <div className="lg:col-span-1 flex items-center justify-center">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border-[1.5px] border-[#12151E] bg-[#F6C844] text-[#12151E] shadow-[2px_2px_0_#12151E] rotate-90 lg:rotate-0">
+            <div data-workbench-arrow className="lg:col-span-1 flex items-center justify-center">
+              <span
+                ref={arrowBadgeRef}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border-[1.5px] border-[#12151E] bg-[#F6C844] text-[#12151E] shadow-[2px_2px_0_#12151E] rotate-90 lg:rotate-0"
+              >
                 <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
               </span>
             </div>
 
             {/* Rendered Specimen Thumbnail + ZIP Archive */}
-            <div className="lg:col-span-6 rounded-xl border-[1.5px] border-[#12151E] bg-white p-4 shadow-[3px_3px_0_#12151E]">
+            <div
+              data-workbench-zip
+              className="lg:col-span-6 rounded-xl border-[1.5px] border-[#12151E] bg-white p-4 shadow-[3px_3px_0_#12151E]"
+            >
               <div className="flex items-center justify-between border-b-[1.5px] border-[#12151E] pb-2.5 mb-4 text-xs">
                 <span className="inline-flex items-center gap-2 font-semibold text-[#12151E]">
                   <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#12151E] bg-[#10B981] text-white">
@@ -143,7 +189,7 @@ export function Hero() {
                     <img
                       src="/assets/aistudio/Colorful_Abstract_Painting_Art_Completion_Certificate_4fe08b87.png"
                       alt="Generated certificate for Aarav Kumar inside certificates_batch.zip"
-                      className="block aspect-[16/11.3] w-full object-cover"
+                      className="block aspect-[16/11.3] w-full object-cover transition-transform duration-300 ease-out hover:scale-[1.03]"
                     />
                   </div>
                 </div>
@@ -151,18 +197,26 @@ export function Hero() {
                 {/* Unclipped Clean PDF Output Rows */}
                 <div className="sm:col-span-7">
                   <ul className="divide-y divide-[#12151E]/10 text-xs">
-                    {SAMPLE_PREVIEW_ROWS.map((row) => (
-                      <li
-                        key={row.file}
-                        className="flex h-9 items-center justify-between gap-2"
-                      >
-                        <span className="inline-flex items-center gap-2 min-w-0 font-mono-tabular text-[11px] font-medium text-[#12151E]">
-                          <FileText className="h-4 w-4 shrink-0 text-[#4B5263]" strokeWidth={1.6} />
-                          <span className="truncate">{row.file}</span>
-                        </span>
-                        <Check className="h-4 w-4 shrink-0 text-[#10B981]" strokeWidth={2} aria-hidden="true" />
-                      </li>
-                    ))}
+                    {SAMPLE_PREVIEW_ROWS.map((row, idx) => {
+                      const isActive = idx === activeRowIdx;
+                      return (
+                        <li
+                          key={row.file}
+                          data-workbench-file
+                          onMouseEnter={() => setActiveRowIdx(idx)}
+                          onClick={() => setActiveRowIdx(idx)}
+                          className={`flex h-9 items-center justify-between gap-2 rounded px-2 -mx-2 cursor-pointer transition-colors duration-150 ${
+                            isActive ? 'bg-[#FFF4CC]/75' : 'hover:bg-[#FAF9F5]'
+                          }`}
+                        >
+                          <span className="inline-flex items-center gap-2 min-w-0 font-mono-tabular text-[11px] font-medium text-[#12151E]">
+                            <FileText className="h-4 w-4 shrink-0 text-[#4B5263]" strokeWidth={1.6} />
+                            <span className="truncate">{row.file}</span>
+                          </span>
+                          <Check className="h-4 w-4 shrink-0 text-[#10B981]" strokeWidth={2} aria-hidden="true" />
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </div>

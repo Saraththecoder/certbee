@@ -87,7 +87,7 @@ export function Blog() {
                 <article
                   key={article.id}
                   data-page-reveal
-                  className="rounded-xl border-[1.5px] border-[#12151E] bg-white p-6 sm:p-7 space-y-3 shadow-[4px_4px_0_#12151E]"
+                  className="rounded-xl border-[1.5px] border-[#12151E] bg-white p-6 sm:p-7 space-y-3 shadow-[4px_4px_0_#12151E] hover:-translate-y-0.5 transition-transform duration-150"
                 >
                   <div className="flex flex-wrap items-center gap-2 text-xs text-[#6B7280]">
                     <span className="font-semibold text-[#12151E]">{article.topic}</span>
@@ -103,10 +103,13 @@ export function Blog() {
                   <button
                     type="button"
                     onClick={() => setSelectedId(article.id)}
-                    className="inline-flex items-center gap-2 text-xs font-semibold text-[#2563EB] hover:text-[#12151E] transition-colors duration-150 cursor-pointer"
+                    className="group inline-flex items-center gap-2 text-xs font-semibold text-[#2563EB] hover:text-[#12151E] transition-colors duration-150 cursor-pointer"
                   >
                     <span>Read article</span>
-                    <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+                    <ArrowRight
+                      className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5"
+                      strokeWidth={1.75}
+                    />
                   </button>
                 </article>
               ))}

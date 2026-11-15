@@ -36,10 +36,10 @@ export function FAQ() {
   };
 
   return (
-    <section id="faq" className="px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
+    <section id="faq" data-faq-section className="px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
       <div className="mx-auto max-w-5xl">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-4 space-y-4">
+          <div data-faq-aside className="lg:col-span-4 space-y-4">
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border-[1.5px] border-[#12151E] bg-[#D1FAE5] text-[#059669] shadow-[2px_2px_0_#12151E]">
               <HelpCircle className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
             </span>
@@ -60,11 +60,14 @@ export function FAQ() {
               <a
                 href={getRoutePath('guide')}
                 onClick={(e) => handleNav(e, 'guide')}
-                className="inline-flex items-center gap-2 font-semibold text-[#2563EB] hover:text-[#12151E] transition-colors duration-150"
+                className="group inline-flex items-center gap-2 font-semibold text-[#2563EB] hover:text-[#12151E] transition-colors duration-150"
               >
                 <BookOpen className="h-4 w-4" strokeWidth={1.75} />
                 <span>Preparation guide</span>
-                <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+                <ArrowRight
+                  className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5"
+                  strokeWidth={1.75}
+                />
               </a>
               <a
                 href={getRoutePath('about')}
@@ -90,6 +93,7 @@ export function FAQ() {
               return (
                 <div
                   key={item.q}
+                  data-faq-item
                   className="rounded-xl border-[1.5px] border-[#12151E] bg-white shadow-[3px_3px_0_#12151E] overflow-hidden"
                 >
                   <button
@@ -105,17 +109,24 @@ export function FAQ() {
                       <span>{item.q}</span>
                     </span>
                     <ChevronDown
-                      className={`h-4 w-4 shrink-0 text-[#12151E] transition-transform duration-150 ${
+                      className={`h-4 w-4 shrink-0 text-[#12151E] transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                         isOpen ? 'rotate-180' : ''
                       }`}
                       strokeWidth={1.75}
                     />
                   </button>
-                  {isOpen && (
-                    <div className="border-t border-[#12151E]/15 bg-[#FAF9F5] px-5 py-4 text-sm leading-relaxed text-[#4B5263]">
-                      {item.a}
+
+                  <div
+                    className={`grid transition-[grid-template-rows,opacity] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="border-t border-[#12151E]/15 bg-[#FAF9F5] px-5 py-4 text-sm leading-relaxed text-[#4B5263]">
+                        {item.a}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             })}
