@@ -68,38 +68,44 @@ export function Home() {
           0.48
         );
 
-      // Scroll-triggered Workflow Dark Block entrance
+      // Scroll-triggered Workflow section & per-step rows
       const workflowSection = root.querySelector('[data-workflow-section]');
       if (workflowSection) {
         const heads = workflowSection.querySelectorAll('[data-workflow-head]');
         const cards = workflowSection.querySelectorAll('[data-workflow-card]');
 
         gsap.set(heads, { y: 16, opacity: 0 });
-        gsap.set(cards, { y: 20, opacity: 0 });
-
         ScrollTrigger.create({
           trigger: workflowSection,
-          start: 'top 85%',
+          start: 'top 86%',
           once: true,
           onEnter: () => {
             gsap.to(heads, {
               y: 0,
               opacity: 1,
               duration: 0.4,
-              stagger: 0.06,
-              ease: 'power3.out',
-              clearProps: 'transform,opacity',
-            });
-            gsap.to(cards, {
-              y: 0,
-              opacity: 1,
-              duration: 0.42,
-              stagger: 0.075,
-              delay: 0.12,
               ease: 'power3.out',
               clearProps: 'transform,opacity',
             });
           },
+        });
+
+        cards.forEach((card) => {
+          gsap.set(card, { y: 20, opacity: 0 });
+          ScrollTrigger.create({
+            trigger: card,
+            start: 'top 88%',
+            once: true,
+            onEnter: () => {
+              gsap.to(card, {
+                y: 0,
+                opacity: 1,
+                duration: 0.44,
+                ease: 'power3.out',
+                clearProps: 'transform,opacity',
+              });
+            },
+          });
         });
       }
 

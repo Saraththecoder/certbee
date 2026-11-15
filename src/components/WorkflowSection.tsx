@@ -1,125 +1,182 @@
-import { ArrowRight, Download, FileSpreadsheet, Move, UploadCloud } from 'lucide-react';
+import { ArrowRight, Maximize2, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useBatchWorkspace } from '../hooks/useBatchWorkspace';
 
 const WORKFLOW_STEPS = [
   {
     id: '01',
-    title: 'Upload design',
-    description: 'Drop in any clean PNG, JPG, SVG, or vector PDF template exported without sample names.',
-    formatHint: 'PNG · JPG · SVG · PDF',
-    icon: UploadCloud,
-    badgeBg: 'bg-[#F97316]',
+    label: 'Step 1',
+    title: 'Upload your design',
+    description:
+      'Drop in any clean PNG, JPG, SVG, or vector PDF template exported without placeholder recipient names.',
+    screenshot: '/assets/aistudio/image_7a95b629.png',
+    screenshotAlt: 'Step 1 of 4: Upload your certificate template inside CertBee',
   },
   {
     id: '02',
-    title: 'Import list',
-    description: 'Load CSV or Excel files, paste plain text rows, or fetch a public Google Sheet link.',
-    formatHint: 'CSV · XLSX · SHEETS',
-    icon: FileSpreadsheet,
-    badgeBg: 'bg-[#2563EB]',
+    label: 'Step 2',
+    title: 'Import your list',
+    description:
+      'Load a CSV or Excel workbook, paste names one per line, or fetch a public Google Sheet directly in your browser.',
+    screenshot: '/assets/aistudio/image_0032b421.png',
+    screenshotAlt: 'Step 2 of 4: Import participant names from CSV, Excel, pasted list, or Google Sheets',
   },
   {
     id: '03',
-    title: 'Place fields',
-    description: 'Align text boxes directly over your artwork, set Auto-fit margins, and preview long names.',
-    formatHint: 'Auto-fit · Custom TTF/OTF',
-    icon: Move,
-    badgeBg: 'bg-[#10B981]',
+    label: 'Step 3',
+    title: 'Place the fields',
+    description:
+      'Drag the name box into place on your template, pick a font and color, and enable Auto-fit so long names never overflow.',
+    screenshot: '/assets/aistudio/image_b59d7b54.png',
+    screenshotAlt: 'Step 3 of 4: Place dynamic name box and customize font styling on certificate',
   },
   {
     id: '04',
-    title: 'Export ZIP',
-    description: 'Render crisp personalized PDFs and download everything bundled in one browser-built ZIP.',
-    formatHint: 'One PDF per participant',
-    icon: Download,
-    badgeBg: 'bg-[#EC4899]',
+    label: 'Step 4',
+    title: 'Export your ZIP',
+    description:
+      'Verify every column once, generate every personalized PDF locally, and download the complete batch in one ZIP archive.',
+    screenshot: '/assets/aistudio/image_909d1e15.png',
+    screenshotAlt: 'Step 4 of 4: Generate batch PDFs and download the ZIP archive',
   },
 ] as const;
 
 export function WorkflowSection() {
   const { startEmptyBatch } = useBatchWorkspace();
+  const [zoomedStepId, setZoomedStepId] = useState<string | null>(null);
+
+  const zoomedStep = WORKFLOW_STEPS.find((s) => s.id === zoomedStepId) ?? null;
+
+  useEffect(() => {
+    if (!zoomedStepId) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setZoomedStepId(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [zoomedStepId]);
 
   return (
-    <section id="workflow" data-workflow-section className="px-4 py-10 sm:px-6 lg:px-8 sm:py-12">
-      <div className="mx-auto max-w-5xl">
-        {/* Cobalt Folder Tab Header */}
+    <section id="workflow" data-workflow-section className="px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
+      <div className="mx-auto max-w-5xl space-y-12 sm:space-y-14">
+        {/* Section Header */}
         <div
           data-workflow-head
-          className="inline-flex items-center gap-2 rounded-t-lg border-[1.5px] border-b-0 border-[#12151E] bg-[#2563EB] px-4 py-1.5 font-mono-tabular text-xs font-semibold text-white"
+          className="flex flex-col gap-5 border-b-[1.5px] border-[#12151E]/15 pb-8 sm:flex-row sm:items-end sm:justify-between"
         >
-          <span>How it works</span>
+          <div className="max-w-xl space-y-2.5 text-left">
+            <span className="inline-block rounded-md border-[1.5px] border-[#12151E] bg-[#2563EB] px-3 py-1 font-mono-tabular text-xs font-semibold text-white shadow-[2px_2px_0_#12151E]">
+              How it works
+            </span>
+            <h2
+              className="font-display text-3xl sm:text-4xl font-bold tracking-[-0.025em] text-[#12151E] leading-[1.12]"
+              style={{ textWrap: 'balance' }}
+            >
+              From spreadsheet to ZIP in 4 steps.
+            </h2>
+            <p className="text-sm sm:text-base leading-relaxed text-[#4B5263]">
+              Keep your own borders, seals, and typography while CertBee merges your sheet locally.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={startEmptyBatch}
+            className="group inline-flex h-10 shrink-0 items-center gap-2 self-start sm:self-auto rounded-lg border-[1.5px] border-[#12151E] bg-[#12151E] px-4 text-xs sm:text-sm font-semibold text-white shadow-[3px_3px_0_#F6C844] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#1E2333] transition-[background-color,transform] duration-150 whitespace-nowrap cursor-pointer"
+          >
+            <span>Start a batch</span>
+            <ArrowRight
+              className="h-4 w-4 text-[#F6C844] transition-transform duration-150 group-hover:translate-x-0.5"
+              strokeWidth={1.75}
+            />
+          </button>
         </div>
 
-        {/* High-Contrast Charcoal Studio Block */}
-        <div className="rounded-2xl rounded-tl-none border-[1.5px] border-[#12151E] bg-[#11131B] p-6 sm:p-8 lg:p-10 text-white shadow-[5px_5px_0_#12151E]">
-          <div
-            data-workflow-head
-            className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"
-          >
-            <div className="max-w-xl space-y-2.5">
-              <h2
-                className="font-display text-2xl sm:text-4xl font-bold tracking-[-0.025em] text-white leading-[1.12]"
-                style={{ textWrap: 'balance' }}
-              >
-                From spreadsheet to ZIP in 4 steps.
-              </h2>
-              <p className="text-sm sm:text-base leading-relaxed text-white/75">
-                Keep your own borders, seals, and typography. Upload your template, import your list, place fields once, and export one clean PDF per participant.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={startEmptyBatch}
-              className="group inline-flex h-10 shrink-0 items-center gap-2 self-start sm:self-auto rounded-lg border-[1.5px] border-white/25 bg-[#2563EB] px-4 text-xs sm:text-sm font-semibold text-white shadow-[3px_3px_0_#000000] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#1D4ED8] transition-[background-color,transform] duration-150 whitespace-nowrap cursor-pointer"
+        {/* Clean Stacked Two-Column Step Rows (Screenshot Left + Step Text Right) */}
+        <div className="space-y-12 sm:space-y-16">
+          {WORKFLOW_STEPS.map((step) => (
+            <div
+              key={step.id}
+              data-workflow-card
+              className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center lg:gap-12"
             >
-              <span>Start a batch</span>
-              <ArrowRight
-                className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5"
-                strokeWidth={1.75}
-              />
-            </button>
-          </div>
-
-          {/* 4 Structured Dark Cards */}
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {WORKFLOW_STEPS.map((step) => {
-              const Icon = step.icon;
-              return (
-                <div
-                  key={step.id}
-                  data-workflow-card
-                  className="group flex flex-col justify-between rounded-xl border border-white/15 bg-[#181B26] p-5 text-left transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-white/30"
+              {/* Step Screenshot Left */}
+              <div className="lg:col-span-7">
+                <button
+                  type="button"
+                  onClick={() => setZoomedStepId(step.id)}
+                  aria-label={`Inspect ${step.title} screenshot`}
+                  className="group relative block w-full overflow-hidden rounded-xl border-[1.5px] border-[#12151E] bg-white shadow-[5px_5px_0_#12151E] hover:-translate-y-0.5 transition-transform duration-200 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12151E]"
                 >
-                  <div>
-                    <div className="flex items-center justify-between gap-2">
-                      <span
-                        className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/20 ${step.badgeBg} text-white transition-transform duration-200 group-hover:scale-105`}
-                      >
-                        <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-                      </span>
-                      <span className="font-mono-tabular tabular-nums text-xs font-medium text-white/55">
-                        {step.id}
-                      </span>
-                    </div>
+                  <img
+                    src={step.screenshot}
+                    alt={step.screenshotAlt}
+                    loading="lazy"
+                    className="block w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.015]"
+                  />
+                  <span className="absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-md border-[1.5px] border-[#12151E] bg-white/95 px-2.5 py-1 font-mono-tabular text-[11px] font-semibold text-[#12151E] shadow-[2px_2px_0_#12151E] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                    <Maximize2 className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />
+                    <span>Expand</span>
+                  </span>
+                </button>
+              </div>
 
-                    <h3 className="mt-4 font-display text-base font-semibold text-white">
-                      {step.title}
-                    </h3>
-                    <p className="mt-1 font-mono-tabular text-[11px] text-white/55">
-                      {step.formatHint}
-                    </p>
-                  </div>
-
-                  <p className="mt-3 text-xs sm:text-sm leading-relaxed text-white/75">
-                    {step.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+              {/* Step Copy Right */}
+              <div className="lg:col-span-5 space-y-3.5 text-left">
+                <span className="inline-block rounded-md border-[1.5px] border-[#12151E] bg-[#FFF4CC] px-3 py-1 font-mono-tabular text-xs font-semibold text-[#12151E] shadow-[2px_2px_0_#12151E]">
+                  {step.label}
+                </span>
+                <h3 className="font-display text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-[#12151E] leading-tight">
+                  {step.title}
+                </h3>
+                <p className="text-sm sm:text-base leading-relaxed text-[#4B5263]">
+                  {step.description}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Fullscreen Lightbox Preview Modal */}
+      {zoomedStep && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${zoomedStep.title} preview`}
+          onClick={() => setZoomedStepId(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#12151E]/80 p-4 backdrop-blur-xs"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-4xl overflow-hidden rounded-2xl border-[1.5px] border-[#12151E] bg-[#FAF9F5] shadow-[6px_6px_0_#F6C844]"
+          >
+            <div className="flex items-center justify-between border-b-[1.5px] border-[#12151E] bg-white px-4 py-3">
+              <div className="flex items-center gap-2.5">
+                <span className="inline-flex h-6 items-center justify-center rounded border border-[#12151E] bg-[#F6C844] px-2 font-mono-tabular text-[11px] font-bold text-[#12151E]">
+                  {zoomedStep.label}
+                </span>
+                <span className="font-display text-sm font-semibold text-[#12151E]">
+                  {zoomedStep.title}
+                </span>
+              </div>
+              <button
+                type="button"
+                aria-label="Close preview"
+                onClick={() => setZoomedStepId(null)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border-[1.5px] border-[#12151E] bg-white text-[#12151E] hover:bg-[#F3F1EA] cursor-pointer"
+              >
+                <X className="h-4 w-4" strokeWidth={1.75} />
+              </button>
+            </div>
+            <img
+              src={zoomedStep.screenshot}
+              alt={zoomedStep.screenshotAlt}
+              className="block w-full h-auto"
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
