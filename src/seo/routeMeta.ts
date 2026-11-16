@@ -50,7 +50,9 @@ function makeOrganizationEntity(origin: string): Record<string, unknown> {
     url: `${origin}/`,
     logo: {
       '@type': 'ImageObject',
-      url: `${origin}/favicon.svg`,
+      url: `${origin}/icon-512x512.png`,
+      width: 512,
+      height: 512,
     },
     sameAs: [SITE_CONFIG.githubUrl],
   };
@@ -61,6 +63,7 @@ function makeWebSiteEntity(origin: string): Record<string, unknown> {
     '@type': 'WebSite',
     '@id': `${origin}/#website`,
     name: SITE_CONFIG.name,
+    alternateName: ['CertBee Certificate Generator', 'certbee.vercel.app'],
     url: `${origin}/`,
     description: SITE_CONFIG.defaultDescription,
     publisher: { '@id': `${origin}/#organization` },
