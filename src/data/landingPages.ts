@@ -4,6 +4,7 @@ export type LandingRouteKey =
   | 'features'
   | 'how-it-works'
   | 'bulk-certificate-generator'
+  | 'canva-certificate-generator'
   | 'certificate-generator-from-excel'
   | 'certificate-generator-from-google-sheets'
   | 'workshop-certificate-generator'
@@ -508,9 +509,70 @@ export const LANDING_PAGES: Record<LandingRouteKey, LandingPageData> = {
       { slug: 'create-workshop-certificates-for-students', label: 'How to Create Workshop Certificates for Students' },
       { slug: 'generate-certificates-without-uploading-data', label: 'Why Local Processing Protects Student Data' },
     ],
+      relatedPages: [
+        { route: 'privacy', label: 'Read how local processing works' },
+        { route: 'about', label: 'Why a Google Student Ambassador built CertBee' },
+      ],
+    },
+
+  'canva-certificate-generator': {
+    route: 'canva-certificate-generator',
+    badge: 'Canva Workflow',
+    badgeColor: '#F6C33E',
+    seoTitle: 'Free Bulk Certificate Generator for Canva Designs | CertBee',
+    metaDescription:
+      'Designed your certificate in Canva Free? Export a blank PNG or PDF template, import Excel, CSV, or Google Sheets, and bulk-generate watermark-free PDFs locally.',
+    primaryKeyword: 'Bulk certificate generator Canva',
+    secondaryKeywords: [
+      'Free bulk certificate generator for Canva',
+      'Canva certificate bulk create alternative free',
+      'Bulk PDF certificate maker from Canva template',
+    ],
+    h1: 'Bulk-fill Canva certificate designs for free—without paywalls',
+    intro:
+      'Design your certificate layout in Canva Free, remove the placeholder recipient name, export once, and let CertBee generate hundreds of personalized PDFs from Excel, CSV, or Google Sheets inside your browser.',
+    screenshot: '/images/certbee-step-3-design-certificate-fields.webp',
+    screenshotAlt:
+      'CertBee design canvas displaying a Canva-exported certificate template with dynamic participant fields',
+    screenshotCaption: 'Keep your exact Canva borders, logos, and typography layout while merging names in bulk.',
+    highlights: [
+      { label: 'Best Canva Export', value: 'PDF Print (vector) or PNG at 3508 × 2480 px' },
+      { label: 'Canva Pro Needed?', value: 'No — works with Canva Free exports' },
+      { label: 'Data Sources', value: 'Excel (.xlsx) · CSV · Paste · Google Sheets' },
+      { label: 'Watermark', value: 'None — clean PDF & ZIP download' },
+    ],
+    sections: [
+      {
+        title: 'How to export your Canva certificate cleanly',
+        body: 'Before exporting from Canva, delete only the sample recipient name (and any dynamic role/date text you want filled per row). Keep borders, event logos, seals, and static copy intact on the page.',
+        bullets: [
+          'Choose Share → Download → PDF Print for crisp vector borders and logos, or PNG (2x / 3508 × 2480 px) for raster artwork.',
+          'Check that your signature line or badge area leaves enough horizontal width for 30+ character names.',
+          'Upload your matching .ttf or .otf font in Step 03 if you want Canva typography matched cleanly.',
+        ],
+      },
+      {
+        title: 'Merge names, roles, and dates locally in four steps',
+        body: 'Upload your Canva export in Step 01, load your participant spreadsheet or Google Sheet in Step 02, enable Auto-fit on the Participant Name box in Step 03, and download named PDFs as a single ZIP in Step 04.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Do I need Canva Pro to bulk-generate certificates with CertBee?',
+        a: 'No. Export a clean certificate background from Canva Free (PNG or PDF Standard/Print) without recipient names, then merge your spreadsheet rows locally in CertBee for free.',
+      },
+      {
+        q: 'Should I export PNG or PDF Print from Canva?',
+        a: 'Export PDF Print when possible so logos, borders, and lines remain vector-sharp inside every generated certificate. If your Canva design includes heavy raster effects, export high-resolution PNG.',
+      },
+    ],
+    relatedArticles: [
+      { slug: 'design-professional-participation-certificate', label: 'How to Design a Clean Certificate Template' },
+      { slug: 'generate-certificates-bulk-excel-free', label: 'How to Generate Bulk Certificates from Excel' },
+    ],
     relatedPages: [
-      { route: 'privacy', label: 'Read how local processing works' },
-      { route: 'about', label: 'Why a Google Student Ambassador built CertBee' },
+      { route: 'certificate-generator-from-excel', label: 'From Excel & CSV spreadsheets' },
+      { route: 'certificate-generator-from-google-sheets', label: 'From Google Sheets' },
     ],
   },
 };

@@ -33,14 +33,28 @@ export function parseCsvText(
   source: ImportSource,
   sourceLabel: string
 ): ParticipantDataset {
-  const parsed = Papa.parse<Record<string, string>>(csvText, {
+  const cleanText = csvText.replace(/^\uFEFF/, '').trim();
+  if (!cleanText) {
+    throw new Error('The CSV file is empty. Add a header row and at least one participant row.');
+  }
+
+  if (/\x00/.test(cleanText)) {
+    throw new Error('This file appears to be binary rather than plain-text CSV. Try importing an Excel (.xlsx) file instead.');
+  }
+
+  const firstFewLines = cleanText.split(/\r?\n/).slice(0, 5).join('\n');
+  const hasKnownDelimiter = /[,;\t|]/.test(firstFewLines);
+
+  const parsed = Papa.parse<Record<string, string>>(cleanText, {
     header: true,
     skipEmptyLines: 'greedy',
+    ...(hasKnownDelimiter ? {} : { delimiter: ',' }),
     transformHeader: (header) => header.trim(),
   });
 
-  if (parsed.errors.length > 0 && (!parsed.data || parsed.data.length === 0)) {
-    throw new Error(parsed.errors[0]?.message || 'Could not parse CSV rows.');
+  const blockingErrors = parsed.errors.filter((err) => err.code !== 'UndetectableDelimiter');
+  if (blockingErrors.length > 0 && (!parsed.data || parsed.data.length === 0)) {
+    throw new Error(blockingErrors[0]?.message || 'Could not parse CSV rows.');
   }
 
   const rawHeaders = (parsed.meta.fields ?? []).filter((h) => h.trim().length > 0);

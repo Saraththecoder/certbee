@@ -20,7 +20,13 @@
   </url>
   <url>
     <loc>https://certbee.vercel.app/bulk-certificate-generator</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://certbee.vercel.app/canva-certificate-generator</loc>
+    <lastmod>2026-11-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

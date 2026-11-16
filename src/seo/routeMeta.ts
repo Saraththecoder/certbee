@@ -29,6 +29,7 @@ export const STATIC_ROUTE_TO_PATH: Record<
   features: '/features',
   'how-it-works': '/how-it-works',
   'bulk-certificate-generator': '/bulk-certificate-generator',
+  'canva-certificate-generator': '/canva-certificate-generator',
   'certificate-generator-from-excel': '/certificate-generator-from-excel',
   'certificate-generator-from-google-sheets': '/certificate-generator-from-google-sheets',
   'workshop-certificate-generator': '/workshop-certificate-generator',
@@ -79,6 +80,7 @@ function makeSoftwareApplicationEntity(origin: string): Record<string, unknown> 
     operatingSystem: 'Web Browser',
     browserRequirements: 'Requires JavaScript and IndexedDB support in a modern web browser.',
     url: `${origin}/`,
+    image: `${origin}${SITE_CONFIG.ogImagePath}`,
     description: SITE_CONFIG.defaultDescription,
     featureList: [
       'Upload PNG, JPG, SVG, and vector PDF certificate templates',
@@ -535,6 +537,7 @@ export function getAllIndexableRouteMetas(origin?: string): ResolvedRouteSeo[] {
     'features',
     'how-it-works',
     'bulk-certificate-generator',
+    'canva-certificate-generator',
     'certificate-generator-from-excel',
     'certificate-generator-from-google-sheets',
     'workshop-certificate-generator',

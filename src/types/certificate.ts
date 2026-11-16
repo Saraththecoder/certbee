@@ -4,6 +4,7 @@ export type PageRoute =
   | 'features'
   | 'how-it-works'
   | 'bulk-certificate-generator'
+  | 'canva-certificate-generator'
   | 'certificate-generator-from-excel'
   | 'certificate-generator-from-google-sheets'
   | 'workshop-certificate-generator'

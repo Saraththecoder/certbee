@@ -5,6 +5,14 @@ export interface FAQItem {
 
 export const HOME_FAQ_ITEMS: FAQItem[] = [
   {
+    q: 'How does the bulk certificate generator work?',
+    a: 'Upload your blank certificate template (PNG, JPG, SVG, or PDF), import participant names from Excel, CSV, pasted text, or a public Google Sheet, drag dynamic text or signature fields onto the live canvas, and export all personalized PDFs individually or inside one ZIP archive.',
+  },
+  {
+    q: 'Can I customize fonts, layout, and Canva certificate templates?',
+    a: 'Yes. Export any blank certificate design from Canva, Figma, or Illustrator without names, upload it into Step 01, and customize field placement, colors, letter spacing, Auto-fit sizing, transparent PNG signatures, or your own .ttf/.otf brand font.',
+  },
+  {
     q: 'Does it handle long names?',
     a: 'Yes. Turn on Auto-fit in Step 03 and drag the text box wide across your template. Any name that exceeds the box scales down proportionally to stay inside your margins, and you can preview the longest name in your sheet before exporting.',
   },
@@ -17,8 +25,8 @@ export const HOME_FAQ_ITEMS: FAQItem[] = [
     a: 'Vector PDF and SVG templates keep borders, logos, and typed names sharp at any print size. For PNG or JPG artwork, export at 3508 × 2480 px (300 DPI for A4) and CertBee embeds that full resolution into each PDF.',
   },
   {
-    q: 'Why is it free, and what is the catch?',
-    a: 'None. It was built by a Google Student Ambassador for ambassador programs, student clubs, and campus events. Because all PDF and ZIP generation runs inside your browser tab instead of backend servers, there are no accounts, no watermarks, and participant lists never reach our servers (optional Google Sheets links fetch directly from Google in your browser).',
+    q: 'How much does it cost, and is there any catch?',
+    a: 'Nothing—it is 100% free with zero watermarks and no account required. Built by a Google Student Ambassador for campus events and workshops, all PDF and ZIP rendering runs inside your browser tab instead of backend servers.',
   },
   {
     q: 'How many certificates can I export in one batch?',

@@ -304,6 +304,13 @@ export function Home() {
                 Google Sheets guide
               </a>
               <a
+                href={getRoutePath('canva-certificate-generator')}
+                onClick={(e) => handleNav(e, 'canva-certificate-generator')}
+                className="text-[#2563EB] hover:text-[#12151E] transition-colors"
+              >
+                Canva template guide
+              </a>
+              <a
                 href={getRoutePath('blog')}
                 onClick={(e) => handleNav(e, 'blog')}
                 className="inline-flex items-center gap-1 rounded-md border-[1.5px] border-[#12151E] bg-white px-3 py-1.5 text-[#12151E] shadow-[2px_2px_0_#12151E] hover:bg-[#F6C844] transition-colors"

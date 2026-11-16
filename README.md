@@ -2,7 +2,9 @@
 
 **One design. Every certificate.**
 
-CertBee is a free, browser-native bulk certificate generator built by a Google Student Ambassador for ambassador programs, student clubs, workshops, and campus hackathons. Upload a blank certificate template once, load a participant list, position dynamic text or signature fields visually on a live canvas, and export personalized PDFs bundled as a ZIP—directly in your browser with zero server uploads.
+Live App: **https://certbee.vercel.app**
+
+CertBee is a free, browser-native bulk certificate generator built by a Google Student Ambassador for ambassador programs, student clubs, workshops, and campus hackathons. Upload a blank certificate template once (from Canva, Figma, or Illustrator), load a participant list, position dynamic text or signature fields visually on a live canvas, and export personalized PDFs bundled as a ZIP—directly in your browser with zero server uploads.
 
 ---
 
@@ -32,16 +34,16 @@ CertBee is a free, browser-native bulk certificate generator built by a Google S
 ## 4-Step Workflow
 
 1. **01 Template** — Upload a clean PNG, JPG, SVG, or PDF certificate background without recipient names.
-   ![Step 1: Upload certificate template](public/assets/aistudio/image_7a95b629.png)
+   ![Step 1: Upload certificate template](public/images/certbee-step-1-upload-certificate-template.webp)
 
 2. **02 Participants** — Import a CSV/Excel spreadsheet, paste names line by line, or load a public Google Sheets link.
-   ![Step 2: Import participants](public/assets/aistudio/image_0032b421.png)
+   ![Step 2: Import participants](public/images/certbee-step-2-import-participants-spreadsheet.webp)
 
 3. **03 Design** — Place dynamic placeholders on the canvas, customize typography or custom fonts, upload signature artwork, and preview real participant rows live.
-   ![Step 3: Design certificate fields](public/assets/aistudio/image_b59d7b54.png)
+   ![Step 3: Design certificate fields](public/images/certbee-step-3-design-certificate-fields.webp)
 
 4. **04 Generate** — Validate the batch, render personalized PDFs locally, and download single files or `certificates_batch.zip`.
-   ![Step 4: Generate and download ZIP](public/assets/aistudio/image_909d1e15.png)
+   ![Step 4: Generate and download ZIP](public/images/certbee-step-4-generate-download-zip.webp)
 
 ---
 

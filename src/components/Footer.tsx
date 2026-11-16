@@ -91,6 +91,15 @@ export function Footer() {
               </li>
               <li>
                 <a
+                  href={getRoutePath('canva-certificate-generator')}
+                  onClick={(e) => handleNav(e, 'canva-certificate-generator')}
+                  className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"
+                >
+                  From Canva designs
+                </a>
+              </li>
+              <li>
+                <a
                   href={getRoutePath('certificate-generator-from-excel')}
                   onClick={(e) => handleNav(e, 'certificate-generator-from-excel')}
                   className="text-[#4B5263] hover:text-[#12151E] transition-colors duration-150"

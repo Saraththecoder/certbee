@@ -37,5 +37,16 @@ describe('parseCsvText', () => {
 
   it('throws on CSVs with headers but zero participant rows', () => {
     expect(() => parseCsvText('Name,Email\n', 'csv', 'empty.csv')).toThrow();
+    expect(() => parseCsvText('Name\n', 'csv', 'single-col-empty.csv')).toThrow(
+      'The file contains headers but zero participant rows.'
+    );
+  });
+
+  it('parses single-column CSVs with UTF-8 BOM without UndetectableDelimiter errors', () => {
+    const dataset = parseCsvText('\uFEFFName\nAarav Sharma\nPriya Nair\n', 'csv', 'names-only.csv');
+    expect(dataset.headers).toEqual(['Name']);
+    expect(dataset.mapping.name).toBe('Name');
+    expect(dataset.rows).toHaveLength(2);
+    expect(dataset.rows[0].values).toEqual({ Name: 'Aarav Sharma' });
   });
 });
