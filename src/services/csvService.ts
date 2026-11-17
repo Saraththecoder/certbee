@@ -62,13 +62,26 @@ export function parseCsvText(
     throw new Error('No column headers were found. Ensure the first row contains column names.');
   }
 
-  // Deduplicate headers if necessary
-  const headers = rawHeaders.filter((h, i) => rawHeaders.indexOf(h) === i);
+  const DANGEROUS_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+  // Deduplicate headers and block prototype-polluting keys
+  const headers = rawHeaders.filter(
+    (h, i) => !DANGEROUS_KEYS.has(h.toLowerCase()) && rawHeaders.indexOf(h) === i
+  );
+  if (headers.length === 0) {
+    throw new Error('No valid column headers were found in the CSV.');
+  }
+
+  const sanitizeCell = (raw: unknown): string => {
+    if (raw === undefined || raw === null) return '';
+    return String(raw)
+      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+      .trim();
+  };
 
   const rows: ParticipantRow[] = (parsed.data ?? []).map((record) => {
     const values: Record<string, string> = {};
     headers.forEach((h) => {
-      values[h] = record[h] !== undefined && record[h] !== null ? String(record[h]).trim() : '';
+      values[h] = sanitizeCell(record[h]);
     });
     return {
       id: createId('row'),

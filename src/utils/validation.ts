@@ -65,24 +65,30 @@ export function parseGoogleSheetUrl(rawUrl: string): {
     };
   }
 
-  if (!parsed.hostname.includes('docs.google.com')) {
+  if (parsed.protocol !== 'https:') {
     return {
       valid: false,
-      error: 'URL must be a Google Sheets link on docs.google.com.',
+      error: 'Only encrypted HTTPS Google Sheets links (https://docs.google.com/...) are allowed.',
+    };
+  }
+
+  if (parsed.hostname.toLowerCase() !== 'docs.google.com') {
+    return {
+      valid: false,
+      error: 'URL must be an exact docs.google.com Google Sheets link.',
     };
   }
 
   const gidFromQuery = parsed.searchParams.get('gid');
   const gidFromHash = parsed.hash.match(/gid=(\d+)/)?.[1];
-  const gid = gidFromQuery || gidFromHash || undefined;
+  const rawGid = gidFromQuery || gidFromHash || undefined;
+  const gid = rawGid && /^\d+$/.test(rawGid) ? rawGid : undefined;
 
-  // Handle "Publish to the web" links (/pub, /pubhtml, /pub?output=csv) while keeping gid
-  if (parsed.pathname.includes('/pubhtml') || parsed.pathname.endsWith('/pub')) {
-    const pubUrl = new URL(parsed.toString());
-    pubUrl.pathname = pubUrl.pathname.replace(/\/pubhtml$/, '/pub');
-    pubUrl.hash = '';
+  // Handle "Publish to the web" links (/pub, /pubhtml, /pub?output=csv) using a clean allowlisted URL
+  if (/^\/spreadsheets\/(?:u\/\d+\/)?d\/e\/[a-zA-Z0-9-_]+\/(?:pubhtml|pub)$/.test(parsed.pathname)) {
+    const pubUrl = new URL(`https://docs.google.com${parsed.pathname.replace(/\/pubhtml$/, '/pub')}`);
     pubUrl.searchParams.set('output', 'csv');
-    if (gid && !pubUrl.searchParams.get('gid')) {
+    if (gid) {
       pubUrl.searchParams.set('gid', gid);
       pubUrl.searchParams.set('single', 'true');
     }

@@ -94,6 +94,7 @@ export function ParticipantTable() {
     const ok = await importSheetsUrl(sheetsUrl);
     if (ok) {
       trackEvent('participants_imported', { source: 'sheets' });
+      setSheetsUrl('');
       setImporterOpen(false);
       setPage(1);
     }
@@ -485,13 +486,13 @@ export function ParticipantTable() {
               </div>
             </form>
           ) : (
-            <form onSubmit={handleSheetsSubmit} className="p-8 sm:p-12 max-w-2xl mx-auto space-y-4">
+            <form onSubmit={handleSheetsSubmit} className="p-8 sm:p-10 max-w-2xl mx-auto space-y-5">
               <div className="space-y-1">
                 <label htmlFor="sheets-url-input" className="block text-sm font-bold text-[#141414]">
-                  Public Google Sheets URL
+                  Google Sheets HTTPS URL
                 </label>
                 <p className="text-xs text-[#52525B]">
-                  Set sharing to &ldquo;Anyone with the link can view&rdquo; in Google Sheets. Private sheets cannot be fetched without OAuth; export private sheets as CSV or Excel instead.
+                  Your browser fetches the sheet directly from Google over encrypted HTTPS (`no-referrer`, `no-store`)—the URL and roster never pass through CertBee servers.
                 </p>
               </div>
               <div className="flex flex-col gap-2 sm:flex-row">
@@ -511,6 +512,29 @@ export function ParticipantTable() {
                 >
                   {isImporting ? 'Fetching...' : 'Import Sheet'}
                 </button>
+              </div>
+
+              <div className="rounded-sm border border-[#141414]/20 bg-[#FBFBF8] p-4 space-y-2 text-xs text-[#4B5263]">
+                <p className="font-semibold text-[#141414]">
+                  Keep participant data safe from link leaks:
+                </p>
+                <ul className="list-disc pl-4 space-y-1">
+                  <li>
+                    <strong className="text-[#141414]">Safest option (stays Private):</strong> In Google Sheets click{' '}
+                    <span className="font-mono-tabular">File → Download → .csv</span> or <span className="font-mono-tabular">.xlsx</span> and{' '}
+                    <button
+                      type="button"
+                      onClick={() => setImportMode('file')}
+                      className="font-semibold text-[#2563EB] underline underline-offset-2 hover:text-[#141414] cursor-pointer"
+                    >
+                      import the file locally
+                    </button>
+                    —no link sharing needed.
+                  </li>
+                  <li>
+                    <strong className="text-[#141414]">If using a link:</strong> Remove unneeded columns (phones, IDs) first, temporarily set sharing to &ldquo;Anyone with the link can view&rdquo;, click Import Sheet, and immediately switch it back to <strong className="text-[#141414]">Restricted</strong>.
+                  </li>
+                </ul>
               </div>
             </form>
           )}

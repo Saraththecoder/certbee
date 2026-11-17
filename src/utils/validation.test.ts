@@ -67,8 +67,15 @@ describe('parseGoogleSheetUrl', () => {
     expect(pub.csvUrl).toContain('gid=777');
   });
 
-  it('rejects non-Google URLs or missing spreadsheet IDs', () => {
+  it('rejects non-Google URLs, spoofed lookalike domains, plain HTTP, or missing spreadsheet IDs', () => {
     expect(parseGoogleSheetUrl('https://example.com/sheet.csv').valid).toBe(false);
+    expect(
+      parseGoogleSheetUrl('https://docs.google.com.evil.example/spreadsheets/d/1AbC_xYz99/edit')
+        .valid
+    ).toBe(false);
+    expect(
+      parseGoogleSheetUrl('http://docs.google.com/spreadsheets/d/1AbC_xYz99/edit').valid
+    ).toBe(false);
     expect(parseGoogleSheetUrl('https://docs.google.com/spreadsheets/').valid).toBe(false);
   });
 });

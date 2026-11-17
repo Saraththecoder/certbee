@@ -3,6 +3,19 @@ import { parseGoogleSheetUrl } from '../utils/validation';
 import { parseCsvText } from './csvService';
 
 const SHEET_FETCH_TIMEOUT_MS = 15000;
+const MAX_SHEET_CSV_BYTES = 10 * 1024 * 1024; // 10 MB safety limit
+
+function isTrustedGoogleExportOrigin(rawUrl: string): boolean {
+  if (!rawUrl) return true;
+  try {
+    const parsed = new URL(rawUrl);
+    if (parsed.protocol !== 'https:') return false;
+    const host = parsed.hostname.toLowerCase();
+    return host === 'docs.google.com' || host.endsWith('.googleusercontent.com');
+  } catch {
+    return false;
+  }
+}
 
 class SheetFetchError extends Error {
   status?: number;
@@ -37,6 +50,9 @@ async function fetchCsvFromUrl(url: string): Promise<string> {
       method: 'GET',
       mode: 'cors',
       credentials: 'omit',
+      cache: 'no-store',
+      referrerPolicy: 'no-referrer',
+      redirect: 'follow',
       signal: controller.signal,
     });
   } catch (err) {
@@ -53,6 +69,12 @@ async function fetchCsvFromUrl(url: string): Promise<string> {
     );
   } finally {
     window.clearTimeout(timeoutId);
+  }
+
+  if (response.url && !isTrustedGoogleExportOrigin(response.url)) {
+    throw new SheetFetchError(
+      'Blocked unexpected redirect away from Google Sheets. Export the sheet as CSV locally instead.'
+    );
   }
 
   if (!response.ok) {
@@ -74,8 +96,21 @@ async function fetchCsvFromUrl(url: string): Promise<string> {
     );
   }
 
+  const contentLength = Number(response.headers.get('content-length') || '0');
+  if (Number.isFinite(contentLength) && contentLength > MAX_SHEET_CSV_BYTES) {
+    throw new SheetFetchError(
+      'The selected Google Sheet exceeds the 10 MB CSV safety limit. Export a smaller roster tab instead.'
+    );
+  }
+
   const contentType = response.headers.get('content-type') || '';
   const body = await response.text();
+  if (body.length > MAX_SHEET_CSV_BYTES) {
+    throw new SheetFetchError(
+      'The selected Google Sheet exceeds the 10 MB CSV safety limit. Split the sheet into smaller batches.'
+    );
+  }
+
   const trimmed = body.trim();
 
   if (
