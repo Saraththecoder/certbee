@@ -10,7 +10,7 @@ export function About() {
 
   usePageReveal(mainRef);
 
-  const handleNav = (e: React.MouseEvent, target: 'privacy' | 'guide' | 'contact') => {
+  const handleNav = (e: React.MouseEvent, target: 'privacy' | 'terms' | 'guide' | 'contact') => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
     navigate(target);
@@ -81,6 +81,9 @@ export function About() {
             <li>
               <strong className="text-[#12151E]">Public Google Sheets:</strong> Only triggered when you paste a public Google Sheets link, fetched read-only directly from your browser tab.
             </li>
+            <li>
+              <strong className="text-[#12151E]">Independent Project:</strong> CertBee is not affiliated with, endorsed by, or officially connected to Google LLC, Canva Pty Ltd, Microsoft Corporation, Figma, Inc., or Adobe Inc.
+            </li>
           </ul>
           <div className="flex flex-wrap items-center gap-4 pt-2 text-xs sm:text-sm font-semibold">
             <a
@@ -98,6 +101,13 @@ export function About() {
               className="text-[#2563EB] hover:text-[#12151E] transition-colors"
             >
               Read Privacy Policy →
+            </a>
+            <a
+              href={getRoutePath('terms')}
+              onClick={(e) => handleNav(e, 'terms')}
+              className="text-[#2563EB] hover:text-[#12151E] transition-colors"
+            >
+              Read Terms of Use →
             </a>
           </div>
         </section>

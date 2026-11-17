@@ -209,7 +209,9 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col gap-2 border-t border-[#12151E]/15 pt-6 text-xs text-[#525866] sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono-tabular tabular-nums">© {new Date().getFullYear()} CertBee</p>
+          <p className="font-mono-tabular tabular-nums">
+            © {new Date().getFullYear()} CertBee · Independent tool, not affiliated with Google, Canva, or Microsoft.
+          </p>
           <p className="inline-flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5 text-[#10B981] shrink-0" strokeWidth={1.75} aria-hidden="true" />
             <span>Participant lists never leave your device</span>

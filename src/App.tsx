@@ -77,55 +77,89 @@ function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
       <div data-page-reveal className="mx-auto max-w-3xl px-4 py-12 sm:px-8 sm:py-16 space-y-6">
         <div className="flex flex-wrap items-center gap-3">
           <span className="inline-block rounded-md border-[1.5px] border-[#12151E] bg-[#F6C844] px-3 py-1 font-mono-tabular text-xs font-semibold text-[#12151E] shadow-[2px_2px_0_#12151E]">
-            {kind === 'privacy' ? 'Privacy policy' : 'Terms of use'}
+            {kind === 'privacy' ? 'Privacy policy' : 'Terms of use & acceptable use'}
           </span>
           <span className="text-xs font-mono-tabular tabular-nums text-[#525866]">
-            Effective November 15, 2026
+            Last updated November 17, 2026
           </span>
         </div>
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-[-0.025em] text-[#12151E]">
-          {kind === 'privacy' ? 'Privacy policy' : 'Terms of use'}
+          {kind === 'privacy' ? 'Privacy policy' : 'Terms of use & disclaimer'}
         </h1>
         {kind === 'privacy' ? (
           <div className="rounded-xl border-[1.5px] border-[#12151E] bg-white p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-[#4B5263] shadow-[4px_4px_0_#12151E]">
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                1. Local browser processing
+                1. Local browser processing &amp; zero server uploads
               </h2>
               <p>
-                CertBee operates as a client-side application. Uploaded certificate templates (PNG, JPG, SVG, PDF), handwritten signature images, custom TTF/OTF fonts, imported CSV/Excel participant spreadsheets, field layouts, and exported PDF/ZIP archives are processed inside your browser memory and stored only in your device&apos;s local IndexedDB database.
+                CertBee operates as a client-side web application. Uploaded certificate templates (PNG, JPG, SVG, PDF), signature images, custom `.ttf`/`.otf` fonts, imported CSV/Excel spreadsheets, pasted participant names, field layouts, and exported PDF or ZIP archives are processed directly inside your browser&apos;s memory. CertBee does not operate a backend database for user accounts, templates, participant rosters, or generated certificates, and does not upload, sell, or share your roster files.
               </p>
             </section>
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                2. Zero server collection of participant lists
+                2. Hosting infrastructure &amp; third-party network requests
               </h2>
               <p>
-                CertBee does not upload, transmit, store, log, or sell recipient names, email addresses, certificate artwork, or generated documents to remote servers. No user accounts are required to run the certificate studio.
+                While your certificate data stays on your device, loading the website and optional external resources involves standard internet requests to third-party infrastructure providers:
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <strong className="text-[#12151E]">Static Hosting (Vercel):</strong> Delivering the application assets generates standard web server/CDN access logs (such as IP address, browser User-Agent, timestamp, and requested page path) governed by Vercel&apos;s privacy practices.
+                </li>
+                <li>
+                  <strong className="text-[#12151E]">Google Fonts:</strong> UI typography CSS stylesheets load from Google Fonts when you view pages, which involves standard HTTP requests to Google&apos;s font CDN.
+                </li>
+                <li>
+                  <strong className="text-[#12151E]">Public Google Sheets Import:</strong> Only when you paste a public Google Sheets URL in Step 02 does your browser make a direct, read-only request to Google&apos;s public CSV export endpoint (`export?format=csv`). CertBee never requests Google Workspace OAuth tokens or access to private Drive files.
+                </li>
+              </ul>
+            </section>
+            <section className="space-y-1.5">
+              <h2 className="font-display text-base font-semibold text-[#12151E]">
+                3. Organizer responsibility as data controller
+              </h2>
+              <p>
+                When you import student, attendee, employee, or participant names and email addresses into CertBee, you act as the sole data controller under applicable privacy laws (including GDPR, CCPA/CPRA, FERPA, and India&apos;s DPDPA). You are solely responsible for ensuring you have a valid legal basis, notice, and any required participant, institutional, or parental consent to process that data and issue certificates.
               </p>
             </section>
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                3. Public Google Sheets &amp; typography assets
+                4. Browser storage (`IndexedDB`) &amp; data deletion
               </h2>
               <p>
-                When you paste a public Google Sheets link in Step 02, your browser makes a direct, read-only request to Google&apos;s public CSV export endpoint for that spreadsheet tab—CertBee never receives OAuth credentials or private Drive access. Built-in UI stylesheets load from Google Fonts, while PDF font embedding uses static font files served alongside the app.
+                Active batch drafts (template, table rows, fields, custom fonts) are stored locally in your browser&apos;s `IndexedDB` so refreshing the tab does not wipe your work. Because CertBee does not store copies on remote servers, only you control this data: click &ldquo;New batch&rdquo; in the studio header or clear site data/cookies in your browser settings at any time to permanently erase it from your device.
               </p>
             </section>
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                4. Draft retention &amp; data deletion
+                5. Optional aggregate analytics &amp; opt-out
               </h2>
               <p>
-                Your active batch draft persists locally in IndexedDB solely so refreshing the browser does not lose your layout. You may permanently erase all locally stored draft assets at any moment via the &ldquo;New batch&rdquo; reset control in the workflow header or by clearing site storage in your browser settings.
+                Analytics are disabled unless explicitly configured via deployment environment variables (`VITE_GA_MEASUREMENT_ID`). When enabled, analytics are configured to anonymize IPs, disable Google Signals and ad personalization, respect browser Do Not Track (`DNT`) and Global Privacy Control (`GPC`) signals, and allow only non-PII aggregate parameters (such as template format category or batch size bucket). Participant names, emails, sheet links, and uploaded filenames are never included in analytics events.
               </p>
             </section>
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                5. Optional aggregate analytics
+                6. Children&apos;s privacy
               </h2>
               <p>
-                When enabled via deployment configuration, aggregate workflow counts (such as template format category or anonymized batch size bucket) may be recorded via privacy-configured analytics respecting Do Not Track (DNT) and Global Privacy Control (GPC). Participant names, emails, sheet URLs, and uploaded files are never included in analytics payloads.
+                CertBee is a productivity utility intended for event organizers, educators, and coordinators—not children under 13 (or the minimum digital consent age in your jurisdiction). CertBee does not knowingly collect personal information from minors. Schools, clubs, and youth event organizers using CertBee are solely responsible for compliance with applicable student and minor privacy regulations.
+              </p>
+            </section>
+            <section className="space-y-1.5">
+              <h2 className="font-display text-base font-semibold text-[#12151E]">
+                7. Policy updates &amp; privacy contact
+              </h2>
+              <p>
+                We may update this Privacy Policy periodically as the software evolves, indicated by the &ldquo;Last updated&rdquo; date above. For privacy questions, data concerns, or security reports, contact{' '}
+                <a
+                  href="mailto:sarathkumar86518@gmail.com"
+                  className="font-semibold text-[#2563EB] underline underline-offset-2 hover:text-[#12151E]"
+                >
+                  sarathkumar86518@gmail.com
+                </a>
+                .
               </p>
             </section>
           </div>
@@ -133,45 +167,108 @@ function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
           <div className="rounded-xl border-[1.5px] border-[#12151E] bg-white p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-[#4B5263] shadow-[4px_4px_0_#12151E]">
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                1. Permitted use &amp; content ownership
+                1. Acceptance of terms &amp; independent status
               </h2>
               <p>
-                CertBee is provided free of charge for generating event, course, workshop, hackathon, institutional, and participation certificates. You retain full copyright and ownership over all templates, signatures, participant rosters, and exported PDF certificates you create.
+                By accessing or using CertBee (`https://certbee.vercel.app`), you agree to these Terms of Use. If you do not agree, do not use the service. CertBee is an independent, community-built open-source utility maintained by its author and is provided free of charge.
               </p>
             </section>
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                2. Asset &amp; font licensing responsibility
+                2. Acceptable use &amp; prohibition of forgery or fraud
               </h2>
               <p>
-                When uploading custom artwork, signature images, or third-party `.ttf`/`.otf` font files for embedding into PDFs, you represent that you hold the necessary usage rights or licenses to embed and distribute those assets within your issued certificates.
+                CertBee is intended strictly for legitimate event, workshop, hackathon, club, training, and appreciation certificates. You agree <strong className="text-[#12151E]">not</strong> to use CertBee to create, alter, forge, or distribute:
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Fake, fraudulent, or unauthorized academic degrees, transcripts, diplomas, or school/university credentials;</li>
+                <li>Counterfeit government, regulatory, medical, legal, financial, safety, or professional licensing documents;</li>
+                <li>Certificates bearing institutional seals, signatures, logos, or organization names that you are not legally authorized to represent or issue;</li>
+                <li>Unlawful, defamatory, deceptive, or infringing content of any kind.</li>
+              </ul>
+              <p>
+                You bear sole legal responsibility for every document you generate or distribute.
               </p>
             </section>
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                3. Batch verification before distribution
+                3. Ownership, templates &amp; font licensing
               </h2>
               <p>
-                Because rendering runs locally inside your browser, you are responsible for verifying recipient spelling, field alignment, auto-fit scaling on long names, and exported sample PDFs prior to distributing certificates at scale.
+                You retain all ownership rights to your original templates, participant lists, and exported PDF certificates. When uploading artwork, logos, signature scans, or third-party `.ttf`/`.otf` fonts into CertBee, you represent and warrant that you hold all required intellectual property rights and embedding/distribution licenses to use those assets.
               </p>
             </section>
             <section className="space-y-1.5">
               <h2 className="font-display text-base font-semibold text-[#12151E]">
-                4. Warranty disclaimer
+                4. Third-party trademarks &amp; non-affiliation disclaimer
               </h2>
               <p>
-                CertBee is provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis without warranties of uninterrupted availability or fitness for a particular regulatory certification standard.
+                CertBee is an independent software project and is <strong className="text-[#12151E]">not affiliated with, endorsed by, sponsored by, or officially connected to</strong> Google LLC (including Google Sheets, Google Fonts, or the Google Student Ambassador program), Canva Pty Ltd, Microsoft Corporation (Excel), Figma, Inc., Adobe Inc., or any educational institution or sponsor. All third-party product names, file formats, and trademarks belong to their respective owners and are mentioned solely to describe workflow compatibility.
+              </p>
+            </section>
+            <section className="space-y-1.5">
+              <h2 className="font-display text-base font-semibold text-[#12151E]">
+                5. No credential verification &amp; pre-export review
+              </h2>
+              <p>
+                CertBee is strictly a client-side layout and PDF merge tool—it does not verify attendee identity, attendance, accreditation, or the authenticity of issued certificates. Because rendering depends on your uploaded files and local browser memory (~200–300 PDFs recommended per batch), you are solely responsible for reviewing exported PDFs for spelling, font shaping, alignment, and print quality before distribution or commercial printing.
+              </p>
+            </section>
+            <section className="space-y-1.5">
+              <h2 className="font-display text-base font-semibold text-[#12151E]">
+                6. Disclaimer of warranties
+              </h2>
+              <p>
+                TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, CERTBEE IS PROVIDED ON AN &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE&rdquo; BASIS, WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING WITHOUT LIMITATION IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, ACCURACY, NON-INFRINGEMENT, OR UNINTERRUPTED AVAILABILITY.
+              </p>
+            </section>
+            <section className="space-y-1.5">
+              <h2 className="font-display text-base font-semibold text-[#12151E]">
+                7. Limitation of liability
+              </h2>
+              <p>
+                TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL CERTBEE, ITS CREATOR, OR ITS CONTRIBUTORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, GOODWILL, REPRINTING COSTS, OR EVENT DISRUPTION ARISING OUT OF OR RELATED TO YOUR USE OF OR INABILITY TO USE CERTBEE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. BECAUSE CERTBEE IS PROVIDED FREE OF CHARGE, TOTAL AGGREGATE LIABILITY FOR ANY CLAIM SHALL NOT EXCEED $0 USD (OR THE MINIMUM AMOUNT PERMITTED BY LAW).
+              </p>
+            </section>
+            <section className="space-y-1.5">
+              <h2 className="font-display text-base font-semibold text-[#12151E]">
+                8. Indemnification
+              </h2>
+              <p>
+                You agree to defend, indemnify, and hold harmless CertBee, its creator, and its contributors from and against any claims, liabilities, damages, losses, or legal expenses (including reasonable attorneys&apos; fees) arising out of or relating to: (a) certificates, artwork, fonts, or signatures you process or distribute; (b) your breach of these Terms or applicable data-protection laws; or (c) any allegation that your templates or issued certificates infringe third-party rights or misrepresent credentials.
+              </p>
+            </section>
+            <section className="space-y-1.5">
+              <h2 className="font-display text-base font-semibold text-[#12151E]">
+                9. Changes, severability &amp; takedown / legal contact
+              </h2>
+              <p>
+                We may modify or discontinue features or update these Terms at any time without notice; continued use after updates constitutes acceptance. If any provision is held unenforceable, the remaining provisions remain in full force. To report copyright/trademark concerns, abuse, or legal notices, email{' '}
+                <a
+                  href="mailto:sarathkumar86518@gmail.com"
+                  className="font-semibold text-[#2563EB] underline underline-offset-2 hover:text-[#12151E]"
+                >
+                  sarathkumar86518@gmail.com
+                </a>
+                .
               </p>
             </section>
           </div>
         )}
-        <div className="pt-2">
+        <div className="flex flex-wrap items-center gap-3 pt-2">
           <button
             type="button"
             onClick={() => navigate('home')}
             className="inline-flex h-10 items-center rounded-lg border-[1.5px] border-[#12151E] bg-white px-4 text-xs sm:text-sm font-semibold text-[#12151E] shadow-[3px_3px_0_#12151E] hover:-translate-y-0.5 active:translate-y-0.5 hover:bg-[#F3F1EA] transition-[background-color,transform] duration-150 cursor-pointer"
           >
             Back to home
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(kind === 'privacy' ? 'terms' : 'privacy')}
+            className="inline-flex h-10 items-center rounded-lg border-[1.5px] border-[#12151E] bg-[#FAF9F5] px-4 text-xs sm:text-sm font-semibold text-[#12151E] hover:bg-[#FFF4CC] transition-colors duration-150 cursor-pointer"
+          >
+            {kind === 'privacy' ? 'Read Terms of use →' : 'Read Privacy policy →'}
           </button>
         </div>
       </div>

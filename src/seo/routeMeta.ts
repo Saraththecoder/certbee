@@ -452,7 +452,7 @@ export function resolveRouteSeo(
         path,
         title: 'Privacy Policy — Zero Server Uploads | CertBee',
         description:
-          'Verify how CertBee processes templates, participant rosters, IndexedDB drafts, Google Sheets links, and optional aggregate analytics locally in your browser.',
+          'Verify how CertBee processes templates and rosters locally in browser IndexedDB, plus Vercel hosting logs, Google Fonts, Google Sheets requests, and organizer responsibilities.',
         robots: 'index, follow',
         ogType: 'website',
         ogImage,
@@ -484,9 +484,9 @@ export function resolveRouteSeo(
       const canonical = buildCanonicalUrl(path, origin);
       return {
         path,
-        title: 'Terms of Use | CertBee',
+        title: 'Terms of Use & Acceptable Use Policy | CertBee',
         description:
-          'Terms covering permitted certificate creation, uploaded template and font licensing responsibility, and batch verification guidelines.',
+          'Terms covering acceptable certificate use, anti-forgery rules, asset and font licensing, third-party trademark non-affiliation, warranty disclaimers, and liability limits.',
         robots: 'index, follow',
         ogType: 'website',
         ogImage,
@@ -494,9 +494,9 @@ export function resolveRouteSeo(
         priority: '0.4',
         changefreq: 'yearly',
         lastmod: SITE_CONFIG.contentLastModified,
-        noscriptTitle: 'Terms of Use',
+        noscriptTitle: 'Terms of Use & Acceptable Use Policy',
         noscriptSummary:
-          'Users retain full ownership of uploaded certificate artwork, participant lists, and exported PDF certificates.',
+          'Users retain ownership of uploaded templates and exported PDFs while assuming responsibility for licensing, accuracy, and lawful certificate issuance.',
         jsonLd: [
           {
             '@context': 'https://schema.org',

@@ -56,7 +56,7 @@ export function Contact() {
           </div>
 
           <p className="text-sm leading-relaxed text-[#4B5263]">
-            Available for template compatibility questions, batch workflow feedback, and general support inquiries.
+            Available for template compatibility questions, batch workflow feedback, privacy inquiries, or copyright/trademark and legal notices.
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-1">
